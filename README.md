@@ -43,11 +43,9 @@ All code, files and objects related to Apex Cross-Cutting Concerns are prefixed 
 
 There are **TWO** repos now. One is the older version which does not have the Platform Events. The newer one incorporates Platform Events and Change Data Capture (CDC) into the cross-cutting concerns.
 
-Use the button below to install the **ALL version** (i.e. with Platform Events + Trigger Handler)
+Use the scripts to install the **ALL version** (i.e. with Platform Events + Trigger Handler)
 
-[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com?template=https://github.com/bjanderson70/sf-accc-dx)
-
-The DX Project has scripts that have ability to control which packages to deploy
+The DX Project has scripts that have ability to control which packages to deploy (either the base ACCC or ACCC + PE/CDC)
 
 ## Apex Docs
 If you download **CCCDocs** directory and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information. The documentation will also link to the Wiki
