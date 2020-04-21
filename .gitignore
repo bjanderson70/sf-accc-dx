@@ -18,6 +18,7 @@ yarn-error.log*
 
 # Dependency directories
 node_modules/
+uncrustify.cfg
 
 # Eslint cache
 .eslintcache
