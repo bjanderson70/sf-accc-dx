@@ -1,6 +1,14 @@
 scratch-org-def: config/project-scratch-def.json
+<<<<<<< HEAD
        assign-permset: true
        permset-name: ACCC_Org_Events_BigObject
        run-apex-tests: true
        delete-scratch-org: false
        show-scratch-org-url: true
+=======
+assign-permset: true
+permset-name: ACCC_Org_Events_BigObject
+run-apex-tests: true
+delete-scratch-org: false
+show-scratch-org-url: true
+>>>>>>> 77495f1e3e8b50c94e0fcb7d939724f5d41fb1a8
