@@ -1,0 +1,62 @@
+#!groovy
+import groovy.json.JsonSlurperClassic
+node {
+
+    def BUILD_NUMBER=env.BUILD_NUMBER
+    def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
+    def SFDC_USERNAME="wf"
+
+    def HUB_ORG=env.HUB_USERNAME
+    def SFDC_HOST = env.HUB_HOST
+    def JWT_KEY_CRED_ID = env.JWT_CRED_ID
+	def URL_KEY_CRED_ID = env.ORG_ACCESS 
+	def CONNECTED_APP_CONSUMER_KEY=env.CONSUMER_KEY
+  
+    def toolbelt = tool 'toolbelt'
+
+    stage('checkout source') {
+        // when running in multi-branch job, one must issue this command
+        checkout scm
+    }
+
+    withCredentials([file(credentialsId: URL_KEY_CRED_ID, variable: 'jwt_key_file')]) {
+	 stage('Grant Org Access') {
+			if (isUnix()) {
+				rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:auth:sfdxurl:store -f ${jwt_key_file} -a ${SFDC_USERNAME}"
+            } else {
+			    rc = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:auth:sfdxurl:store -f \"${jwt_key_file}\" -a ${SFDC_USERNAME}"
+			}
+			if (rc != 0) { error 'sandbox org authorization failed' }
+
+        }
+	 stage('Push To Sandbox Org') {
+			if (isUnix()) {
+				rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:source:deploy -p force-app --targetusername ${SFDC_USERNAME}"
+			} else {
+			    rc = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\"  force:source:deploy -p force-app --targetusername ${SFDC_USERNAME}"
+			}
+            if (rc != 0) {
+                error 'deploy failed'
+            }
+            
+        }
+	 stage('Run Apex Test') {
+            sh "mkdir -p ${RUN_ARTIFACT_DIR}"
+            timeout(time: 120, unit: 'SECONDS') {
+			    if (isUnix()) {
+					rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ${RUN_ARTIFACT_DIR} --resultformat tap --targetusername ${SFDC_USERNAME}"
+                } else {
+					rc = bat returnStatus: true, script: "\"${toolbelt}\\sfdx\" force:apex:test:run --testlevel RunLocalTests --outputdir ${RUN_ARTIFACT_DIR} --resultformat tap --targetusername ${SFDC_USERNAME}"
+				}
+				if (rc != 0) {
+                    error 'apex test run failed'
+                }
+            }
+        }
+	
+     stage('collect results') {
+            junit keepLongStdio: true, testResults: 'tests/**/*-junit.xml'
+        }
+       
+    }
+}
