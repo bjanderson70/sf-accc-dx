@@ -1,21 +1,21 @@
 
-![logo](https://github.com/wjanderson/sf-apex-cross-cutting-concerns/blob/master/imgs/logo.png)
+![logo](https://github.com/bjanderson70/sf-apex-cross-cutting-concerns/blob/master/imgs/logo.png)
 # sf-cross-cutting-concerns
 Cross cutting concerns for apex code. This is the most up-to-date code.
 
 See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configuration-first-replacing-code-at-runtime.html) on this framework.
 
 This code designed to encapsulate common cross-cutting concerns (logging, exception handling, **platform events**, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This package encapsulates those concerns and provide a mechanism to change/augment. 
-Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/wjanderson/sf-cross-cutting-concerns/wiki) for more information.
+Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more information.
 
-## :star2: Updates - Incorporated [Platform Events](https://github.com/wjanderson/sf-platform-events) Consumer/Publisher
+## :star2: Updates - Incorporated [Platform Events](https://github.com/bjanderson70/sf-platform-events) Consumer/Publisher
 Platform Events has been incorporated into this framework  (:point_right:**merge-pe** branch) . The overlap between the two was too much to ignore.
 
-It now includes a section on [Platform Events](https://github.com/wjanderson/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
+It now includes a section on [Platform Events](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
 * Added Summer '19 features _AsyncOperationEvent_; however, this will tie this the package (merge-pe branch) to minimum version 46.
 * Updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event.
 * The template will be started but will probably not be done before the merge.
-* Incorporate Trigger Handling for Platform Events and CDC. There is a section that can tie in the [trigger handling framework](https://github.com/wjanderson/sf-trigger-handling/wiki)
+* Incorporate Trigger Handling for Platform Events and CDC. There is a section that can tie in the [trigger handling framework](https://github.com/bjanderson70/sf-trigger-handling/wiki)
 * Control Event Batching Size (initially via attributes before moving into CMDT)
 
 ## Caveat
@@ -45,7 +45,7 @@ There are **TWO** repos now. One is the older version which does not have the Pl
 
 Use the button below to install the **ALL version** (i.e. with Platform Events + Trigger Handler)
 
-[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com?template=https://github.com/wjanderson/sf-accc)
+[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com?template=https://github.com/bjanderson70/sf-accc-dx)
 
 The DX Project has scripts that have ability to control which packages to deploy
 
