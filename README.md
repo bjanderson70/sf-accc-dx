@@ -58,10 +58,10 @@ Please read [Contributing](Contributing) for details on our code of conduct, and
 
 ## Versioning
 
-**Accc Domain** v0.5.0
-**Accc Common** v1.1.1
-**Accc PE Domain** v0.5.0
-**Accc PE** v1.0.0
+* **Accc Domain** v0.5.0
+* **Accc Common** v1.1.1
+* **Accc PE Domain** v0.5.0
+* **Accc PE** v1.0.0
 
 ## Authors
 
