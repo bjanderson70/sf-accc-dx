@@ -110,7 +110,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
 
         // now go check that this partition is already created ( setup->cache in the Org)
         // Note, this is normally the Default cache partition ('local.work')
-        this.cacheIsAvailable = this.getPartition(this.cacheNamespace, this.cachePartition) != null;
+        this.getPartition(this.cacheNamespace, this.cachePartition);
 
         accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered partition=' + partition + ', this.cacheIsAvailable=' + this.cacheIsAvailable );
     } // end of ctor
@@ -388,18 +388,29 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         Cache.OrgPartition result = null;
 
         try {
+
             String cachePartition = accc_ApexCache.getCachePartitionName(namespace, partition);
             if ( false == accc_ApexCache.orgPartition.containsKey(cachePartition)  ) {
-
                 result = Cache.Org.getPartition(cachePartition);
                 if ( result != null ) {
+                    final String testKey ='test1key';
                     accc_ApexCache.orgPartition.put(cachePartition, result);
+                    // quick validation to put/get data;
+                    // why, the space may not be allocate even though the partition is present
+                    result.put(testKey, testKey, DEFAULT_MIN_TTL_IN_SECS);
+                    Object isValid = result.get(testKey);
+                    // if not present; throw exception
+                    if ( isValid == null ) {
+                        throw new accc_ApexApplicationException('No cache available for "local.work" or no space allocated');
+                    }
                 }
 
             } else {
                 result = (Cache.OrgPartition )accc_ApexCache.orgPartition.get(cachePartition);
             }
-        } catch (Cache.Org.OrgCacheException excp) {
+            this.cacheIsAvailable =true;
+        } catch (Exception excp) {
+            this.cacheIsAvailable = false;
             // if there is no data by the key, the parition may not have been created
             accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }

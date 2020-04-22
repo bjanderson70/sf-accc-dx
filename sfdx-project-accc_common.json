@@ -1,0 +1,32 @@
+{
+    "packageDirectories": [{
+            "path": "accc_domain",
+            "default": false,
+            "package": "Accc_Domain",
+            "versionName": "ACCC Domain - Spring '20",
+            "versionNumber": "0.5.0.NEXT",
+            "definitionFile": "config/project-scratch-def.json"
+        },
+        {
+            "path": "accc_common",
+            "default": true,
+            "package": "Accc_Common",
+            "versionName": "ACCC Common - Spring '20",
+            "versionNumber": "1.2.0.NEXT",
+            "definitionFile": "config/project-scratch-def.json",
+            "dependencies": [{
+                "package": "Accc_Domain",
+                "versionNumber": "0.5.0.LATEST"
+            }]
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "Accc_Domain": "0Ho4R000000XZAqSAO",
+        "Accc_Common": "0Ho4R000000XZAWSA4",
+        "Accc_Domain@0.5.0-1": "04t4R000001NNuSQAW",
+        "Accc_Common@1.2.0-0": "04t4R000001NNvGQAW"
+    }
+}
