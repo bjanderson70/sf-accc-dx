@@ -60,6 +60,7 @@ Please read [Contributing](Contributing) for details on our code of conduct, and
 * **Accc Common** v1.1.1
 * **Accc PE Domain** v0.5.0
 * **Accc PE** v1.0.0
+* **Accc TH** v0.6.0
 
 ## Authors
 
