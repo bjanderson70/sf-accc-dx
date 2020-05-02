@@ -1,97 +1,19 @@
 {
     "packageDirectories": [
         {
-            "path": "accc_domain",
-            "default": false,
-            "package": "Accc_Domain",
-            "versionName": "ACCC Domain - Spring '20",
-            "versionNumber": "0.5.0.NEXT",
-            "definitionFile": "config/project-scratch-def.json"
-        },
-        {
-            "path": "accc_common",
-            "default": false,
-            "package": "Accc_Common",
-            "versionName": "ACCC Common - Spring '20",
-            "versionNumber": "1.2.0.NEXT",
-            "definitionFile": "config/project-scratch-def.json",
-            "dependencies": [
-                {
-                    "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
-                }
-            ]
-        },
-        {
-            "path": "accc_pe_domain",
-            "default": false,
-            "package": "Accc_PE_Domain",
-            "versionName": "ACCC PE Domain - Spring '20",
-            "versionNumber": "0.5.0.NEXT",
-            "definitionFile": "config/project-scratch-def.json"
-        },
-        {
-            "path": "accc_pe",
-            "package": "Accc_PE",
-            "versionName": "ACCC Platform Events - Spring '20",
-            "versionNumber": "1.0.1.NEXT",
-            "default": false,
-            "definitionFile": "config/project-scratch-def.json",
-            "dependencies": [
-                {
-                    "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
-                },
-                {
-                    "package": "Accc_Common",
-                    "versionNumber": "1.2.0.LATEST"
-                },
-                {
-                    "package": "Accc_PE_Domain",
-                    "versionNumber": "0.5.0.LATEST"
-                }
-            ]
-        },
-        {
-            "path": "accc_th",
+            "path": "accc_and_pe",
             "default": true,
-            "package": "Accc_TH",
-            "versionName": "ACCC Trigger Handler - Spring '20",
-            "versionNumber": "0.6.0.NEXT",
-            "definitionFile": "config/project-scratch-def.json",
-            "dependencies": [
-                {
-                    "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
-                },
-                {
-                    "package": "Accc_Common",
-                    "versionNumber": "1.2.0.LATEST"
-                },
-                {
-                    "package": "Accc_PE_Domain",
-                    "versionNumber": "0.5.0.LATEST"
-                },
-                {
-                    "package": "Accc_PE",
-                    "versionNumber": "1.0.0.LATEST"
-                }
-            ]
+            "package": "Accc_and_PE",
+            "versionName": "ACCC Common and ACCC Platform Events - Spring '20",
+            "versionNumber": "1.0.0.NEXT",
+            "definitionFile": "config/project-scratch-def.json"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "Accc_Domain": "0Ho4R000000XZAqSAO",
-        "Accc_Common": "0Ho4R000000XZAWSA4",
-        "Accc_PE_Domain": "0Ho4R000000XZAvSAO",
-        "Accc_PE": "0Ho4R000000XZAlSAO",
-        "Accc_TH": "0Ho4R000000XZB0SAO",
-        "Accc_Domain@0.5.0-1": "04t4R000001NNuSQAW",
-        "Accc_Common@1.2.0-0": "04t4R000001NNvGQAW",
-        "Accc_PE_Domain@0.5.0-1": "04t4R000001NNuhQAG",
-        "Accc_PE@1.0.0-1": "04t4R000001NNurQAG",
-        "Accc_TH@0.6.0-1": "04t4R000001NNvaQAG"
+        "Accc_and_PE": "0Ho4R000000fxT9SAI",
+        "Accc_and_PE@1.0.0.0-1": "04t4R000001lcHiQAI"
     }
 }

@@ -1,36 +1,36 @@
 {
-  "orgName": "Accc-Core-Scratch-install",
+  "orgName": "Accc-Pe-Core-Scratch-install",
   "edition": "Developer",
-  "features": ["MultiCurrency" 
-              ,"AuthorApex" 
+  "features": [ 
+              "AuthorApex" 
               ,"DebugApex"
               ,"BigObjectsBulkAPI"
               ,"ChangeDataCapture"
               ,"PlatformCache"
               ],
     "settings": {
-    "communitiesSettings": {
-      "enableNetworksEnabled": false
-    },
-    "mobileSettings": {
-      "enableS1EncryptedStoragePref2": false
-    },
-    "omniChannelSettings": {
-      "enableOmniChannel": false
-    },
-    "caseSettings": {
-      "systemUserEmail": "support@salesforce.com"
-    },
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
-    },
-    "chatterSettings": {
-      "enableChatter": false
-    },
-    "securitySettings": {
-      "sessionSettings": {
-        "sessionTimeout": "TwelveHours"
+      "communitiesSettings": {
+        "enableNetworksEnabled": false
+      },
+      "mobileSettings": {
+        "enableS1EncryptedStoragePref2": false
+      },
+      "omniChannelSettings": {
+        "enableOmniChannel": false
+      },
+      "caseSettings": {
+        "systemUserEmail": "support@salesforce.com"
+      },
+      "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
+      },
+      "chatterSettings": {
+        "enableChatter": false
+      },
+      "securitySettings": {
+        "sessionSettings": {
+          "sessionTimeout": "TwelveHours"
+        }
       }
     }
-  }
 }
