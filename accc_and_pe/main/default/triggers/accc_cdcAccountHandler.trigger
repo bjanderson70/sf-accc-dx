@@ -40,5 +40,6 @@ trigger accc_cdcAccountHandler on AccountChangeEvent (after insert) {
     // otherwise, to hook into trigger handler
     //accc_ApexPlatformEventDispatcher.run(AccountChangeEvent.class );
     //
-    system.debug('+++++ Trigger.New:' + Trigger.New);
+    // if you are not using the accc_TriggerMediator (hook it up with you domain)
+    system.debug('+++++ (accc_cdcAccountHandler is not using "accc_TriggerMediator" ) Trigger.New:' + Trigger.New);
 }

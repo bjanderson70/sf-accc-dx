@@ -71,7 +71,7 @@ public virtual class accc_BatchApexErrorEventHandler extends accc_EventBase {
                 JobInfo asyncApexJob = jobs.get(event.AsyncApexJobId);
                 // job present
                 if (asyncApexJob != null) {
-
+           
                     entries.add(new AcccApplicationLog__c(
                                     DebugLevel__c = ERROR_LEVEL,
                                     Username__c = UserInfo.getUserName(),

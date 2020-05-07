@@ -66,23 +66,23 @@ public class accc_ApexConstants {
     // [the names are self-explanatory]
     //
 
-    public static final String ObjectFactory = 'ObjectFactory';
-    public static final String CacheStrategy = 'CacheStrategy';
-    public static final String CacheResource = 'CacheResource';
-    public static final String CacheStrategyInvocation = 'CacheStrategyInvocation';
-    public static final String ConfigurationResource = 'Configuration';
+    public static final String ObjectFactory = 'Accc-ObjectFactory';
+    public static final String CacheStrategy = 'Accc-CacheStrategy';
+    public static final String CacheResource = 'Accc-CacheResource';
+    public static final String CacheStrategyInvocation = 'Accc-CacheStrategyInvocation';
+    public static final String ConfigurationResource = 'Accc-Configuration';
 
-    public static final String ExceptionHandler = 'ExceptionHandler';
-    public static final String ExceptionFormatter = 'ExceptionFormatter';
-    public static final String ExceptionPolicyHandler = 'ExceptionPolicyHandler';
+    public static final String ExceptionHandler = 'Accc-ExceptionHandler';
+    public static final String ExceptionFormatter = 'Accc-ExceptionFormatter';
+    public static final String ExceptionPolicyHandler = 'Accc-ExceptionPolicyHandler';
 
-    public static final String FactoryResource = 'FactoryResource';
-    public static final String FallbackResource = 'FallbackResource';
-    public static final String LoggerResource = 'Logger';
-    public static final String LogFormatter = 'LogFormatter';
-    public static final String RuntimeEnvironment = 'RuntimeEnvironment';
-    public static final String SendEmailChannel = 'SendEmailChannel';
-    public static final String PreviousTransactionResultResource = 'PreviousTransactionResultResource';
+    public static final String FactoryResource = 'Accc-FactoryResource';
+    public static final String FallbackResource = 'Accc-FallbackResource';
+    public static final String LoggerResource = 'Accc-Logger';
+    public static final String LogFormatter = 'Accc-LogFormatter';
+    public static final String RuntimeEnvironment = 'Accc-RuntimeEnvironment';
+    public static final String SendEmailChannel = 'Accc-SendEmailChannel';
+    public static final String PreviousTransactionResultResource = 'Accc-PreviousTransactionResultResource';
 
     //
     // List of ALL cross-cutting resource names
@@ -214,7 +214,7 @@ public class accc_ApexConstants {
     *
     * Current Version
     ************************************************************************************/
-    public static final String CURRENT_VERSION = '1.2.0.0';
+    public static final String CURRENT_VERSION = '1.2.3.0';
 
     /************************************************************************************
     *

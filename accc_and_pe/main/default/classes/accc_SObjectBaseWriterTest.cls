@@ -40,19 +40,19 @@ private class accc_SObjectBaseWriterTest {
     @isTest
     static void testAdd() {
         // arrange
-        final String name = 'Testaccc_QueableSObjectsTest';
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
         // startTest/stopTest block to force async processes
         //   to run in the test.
         Test.startTest();
-        Account acct = createAccount(name,false);
+        AcccApplicationLog__c acct = createALog(msg,false);
         // act
-        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<Account> {acct });
+        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<AcccApplicationLog__c> {acct });
         writer.execute();
         Test.stopTest();
 
         // assert
-        List<Account> returnedAccts = [SELECT Id FROM Account ];
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c ];
 
         System.assertNotEquals(null, returnedAccts);
         System.assertEquals(1, returnedAccts.size());
@@ -63,27 +63,27 @@ private class accc_SObjectBaseWriterTest {
     @isTest
     static void testRemove() {
         // arrange
-        final String name = 'Testaccc_QueableSObjectsTest';
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
 
         // startTest/stopTest block to force async processes
         //   to run in the test.
         Test.startTest();
-        Account acct = createAccount(name,true);
-        List<Account> returnedAccts = [SELECT Id,Name FROM Account ];
+        AcccApplicationLog__c acct = createALog(msg,true);
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c FROM AcccApplicationLog__c ];
         // assert
         System.assertNotEquals(null, returnedAccts);
         System.assertEquals(1, returnedAccts.size());
-        System.assertEquals(name, returnedAccts[0].Name);
+        System.assertEquals(msg, returnedAccts[0].Message__c);
         // act
-        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<Account> {acct }, true);
+        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<AcccApplicationLog__c> {acct }, true);
         writer.execute();
         Test.stopTest();
 
         // Validate that the job has run
         // by verifying that the record was not created.
         // assert
-        returnedAccts = [SELECT Id FROM Account];
+        returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
         System.assertEquals(0, returnedAccts.size());
         System.assertEquals(true, writer.theException == null);
 
@@ -92,12 +92,12 @@ private class accc_SObjectBaseWriterTest {
     @isTest
     static void testAddBadData() {
         // arrange
-        final String name = 'Testaccc_QueableSObjectsTest';
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
         // startTest/stopTest block to force async processes
         //   to run in the test.
         Test.startTest();
-        Account acct = createAccount(name,false);
+        AcccApplicationLog__c acct = createALog(msg,false);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(null, true);
         writer.execute();
@@ -106,28 +106,28 @@ private class accc_SObjectBaseWriterTest {
         // Validate that the job has run
         // by verifying that the record was not created.
         // assert
-        List<Account> returnedAccts = [SELECT Id FROM Account];
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
         System.assertEquals(0, returnedAccts.size());
     }
     @isTest
     static void testException() {
         // arrange
-        final String name = 'Testaccc_QueableSObjectsTest';
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
 
         // startTest/stopTest block to force async processes
         //   to run in the test.
         Test.startTest();
-        Account acct = createAccount(name,false);
+        AcccApplicationLog__c acct = createALog(msg,false);
         // act
-        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<Account> {acct }, true);
+        accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<AcccApplicationLog__c> {acct }, true);
         accc_SObjectBaseWriter.m_testToCaseException = true;
         writer.execute();
         Test.stopTest();
 
         // Validate that the jobdid not run
         // assert
-        List<Account> returnedAccts = [SELECT Id FROM Account];
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
         System.assertEquals(0, returnedAccts.size());
         System.assertEquals(true, writer.theException != null);
     }
@@ -135,12 +135,12 @@ private class accc_SObjectBaseWriterTest {
     @isTest
     static void testhasID() {
         // arrange
-        final String name = 'Testaccc_QueableSObjectsTest';
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
         // startTest/stopTest block to force async processes
         //   to run in the test.
         Test.startTest();
-        Account acct = createAccount(name,false);
+        AcccApplicationLog__c acct = createALog(msg,false);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<Sobject> {acct});
         // assert
@@ -151,24 +151,24 @@ private class accc_SObjectBaseWriterTest {
         // Validate that the job has run
         // by verifying that the record was created.
         // assert
-        List<Account> returnedAccts = [SELECT Id FROM Account];
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
         System.assertEquals(1, returnedAccts.size());
         // it should be present now
         System.assertEquals(true, writer.hasID());
     }
     /**
-     * @description create an account -- may need to plug into your account creator for tests
+     * @description create an log -- may need to plug into your log creator for tests
      *
-     * @param name name for the account
+     * @param msg msg for the AcccApplicationLog__c
      * @param doInsert do insert
      *
-     * @return an account
+     * @return an AcccApplicationLog__c
      */
-    static Account createAccount(String name, Boolean doInsert) {
-        Account acct = new Account (Name = name );
+    static AcccApplicationLog__c createALog(String msg, Boolean doInsert) {
+        AcccApplicationLog__c aal = new AcccApplicationLog__c (Message__c = msg );
         if ( doInsert ) {
-            insert acct;
+            insert aal;
         }
-        return acct;
-    } // end of createAccount
+        return aal;
+    }     // end of createALog
 } // end of accc_SObjectBaseWriterTest

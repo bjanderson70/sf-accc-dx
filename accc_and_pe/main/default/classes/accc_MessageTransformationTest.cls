@@ -81,7 +81,7 @@ private class accc_MessageTransformationTest {
         // act
         for (AcccApplicationLog__c item : entries) {
             String result=accc_MessageTransformation.mergeApplicationLogData(item);
-            system.debug('+++++>result:'+result);
+          
             system.assertEquals(true,  result.contains('Message__c'));
             system.assertEquals (true,  result.contains ('Source__c'));
 			system.assertEquals (true,  result.contains ('SourceFunction__c'));

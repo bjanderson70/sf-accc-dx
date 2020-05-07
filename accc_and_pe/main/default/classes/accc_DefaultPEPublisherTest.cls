@@ -247,15 +247,15 @@ private class accc_DefaultPEPublisherTest {
         integer expected = 1;
         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
-        // Create two accounts, assuming the NAME is all that is required;
+        // Create two AcccApplicationLog__c, assuming the NAME is all that is required;
         // otherwise, this db insert is incorrect.
 
         accc_DefaultPEPublisher publisher = new accc_DefaultPEPublisher(eventName);
 
         // the goal is to have success and the count be equl to the results size (2) [as no errors]
-        List<Account> sobjects = new List<Account> {
-            new Account(Name = 'we'),
-            new Account()
+        List<AcccApplicationLog__c> sobjects = new List<AcccApplicationLog__c> {
+            new AcccApplicationLog__c(Message__c = 'we'),
+            new AcccApplicationLog__c()
         };
 
         Database.SaveResult[] db_results = Database.insert(sobjects, false);

@@ -45,17 +45,17 @@ private class accc_QueableSObjectsTest {
 		// startTest/stopTest block to force async processes
 		//   to run in the test.
 		Test.startTest();
-		Account acct = createAccount(name,false);
+		AcccApplicationLog__c acct = createALog(name,false);
 		// act
-		System.enqueueJob(new accc_QueableSObjects(new List<Account> {acct }));
+		System.enqueueJob(new accc_QueableSObjects(new List<AcccApplicationLog__c> {acct }));
 		Test.stopTest();
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the AcccApplicationLog__c created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Name  FROM Account ];
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c ];
 
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
@@ -65,28 +65,28 @@ private class accc_QueableSObjectsTest {
 	@isTest
 	static  void testQueueableRemove() {
 		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
+		final String msg = 'Testaccc_QueableSObjectsTest';
 
 
 		// startTest/stopTest block to force async processes
 		//   to run in the test.
 		Test.startTest();
-		Account acct = createAccount(name,true);
-		List<Account> returnedAccts = [SELECT Id,Name  FROM Account ];
+		AcccApplicationLog__c acct = createALog(msg,true);
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c  FROM AcccApplicationLog__c ];
 		// assert
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(name, returnedAccts[0].Name);
+		System.assertEquals(msg, returnedAccts[0].Message__c);
 		// act
-		System.enqueueJob(new accc_QueableSObjects(new List<Account> {acct }, true));
+		System.enqueueJob(new accc_QueableSObjects(new List<AcccApplicationLog__c> {acct }, true));
 		Test.stopTest();
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the AcccApplicationLog__c created in test context by the
 		// Queueable class method.
 		// assert
-		returnedAccts =  [SELECT Id  FROM Account ];
+		returnedAccts =  [SELECT Id  FROM AcccApplicationLog__c ];
 		System.assertEquals(0, returnedAccts.size());
 
 	}
@@ -108,19 +108,19 @@ private class accc_QueableSObjectsTest {
 		System.assertEquals(null, qobject.theException);
 	}
 
-	/**
-	 * @description create an account -- may need to plug into your account creator for tests
-	 *
-	 * @param name name for the account
-	 * @param doInsert do insert
-	 *
-	 * @return an account
-	 */
-	static Account createAccount(String name, Boolean doInsert) {
-		Account acct = new Account (Name = name );
-		if ( doInsert ) {
-			insert acct;
-		}
-		return acct;
-	} // end of createAccount
+    /**
+     * @description create an log -- may need to plug into your log creator for tests
+     *
+     * @param msg msg for the AcccApplicationLog__c
+     * @param doInsert do insert
+     *
+     * @return an AcccApplicationLog__c
+     */
+    static AcccApplicationLog__c createALog(String msg, Boolean doInsert) {
+        AcccApplicationLog__c aal = new AcccApplicationLog__c (Message__c = msg );
+        if ( doInsert ) {
+            insert aal;
+        }
+        return aal;
+    }     // end of createALog
 }

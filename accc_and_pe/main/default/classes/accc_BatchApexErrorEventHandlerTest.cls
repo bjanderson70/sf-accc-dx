@@ -40,76 +40,82 @@
 @isTest
 private class accc_BatchApexErrorEventHandlerTest {
 
-	public final static String DefaultAccountName = '* TEST - DefaultAccountName - TEST';
+    public final static String DEFAULT_LOG_CODE_DATA = '* TEST - DEFAULT_LOG_CODE_DATA - TEST';
 
-	@IsTest
-	private static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
+    @IsTest
+    private static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
 
-		// Given
-		Account testAccount = accc_BatchApexErrorEventHandlerTest.createNewAccount();
-		testAccount.name = accc_TestBatchableErrorTestJob.CAUSE_BAD_FLOW_NAME;
-		update testAccount;
-		List<Account> testRecords = new List<Account> { testAccount };
-		accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
+        // Given
+        AcccApplicationLog__c testMsgLog = accc_BatchApexErrorEventHandlerTest.createNewMsgLog();
+        testMsgLog.LogCode__c = accc_TestBatchableErrorTestJob.CAUSE_BAD_FLOW_NAME;
+        update testMsgLog;
+        List<AcccApplicationLog__c> testRecords = new List<AcccApplicationLog__c> { testMsgLog };
+        accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
 
-		// When
-		Test.startTest();
-		Id jobId = Database.executeBatch(job);
-		Test.stopTest();
+        // When
+        Test.startTest();
+        Id jobId = Database.executeBatch(job);
+        List<AcccApplicationLog__c> results = [select Id, LogCode__c,Source__c from AcccApplicationLog__c];
+        Test.stopTest();
 
-		// Then (failures captured)
-		System.assertEquals(1, [select id from AcccApplicationLog__c].size());
-		System.assertEquals(accc_TestBatchableErrorTestJob.EXCEPTION_MESSAGE, [select Message__c from AcccApplicationLog__c limit 1].Message__c);
-		System.assertEquals('accc_TestBatchableErrorTestJob', [select Source__c from AcccApplicationLog__c limit 1].Source__c);
+        // Then (failures captured)
+        System.assertEquals(1, (Integer) [select count() from AcccApplicationLog__c where LogCode__c = :accc_TestBatchableErrorTestJob.CAUSE_BAD_FLOW_NAME]);
 
-	}// end of whenJobExceptionThenLogGeneratedAndHandlerCalled
+    }// end of whenJobExceptionThenLogGeneratedAndHandlerCalled
 
-	@IsTest
-	private static void whenNoJobExceptionThenDoNotLogGeneratedAndHandlerCalled() {
+    @IsTest
+    private static void whenNoJobExceptionThenDoNotLogGeneratedAndHandlerCalled() {
 
-		// Given
-		Account testAccount = accc_BatchApexErrorEventHandlerTest.createNewAccount();
-		List<Account> testRecords = new List<Account> { testAccount };
-		accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
+        // Given
+        AcccApplicationLog__c testMsgLog = accc_BatchApexErrorEventHandlerTest.createNewMsgLog();
+        List<AcccApplicationLog__c> testRecords = new List<AcccApplicationLog__c> { testMsgLog };
+        accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
 
-		// When
-		Test.startTest();
-		Id jobId = Database.executeBatch(job);
-		Test.stopTest();
+        // When
+        Test.startTest();
+        Id jobId = Database.executeBatch(job);
+        Test.stopTest();
 
-		// Then (failures captured)
-		System.assertEquals(accc_TestBatchableErrorTestJob.CAUSE_GOOD_FLOW_NAME, [select Name from Account limit 1].Name);
-		System.assertEquals(0, (Integer)[select count() from AcccApplicationLog__c ]);
+        // Then (failures captured)
+        System.assertEquals(1, (Integer)[select count() from AcccApplicationLog__c Where LogCode__c = :accc_TestBatchableErrorTestJob.CAUSE_GOOD_FLOW_NAME]);
 
-	} // end of whenNoJobExceptionThenDoNotLogGeneratedAndHandlerCalled
+    } // end of whenNoJobExceptionThenDoNotLogGeneratedAndHandlerCalled
 
-	@IsTest
-	private static void whenJobExceptionDoNoWork() {
+    @IsTest
+    private static void whenJobExceptionDoNoWork() {
 
-		// Given
-		Account testAccount = accc_BatchApexErrorEventHandlerTest.createNewAccount();
-		String testAccountName = testAccount.Name;
-		List<Account> testRecords = new List<Account> { testAccount };
-		accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
-		// nothing is logged in accc_BatchApexErrorEventHandler
-		accc_BatchApexErrorEventHandler.causeExceptionForTesting = true;
-		// When
-		Test.startTest();
-		Id jobId = Database.executeBatch(job);
-		Test.stopTest();
+        // Given
+        AcccApplicationLog__c testMsgLog = accc_BatchApexErrorEventHandlerTest.createNewMsgLog();
+        String testMsgLogName = testMsgLog.Name;
+        List<AcccApplicationLog__c> testRecords = new List<AcccApplicationLog__c> { testMsgLog };
+        accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
+        // nothing is logged in accc_BatchApexErrorEventHandler
+        accc_BatchApexErrorEventHandler.causeExceptionForTesting = true;
+        // When
+        Test.startTest();
+        Id jobId = Database.executeBatch(job);
+        Test.stopTest();
 
-		// Then (failures captured)
-		System.assertEquals(accc_TestBatchableErrorTestJob.CAUSE_GOOD_FLOW_NAME, [select Name from Account limit 1].Name);
-		System.assertEquals(0, (Integer)[select count() from AcccApplicationLog__c ]);
+        // Then (failures captured)
+        System.assertEquals(1, (Integer) [select count() from AcccApplicationLog__c Where LogCode__c = :accc_TestBatchableErrorTestJob.CAUSE_GOOD_FLOW_NAME]);
+ 
+    } // end of whenJobExceptionDoNoWork
 
-	} // end of whenJobExceptionDoNoWork
+	////////////////////////////////////////////////////////////
+	// Helpers
+	////////////////////////////////////////////////////////////
 
-	static Account createNewAccount() {
-		Account account = new Account();
-		account.Name = DefaultAccountName;
+    static AcccApplicationLog__c createNewMsgLog() {
+        return accc_BatchApexErrorEventHandlerTest.createNewMsgLog(DEFAULT_LOG_CODE_DATA);
 
-		insert account;
-		return account;
+    }// end of createNewMsgLog
 
-	} // end of createNewAccount
+    static AcccApplicationLog__c createNewMsgLog(String lcode) {
+        AcccApplicationLog__c msglg = new AcccApplicationLog__c();
+        msglg.LogCode__c = lcode;
+
+        insert msglg;
+        return msglg;
+
+    }// end of createNewMsgLog
 } // end of accc_BatchApexErrorEventHandlerTest
