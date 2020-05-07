@@ -14,3 +14,5 @@ package.xml
 **/__tests__/**
 # accc-common
 accc_common/main/default/profiles
+#README
+**/README.md

@@ -52,12 +52,10 @@ private class accc_SObjectBaseWriterTest {
         Test.stopTest();
 
         // assert
-        List<Account> returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        List<Account> returnedAccts = [SELECT Id FROM Account ];
 
         System.assertNotEquals(null, returnedAccts);
         System.assertEquals(1, returnedAccts.size());
-        System.assertEquals(name, returnedAccts[0].Name);
-
         System.assertEquals(true, writer.theException == null);
 
     }
@@ -72,7 +70,7 @@ private class accc_SObjectBaseWriterTest {
         //   to run in the test.
         Test.startTest();
         Account acct = createAccount(name,true);
-        List<Account> returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        List<Account> returnedAccts = [SELECT Id,Name FROM Account ];
         // assert
         System.assertNotEquals(null, returnedAccts);
         System.assertEquals(1, returnedAccts.size());
@@ -85,7 +83,7 @@ private class accc_SObjectBaseWriterTest {
         // Validate that the job has run
         // by verifying that the record was not created.
         // assert
-        returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        returnedAccts = [SELECT Id FROM Account];
         System.assertEquals(0, returnedAccts.size());
         System.assertEquals(true, writer.theException == null);
 
@@ -108,7 +106,7 @@ private class accc_SObjectBaseWriterTest {
         // Validate that the job has run
         // by verifying that the record was not created.
         // assert
-        List<Account> returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        List<Account> returnedAccts = [SELECT Id FROM Account];
         System.assertEquals(0, returnedAccts.size());
     }
     @isTest
@@ -129,7 +127,7 @@ private class accc_SObjectBaseWriterTest {
 
         // Validate that the jobdid not run
         // assert
-        List<Account> returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        List<Account> returnedAccts = [SELECT Id FROM Account];
         System.assertEquals(0, returnedAccts.size());
         System.assertEquals(true, writer.theException != null);
     }
@@ -153,7 +151,7 @@ private class accc_SObjectBaseWriterTest {
         // Validate that the job has run
         // by verifying that the record was created.
         // assert
-        List<Account> returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+        List<Account> returnedAccts = [SELECT Id FROM Account];
         System.assertEquals(1, returnedAccts.size());
         // it should be present now
         System.assertEquals(true, writer.hasID());
