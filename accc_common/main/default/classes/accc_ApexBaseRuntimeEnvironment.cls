@@ -74,10 +74,11 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IApexFactory objectFactory() {
         accc_IApexFactory result = (accc_IApexFactory)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.ObjectFactory);
         if ( result == null ) {
+            result=new accc_ApexObjectFactory();
             // default  factory, subject to change
-            result =  (accc_IApexFactory)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ObjectFactory, new accc_ApexObjectFactory());
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ObjectFactory, result);
         }
-         
+
         return result;
     } // end of objectFactory
 
@@ -88,10 +89,11 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IConfigurationProvider provider() {
         accc_IConfigurationProvider result = (accc_IConfigurationProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.ConfigurationResource);
         if ( result == null ) {
-            result = (accc_IConfigurationProvider)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ConfigurationResource,
-                     this.objectFactory().create(accc_ApexConstants.ConfigurationResource));
+            result=(accc_IConfigurationProvider)this.objectFactory().create(accc_ApexConstants.ConfigurationResource);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ConfigurationResource,
+                                                            result);
         }
-        
+
         return result;
     } // end of provider
 
@@ -102,8 +104,8 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_ILogger logger() {
         accc_ILogger result = (accc_ILogger)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.LoggerResource);
         if ( result == null ) {
-            result =  (accc_ILogger) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.LoggerResource,
-                      this.objectFactory().create(accc_ApexConstants.LoggerResource));
+            result =  (accc_ILogger)this.objectFactory().create(accc_ApexConstants.LoggerResource);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.LoggerResource,result);
         }
 
         return result;
@@ -116,8 +118,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IFallbackResources fallbackResources() {
         accc_IFallbackResources result = (accc_IFallbackResources)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.FallbackResource);
         if ( result == null ) {
-            result = (accc_IFallbackResources) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.FallbackResource,
-                     this.objectFactory().create(accc_ApexConstants.FallbackResource));
+            result = (accc_IFallbackResources)this.objectFactory().create(accc_ApexConstants.FallbackResource);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.FallbackResource,
+                                                            result);
         }
 
         return result;
@@ -130,8 +133,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IApexExceptionHandler exceptionHandler() {
         accc_IApexExceptionHandler result = (accc_IApexExceptionHandler)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.ExceptionHandler);
         if ( result == null ) {
-            result =  (accc_IApexExceptionHandler) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ExceptionHandler,
-                      this.objectFactory().create(accc_ApexConstants.ExceptionHandler));
+            result =  (accc_IApexExceptionHandler)this.objectFactory().create(accc_ApexConstants.ExceptionHandler);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ExceptionHandler,
+                                                            result);
         }
 
         return result;
@@ -144,8 +148,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_ICache cache() {
         accc_ICache result = (accc_ICache)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.CacheResource);
         if ( result == null ) {
-            result = (accc_ICache) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheResource,
-                     this.objectFactory().create(accc_ApexConstants.CacheResource));
+            result = (accc_ICache) this.objectFactory().create(accc_ApexConstants.CacheResource);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheResource,
+                                                            result);
         }
 
         return result;
@@ -157,22 +162,24 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IApexCacheStrategyInvocation cacheStrategyInvocation() {
         accc_IApexCacheStrategyInvocation result = (accc_IApexCacheStrategyInvocation)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.CacheStrategyInvocation);
         if ( result == null ) {
-            result = (accc_IApexCacheStrategyInvocation) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategyInvocation,
-                     this.objectFactory().create(accc_ApexConstants.CacheStrategyInvocation));
+            result = (accc_IApexCacheStrategyInvocation)this.objectFactory().create(accc_ApexConstants.CacheStrategyInvocation);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategyInvocation,
+                                                            result);
         }
 
         return result;
     } // end of cacheStrategyInvocation
 
     /**
-    * @description get the cache strategy policy
-    * @return accc_IApexCachePolicyStrategy the caching policy strategy
-    */
+     * @description get the cache strategy policy
+     * @return accc_IApexCachePolicyStrategy the caching policy strategy
+     */
     public virtual accc_IApexCachePolicyStrategy cachePolicyStrategy() {
         accc_IApexCachePolicyStrategy result = (accc_IApexCachePolicyStrategy)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.CacheStrategy);
         if ( result == null ) {
-            result  = (accc_IApexCachePolicyStrategy) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategy,
-                      this.objectFactory().create(accc_ApexConstants.CacheStrategy));
+            result  = (accc_IApexCachePolicyStrategy)this.objectFactory().create(accc_ApexConstants.CacheStrategy);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategy,
+                                                            result);
         }
 
         return result;
@@ -184,8 +191,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IPreviousTransactionResult transactionResult() {
         accc_IPreviousTransactionResult result = (accc_IPreviousTransactionResult)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.PreviousTransactionResultResource);
         if ( result == null ) {
-            result   = (accc_IPreviousTransactionResult)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.PreviousTransactionResultResource,
-                       this.objectFactory().create(accc_ApexConstants.PreviousTransactionResultResource));
+            result   = (accc_IPreviousTransactionResult)this.objectFactory().create(accc_ApexConstants.PreviousTransactionResultResource);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.PreviousTransactionResultResource,
+                                                            result);
         }
 
         return result;
@@ -197,8 +205,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IApexMessageSender messageSender() {
         accc_IApexMessageSender result = (accc_IApexMessageSender)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.SendEmailChannel);
         if ( result == null ) {
-            result   = (accc_IApexMessageSender)  accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.SendEmailChannel,
-                       this.objectFactory().create(accc_ApexConstants.SendEmailChannel));
+            result   = (accc_IApexMessageSender)  this.objectFactory().create(accc_ApexConstants.SendEmailChannel);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.SendEmailChannel,
+                                                            result);
         }
 
         return result;
@@ -272,20 +281,20 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     } // end of thePreviousTransactionResult
 
     /**
-    * @description set the cache strategy invocation
-    *
-    * @param accc_IApexCacheStrategyInvocation cache strategy
-    */
+     * @description set the cache strategy invocation
+     *
+     * @param accc_IApexCacheStrategyInvocation cache strategy
+     */
     public void cacheStrategyInvocation(accc_IApexCacheStrategyInvocation cacheStrategyInvo) {
         accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategyInvocation, cacheStrategyInvo);
     } // end of cacheStrategyInvocation
 
 
     /**
-    * @description set the cache strategy polict
-    *
-    * @param accc_IApexCachePolicyStrategy cache policy
-    */
+     * @description set the cache strategy polict
+     *
+     * @param accc_IApexCachePolicyStrategy cache policy
+     */
     public void cachePolicyStrategy(accc_IApexCachePolicyStrategy theCachePolicyStrategy) {
         accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.CacheStrategy, theCachePolicyStrategy);
     } // end of cachePolicyStrategy
@@ -322,9 +331,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     } // end of theFactory
 
     /** @description Just return the current resource
-    *
-    * @return accc_IFallbackResources the Resource
-    */
+     *
+     * @return accc_IFallbackResources the Resource
+     */
     @TestVisible
     protected accc_IFallbackResources theResource {
         get {
@@ -334,9 +343,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
 
 
     /** @description Just return the current exception handler
-    *
-    * @return accc_IApexExceptionHandler the ExceptionHandler
-    */
+     *
+     * @return accc_IApexExceptionHandler the ExceptionHandler
+     */
     @TestVisible
     protected accc_IApexExceptionHandler theExceptionHandler {
         get {
@@ -358,9 +367,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
 
 
     /** @description Just return the current logger
-    *
-    * @return accc_ILogger the Logger
-    */
+     *
+     * @return accc_ILogger the Logger
+     */
     @TestVisible
     protected accc_ILogger theLogger {
         get {
@@ -383,9 +392,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
 
 
     /** @description Just return the current cache policy strategy
-    *
-    * @return  accc_IApexCachePolicyStrategy the Cache Policy Strategy
-    */
+     *
+     * @return  accc_IApexCachePolicyStrategy the Cache Policy Strategy
+     */
     @TestVisible
     protected accc_IApexCachePolicyStrategy theCachePolicyStrategy {
         get {
@@ -407,9 +416,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     } // end of theCacheStrategyInvocation
 
     /** @description Just return the previous transacton result
-    *
-    * @return  accc_IPreviousTransactionResult the Previous Transaction Result
-    */
+     *
+     * @return  accc_IPreviousTransactionResult the Previous Transaction Result
+     */
     @TestVisible
     protected accc_IPreviousTransactionResult thePreviousTransactionResult {
         get {
@@ -419,9 +428,9 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
 
 
     /** @description Just return the message sender
-    *
-    * @return  accc_IApexMessageSender the Message Sender
-    */
+     *
+     * @return  accc_IApexMessageSender the Message Sender
+     */
     @TestVisible
     protected accc_IApexMessageSender theMessageSender {
         get {

@@ -57,7 +57,7 @@ private class accc_SyncAsyncWriterTest {
 		// This query returns only the account created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Name  FROM Account WHERE Name = :name];
+		List<Account> returnedAccts = [SELECT Id,Name  FROM Account];
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
 		System.assertEquals(name, returnedAccts[0].Name);
@@ -78,11 +78,10 @@ private class accc_SyncAsyncWriterTest {
 		//   to run in the test.
 		Test.startTest();
 		Account acct =  createAccount(name, true);
-		List<Account> returnedAccts = [SELECT Name  FROM Account WHERE Name = :name];
+		List<Account> returnedAccts = [SELECT Id  FROM Account];
 		// assert
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(name, returnedAccts[0].Name);
 		// act
 		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<Account> {acct }, true);
 
@@ -95,7 +94,7 @@ private class accc_SyncAsyncWriterTest {
 		// This query returns only the account created in test context by the
 		// Queueable class method.
 		// assert
-		returnedAccts = [SELECT Name FROM Account WHERE Name = :name];
+		returnedAccts = [SELECT Id FROM Account];
 		System.assertEquals(0, returnedAccts.size());
 
 		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
@@ -148,7 +147,7 @@ private class accc_SyncAsyncWriterTest {
 		// This query returns only the account created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Name  FROM Account WHERE Name = :name ];
+		List<Account> returnedAccts = [SELECT Id,Name  FROM Account  ];
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
 		System.assertEquals(name, returnedAccts[0].Name);
@@ -181,7 +180,7 @@ private class accc_SyncAsyncWriterTest {
 		// This query returns only the account created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Name  FROM Account WHERE Name = :name];
+		List<Account> returnedAccts = [SELECT Id  FROM Account];
 		System.assertEquals(0, returnedAccts.size());
 		System.assertEquals(true, writer.theException != null);
 	}

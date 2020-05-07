@@ -16,3 +16,5 @@ package.xml
 accc_common/main/default/profiles
 #README
 **/README.md
+#
+uncrustify.cfg
