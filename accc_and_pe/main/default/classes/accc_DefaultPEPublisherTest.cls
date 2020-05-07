@@ -244,7 +244,7 @@ private class accc_DefaultPEPublisherTest {
         // assign
         final String eventName = ExceptedEventLabelInCustomMDT;
         Boolean result = true, exceptionOccurred = false;
-        integer expected = 1;
+        integer expected = 2;
         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
         // Create two AcccApplicationLog__c, assuming the NAME is all that is required;
