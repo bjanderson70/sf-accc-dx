@@ -66,7 +66,7 @@
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.2.LATEST"
+                    "versionNumber": "1.2.3.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -89,7 +89,6 @@
         "Accc_PE": "0Ho4R000000XZAlSAO",
         "Accc_TH": "0Ho4R000000XZB0SAO",
         "Accc_Domain@0.5.0-1": "04t4R000001NNuSQAW",
-        "Accc_Common@1.2.1-1": "04t4R000001NO1PQAW",
         "Accc_Common@1.2.3-1": "04t4R000001NO1UQAW",
         "Accc_PE_Domain@0.5.0-1": "04t4R000001NNuhQAG",
         "Accc_PE@1.0.0-1": "04t4R000001NNurQAG",
