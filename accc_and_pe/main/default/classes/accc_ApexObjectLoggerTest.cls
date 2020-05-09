@@ -143,9 +143,9 @@ private class accc_ApexObjectLoggerTest {
         logger.write(values);
         System.assertEquals(true, logger.lastMessage().contains(lastValue));
         logger.write((Object)null);
-		// last message is still present
+        // last message is still present
         System.assertEquals(true, logger.lastMessage().contains(lastValue));
-    
+
     }// end of testwriteWithArraySingleParam
 
     @isTest
@@ -163,6 +163,26 @@ private class accc_ApexObjectLoggerTest {
         logger.write(LoggingLevel.DEBUG, values);
         System.assertEquals(true, logger.lastMessage().contains('two'));
     }// end of testwriteWithListArray
+
+    @isTest
+    static void testwriteWithListArrayOfAppLog() {
+        final List<Object> values = new List<Object> {
+            new AcccApplicationLog__c(SourceFunction__c='data'),
+            new AcccApplicationLog__c(SourceFunction__c='two')
+        };
+        final string SDEBUG= LoggingLevel.DEBUG.name().toUpperCase();
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        Test.startTest();
+        logger.write(LoggingLevel.DEBUG, values);
+        List<AcccApplicationLog__c> items = [select Id,Message__c,LogCode__c,DebugLevel__c, SourceFunction__c from AcccApplicationLog__c ];
+        Test.stopTest();
+ 
+        for ( AcccApplicationLog__c item: items) {
+            System.assertEquals(true, item.SourceFunction__c=='data' || item.SourceFunction__c=='two');
+            System.assertEquals(SDEBUG, item.LogCode__c.toUpperCase());
+            System.assertEquals(SDEBUG, item.DebugLevel__c.toUpperCase());
+        }
+    } // end of testwriteWithListArrayOfAppLog
     //////////////////////////////////////////////////////////////////////////////////
     // PRIVATE METHODS
     //////////////////////////////////////////////////////////////////////////////////

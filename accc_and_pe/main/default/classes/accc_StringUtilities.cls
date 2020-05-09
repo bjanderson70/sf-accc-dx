@@ -45,10 +45,15 @@ public without sharing class accc_StringUtilities {
 
     public static final integer MAX_DAY_IN_MONTH = 31;
     public static final integer MAX_NUM_OF_MONTH = 12;
-
+    /**
+     * Our JSON Parser
+     *
+     */
+    public static final accc_ApexJSONObjectParser THE_PARSER = new accc_ApexJSONObjectParser();
     /**
      * Month Index to 2 char string
      */
+    @TestVisible
     private static Map<Integer, String> MonthIndex = new Map<Integer, String> {
         1 => '01'
         , 2 => '02'
@@ -66,12 +71,17 @@ public without sharing class accc_StringUtilities {
     /**
      * Day indexto 2 char string
      */
+    @TestVisible
     private static Map<Integer, String> DayIndex = new Map<Integer, String> {
         1 => '01', 2 => '02', 3 => '03', 4 => '04', 5 => '05', 6 => '06', 7 => '07', 8 => '08', 9 => '09', 10 => '10'
         , 11 => '11', 12 => '12', 13 => '13', 14 => '14', 15 => '15', 16 => '16', 17 => '17', 18 => '18', 19 => '19', 20 => '20'
         , 21 => '21', 22 => '22', 23 => '23', 24 => '24', 25 => '25', 26 => '26', 27 => '27', 28 => '28', 29 => '29', 30 => '30'
         , 31 => '31'
     };
+
+    //////////////////////////////////////////////////////////////////
+    // Public Static Methods
+    //////////////////////////////////////////////////////////////////
     /**
      *  @description form the provder name for entity access
      * [deprecating to accc_StringUtilities]
@@ -165,6 +175,24 @@ public without sharing class accc_StringUtilities {
         }
         return result == null ? accc_ApexConstants.EmptyString : result;
     }  // end of toString
+    /**
+     * toJsonString
+     * @description to JSON string
+     * @param  obj  the object
+     * @return JSON string
+     */
+    public static String toJsonString(Object obj) {
+        return THE_PARSER.parse(obj);
+    }// end of toJsonString
+     /**
+      * toJsonString
+      * @description to JSON string
+      * @param  objs  colleciton of objects
+      * @return JSON string
+      */
+    public static String toJsonString(List<Object> objs) {
+        return THE_PARSER.parse(objs);
+    }  // end of toJsonString
     /**
      * @description create the cache identifier
      * [deprecating to accc_StringUtilities]

@@ -126,7 +126,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
      */
     @TestVisible
     protected override void write(LoggingLevel level, List<Object> messages, boolean sendToLogger) {
-   
+
         // any messsages
         if ( messages == null || messages.size() == 0 ) {
             return;
@@ -137,7 +137,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
         // remember last value
         this.setLastMessage(level, result);
         // write it
-        this.writeOutput(level, result, sendToLogger);
+        this.writeOutput(level, messages, sendToLogger);
 
 
     } // end of write
@@ -169,7 +169,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
         // check again due to inheritance on result being null;
         List<AcccApplicationLog__c> appLogs = new List<AcccApplicationLog__c>();
         integer size = result != null ? result.size() : 0;
-       
+
         // create  log
         for ( integer inx = 0; inx < size; ++inx) {
             appLogs.add(accc_MessageTransformation.translate(level, result[inx]));

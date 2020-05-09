@@ -439,10 +439,15 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         return result;
     } // end of isTheTraceNotCCandShowAllowed
 
+    /////////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    /////////////////////////////////////////////////////////////////////////////
+
     /**
     * @description get the data model
     * @return accc_ApexLogDataModel 
     **/
+     @TestVisible
     private accc_ApexLogDataModel getDataModel(){
         if ( this.dataModel == null ) {
             this.dataModel=new accc_ApexLogDataModel( new DmlException().getStackTraceString()
@@ -450,4 +455,5 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         }
         return this.dataModel;
     }// end of getDataModel
+
 } // end of accc_ApexLoggers

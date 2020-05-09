@@ -172,6 +172,7 @@ function runApexTests() {
 function setPermissions() {
     print "Setting up permissions."
     $SFDX_CLI_EXEC force:user:permset:assign -n ACCC_Org_Events_BigObject -u "$orgName"
+    $SFDX_CLI_EXEC force:user:permset:assign -n Accc_Application_Log -u "$orgName"
 }
 #######################################################
 # Install Packages

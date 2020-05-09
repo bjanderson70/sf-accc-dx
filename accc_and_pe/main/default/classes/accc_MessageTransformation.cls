@@ -50,13 +50,28 @@ public without sharing class accc_MessageTransformation {
         if ( message != null ) {
             Id userId = UserInfo.getUserId();
             String lvlName = level.name();
+            Type theType = message instanceof AcccApplicationLog__c ?  AcccApplicationLog__c.class : null;
 
-            result = new AcccApplicationLog__c(LogCode__c = lvlName,
-                                               DebugLevel__c = lvlName,
-                                               Message__c =  accc_ApexUtilities.toString(message),
-                                               Source__c = ACCCAPPLICATION_LOG_NAME,
-                                               OwnerId = userId,
-                                               Username__c = userId);
+            if ( AcccApplicationLog__c.class == theType ) {
+                result = (AcccApplicationLog__c)message;
+                if ( result != null ) {
+                    result.LogCode__c = lvlName;
+                    result.DebugLevel__c = lvlName;
+                    if ( result.Username__c== null) {
+                        result.Username__c=userId;
+                    }
+                    if ( result.OwnerId== null) {
+                        result.OwnerId=userId;
+                    }
+                }
+            } else {
+                result = new AcccApplicationLog__c(LogCode__c = lvlName,
+                                                   DebugLevel__c = lvlName,
+                                                   Message__c =  accc_StringUtilities.toJsonString(message),//accc_ApexUtilities.toString(message),
+                                                   Source__c = ACCCAPPLICATION_LOG_NAME,
+                                                   OwnerId = userId,
+                                                   Username__c = userId);
+            }
         }
         return result;
     } // end of translate
@@ -97,7 +112,7 @@ public without sharing class accc_MessageTransformation {
         DateTime dte=null;
         if (entries != null && entries.size() > 0) {
             for (AcccApplicationLog__c item : entries) {
-                json = accc_MessageTransformation.createJSONFrom(item);
+                json = accc_StringUtilities.THE_PARSER.parse(item);
                 cjson = json.replaceFirst('^(.{' + accc_ApexConstants.MAX_JSON_SIZE +'}).*', '$1');
                 truncate =cjson.length() != json.length() ? 1 : 0;
                 dte = item.createdDate == null ? DateTime.now() : item.createdDate;
@@ -153,14 +168,4 @@ public without sharing class accc_MessageTransformation {
 
     } // end of mergeApplicationLogData
 
-    /**
-     * createJSONFrom
-     * @description convert AcccApplicationLog__c to Json
-     * @param  entry AcccApplicationLog__c
-     * @return serialize JSON
-     */
-    public static String createJSONFrom(AcccApplicationLog__c entry) {
-        String result =entry == null ? accc_ApexConstants.EMPTY_JSON_s  : JSON.serialize(entry);
-        return result;
-    }
 } // end of accc_MessageTransformation

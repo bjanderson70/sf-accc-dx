@@ -70,10 +70,10 @@ public without sharing class accc_ApplicationLog {
 
     } // end of ctor
     /**
-    *
-    * @description ctor (copy ctor, no automatic logging)
-    * @param appLogEntry the application log
-    */
+     *
+     * @description ctor (copy ctor, no automatic logging)
+     * @param appLogEntry the application log
+     */
     public accc_ApplicationLog(AcccApplicationLog__c appLogEntry) {
         this.entry = appLogEntry;
     }// end of ctor
@@ -95,11 +95,11 @@ public without sharing class accc_ApplicationLog {
         this( excp, accc_ApexConstants.Unknown, accc_ApexConstants.Unknown);
     } // end of ctor
     /**
-    *
-    * @description ctor (no automatic logging)
-    * @param className the class name
-    * @param methodName the method name
-    */
+     *
+     * @description ctor (no automatic logging)
+     * @param className the class name
+     * @param methodName the method name
+     */
     public accc_ApplicationLog(String className, String methodName) {
         this(null, className, methodName, null, null);
     } // end of ctor
@@ -277,7 +277,7 @@ public without sharing class accc_ApplicationLog {
      */
     public Boolean log(AcccApplicationLog__c logEntry) {
         Boolean result = logEntry == null ? false : true;
-
+        
         try {
             // if we have an entry, log it
             if ( result == true ) {
