@@ -56,7 +56,7 @@ private class accc_DefaultPlatformEventModelTest {
 	static void testCtorWithProcess() {
 		// assign
 		List<SObject> events = new List<SObject> {
-			new Account( Name = 'Junk')
+			new AcccApplicationLog__c( Message__c = 'Junk')
 		};
 		// act
 		accc_IPlatformEventModel pem = new accc_DefaultPlatformEventModel();

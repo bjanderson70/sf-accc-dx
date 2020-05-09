@@ -214,7 +214,7 @@ public class accc_ApexConstants {
     *
     * Current Version
     ************************************************************************************/
-    public static final String CURRENT_VERSION = '1.2.0.0';
+    public static final String CURRENT_VERSION = '1.2.3.0';
 
     /************************************************************************************
     *

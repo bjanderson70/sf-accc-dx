@@ -36,31 +36,32 @@
  */
 @isTest
 private class accc_SyncAsyncWriterTest {
-	@isTest
-	static  void testSyncAsyncWriterAdd() {
-		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
+    @isTest
+    static void testSyncAsyncWriterAdd() {
+        // arrange
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
-		Boolean isAsyncDone = false;
-
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		Account acct =  createAccount(name, true);
+        Boolean isAsyncDone = false;
+        Id theId = null;
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        AcccApplicationLog__c acct =  createALog(msg, true);
+        theId = acct.Id;
 		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<Account> {acct }, false);
+		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
 		writer.execute();
 		Test.stopTest();
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the log created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Id,Name  FROM Account];
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(name, returnedAccts[0].Name);
+		System.assertEquals(theId, returnedAccts[0].Id);
 
 		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
 		System.assertEquals(true, writer.theException == null);
@@ -69,7 +70,7 @@ private class accc_SyncAsyncWriterTest {
 	@isTest
 	static  void testSyncAsyncWriterRemove() {
 		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
+		final String msg = 'Testaccc_QueableSObjectsTest';
 
 		Boolean isAsyncDone = false;
 
@@ -77,13 +78,13 @@ private class accc_SyncAsyncWriterTest {
 		// startTest/stopTest block to force async processes
 		//   to run in the test.
 		Test.startTest();
-		Account acct =  createAccount(name, true);
-		List<Account> returnedAccts = [SELECT Id  FROM Account];
+		AcccApplicationLog__c acct =  createALog(msg, true);
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
 		// assert
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
 		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<Account> {acct }, true);
+		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, true);
 
 		writer.execute();
 
@@ -91,10 +92,10 @@ private class accc_SyncAsyncWriterTest {
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the Log created in test context by the
 		// Queueable class method.
 		// assert
-		returnedAccts = [SELECT Id FROM Account];
+		returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
 		System.assertEquals(0, returnedAccts.size());
 
 		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
@@ -105,8 +106,6 @@ private class accc_SyncAsyncWriterTest {
 	@isTest
 	static  void testSyncAsyncWriterBadData() {
 		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
-
 		Boolean isAsyncDone = false;
 
 		// startTest/stopTest block to force async processes
@@ -127,16 +126,16 @@ private class accc_SyncAsyncWriterTest {
 	@isTest
 	static  void testSyncAsyncWriterAddAsync() {
 		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
+		final String msg = 'Testaccc_QueableSObjectsTest';
 
 		Boolean isAsyncDone = true;
 
 		// startTest/stopTest block to force async processes
 		//   to run in the test.
 		Test.startTest();
-		Account acct = createAccount(name, false);
+		AcccApplicationLog__c acct = createALog(msg, false);
 		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<Account> {acct }, false);
+		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
 		accc_SyncAsyncWriter.m_makeAsync = true;
 		writer.execute();
 		writer.theException = new accc_ApexApplicationException('Test');
@@ -144,13 +143,13 @@ private class accc_SyncAsyncWriterTest {
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the AcccApplicationLog__c created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Id,Name  FROM Account  ];
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c  FROM AcccApplicationLog__c  ];
 		System.assertNotEquals(null, returnedAccts);
 		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(name, returnedAccts[0].Name);
+		System.assertEquals(msg, returnedAccts[0].Message__c);
 
 		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
 		System.assertEquals(true, writer.theException != null);
@@ -159,17 +158,17 @@ private class accc_SyncAsyncWriterTest {
 	@isTest
 	static  void testSyncAsyncWriterForceSyncCauseException() {
 		// arrange
-		final String name = 'Testaccc_QueableSObjectsTest';
+		final String msg = 'Testaccc_QueableSObjectsTest';
 
 		Boolean isAsyncDone = true;
 
 		// startTest/stopTest block to force async processes
 		// to run in the test.
 		Test.startTest();
-		Account acct =  createAccount(name, false);
+		AcccApplicationLog__c acct =  createALog(msg, false);
 
 		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<Account> {acct }, false, true);
+		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false, true);
 		accc_SyncAsyncWriter.m_makeAsync = true;
 		writer.execute();
 
@@ -177,26 +176,26 @@ private class accc_SyncAsyncWriterTest {
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the AcccApplicationLog__c created in test context by the
 		// Queueable class method.
 		// assert
-		List<Account> returnedAccts = [SELECT Id  FROM Account];
+		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
 		System.assertEquals(0, returnedAccts.size());
 		System.assertEquals(true, writer.theException != null);
 	}
 	/**
-	 * @description create an account -- may need to plug into your account creator for tests
+	 * @description create an log -- may need to plug into your log creator for tests
 	 *
-	 * @param name name for the account
+	 * @param msg msg for the AcccApplicationLog__c
 	 * @param doInsert do insert
 	 *
-	 * @return an account
+	 * @return an AcccApplicationLog__c
 	 */
-	static Account createAccount(String name, Boolean doInsert) {
-		Account acct = new Account (Name = name );
+	static AcccApplicationLog__c createALog(String msg, Boolean doInsert) {
+		AcccApplicationLog__c aal = new AcccApplicationLog__c (Message__c = msg );
 		if ( doInsert ) {
-			insert acct;
+			insert aal;
 		}
-		return acct;
-	} // end of createAccount
+		return aal;
+	} // end of createALog
 }

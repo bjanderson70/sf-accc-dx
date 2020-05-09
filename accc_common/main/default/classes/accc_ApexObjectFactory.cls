@@ -42,8 +42,11 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
     ////////////////////////////////////////////////////////////////////////////////
 
     // the collection of object creation
+    @TestVisible
     private final static Map<String, accc_IApexObjectGetter> theObjectCollection = new Map<String, accc_IApexObjectGetter>();
-
+    // do once
+    @TestVisible
+    private static Boolean DONE_ONCE=false;
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors
     ////////////////////////////////////////////////////////////////////////////////
@@ -302,8 +305,8 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
                     system.debug('\t' + (count++) +') ACCC Factory Class Creators:'+classInstance);
                 }
                 this.addToCollection(classInstance);
-            }
 
+            }
         }
 
     } // end of initializeBase

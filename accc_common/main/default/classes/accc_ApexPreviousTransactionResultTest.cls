@@ -72,7 +72,7 @@ private class accc_ApexPreviousTransactionResultTest {
     static void TestprocessErrorWithSavedResult() {
         // assign
         Account[] accts = new List<Account> {
-            new Account(Name = 'Account1'),
+            new Account(Name = 'Log1'),
             new Account(),
             new Account()
         };

@@ -43,34 +43,34 @@ public class accc_TestBatchableErrorTestJob implements Database.Batchable<SObjec
     public static final String CAUSE_BAD_ASYNC_FLOW_NAME = 'Bad-Async';
     public static final String CAUSE_GOOD_FLOW_NAME = 'All good';
 
-    private List<Account> accounts;
+    private List<AcccApplicationLog__c> msgLogs;
     private Boolean IS_BATCH_EXCEPTION = false;
 
-    public accc_TestBatchableErrorTestJob(List<Account> accounts) {
-        this.accounts = accounts;
+    public accc_TestBatchableErrorTestJob(List<AcccApplicationLog__c> msgLogs) {
+        this.msgLogs = msgLogs;
     }
 
-    public List<Account> start(Database.BatchableContext ctx) {
-        return this.accounts;
+    public List<AcccApplicationLog__c> start(Database.BatchableContext ctx) {
+        return this.msgLogs;
     }
 
-    public void execute(Database.BatchableContext ctx, List<Account> scope) {
+    public void execute(Database.BatchableContext ctx, List<AcccApplicationLog__c> scope) {
         try {
-            // Query accounts
-            Set<Id> accountIds = new Map<Id, Account>(scope).keySet();
-            List<Account> accounts = [select Id, Name from Account where id in :accountIds];
+            // Query msgLogs
+            Set<Id> msgIds = new Map<Id, AcccApplicationLog__c>(scope).keySet();
+            List<AcccApplicationLog__c> msgLogs = [select Id, LogCode__c from AcccApplicationLog__c where id in :msgIds];
             // Throw a test exception?
-            if (accounts[0].Name == CAUSE_BAD_FLOW_NAME) {
+            if (msgLogs[0].LogCode__c == CAUSE_BAD_FLOW_NAME) {
                 IS_BATCH_EXCEPTION = true;
                 throw new TestJobException(EXCEPTION_MESSAGE);
-            } else if ( accounts[0].Name == CAUSE_BAD_ASYNC_FLOW_NAME ) {
+            } else if ( msgLogs[0].LogCode__c == CAUSE_BAD_ASYNC_FLOW_NAME ) {
                 throw new TestJobException(EXCEPTION_MESSAGE);
             }
-            // Update account if all good
-            for (Account account : accounts) {
-                account.Name = CAUSE_GOOD_FLOW_NAME;
+            // Update AcccApplicationLog__c if all good
+            for (AcccApplicationLog__c msg : msgLogs) {
+                msg.LogCode__c = CAUSE_GOOD_FLOW_NAME;
             }
-            update accounts;
+            update msgLogs;
         } catch (Exception excp) {
 
             SObject event = null;
@@ -94,7 +94,7 @@ public class accc_TestBatchableErrorTestJob implements Database.Batchable<SObjec
 
             Database.SaveResult sr = EventBus.publish(event);
             if ( !sr.isSuccess()) {
-                accc_ApexUtilities.log(new TestJobException('Unable to public event'+ event));
+                accc_ApexUtilities.log(new TestJobException('Unable to publish event'+ event));
             }
 
         }

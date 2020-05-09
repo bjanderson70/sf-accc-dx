@@ -13,7 +13,7 @@
             "default": true,
             "package": "Accc_Common",
             "versionName": "ACCC Common - Spring '20",
-            "versionNumber": "1.2.3.NEXT",
+            "versionNumber": "1.2.4.NEXT",
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
@@ -44,7 +44,7 @@
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.3.LATEST"
+                    "versionNumber": "1.2.4.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -66,7 +66,7 @@
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.3.LATEST"
+                    "versionNumber": "1.2.4.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -89,7 +89,7 @@
         "Accc_PE": "0Ho4R000000XZAlSAO",
         "Accc_TH": "0Ho4R000000XZB0SAO",
         "Accc_Domain@0.5.0-1": "04t4R000001NNuSQAW",
-        "Accc_Common@1.2.3-1": "04t4R000001NO1UQAW",
+        "Accc_Common@1.2.4-1": "04t4R000001NO1ZQAW",
         "Accc_PE_Domain@0.5.0-1": "04t4R000001NNuhQAG",
         "Accc_PE@1.0.0-1": "04t4R000001NNurQAG",
         "Accc_TH@0.6.0-1": "04t4R000001NNvaQAG"

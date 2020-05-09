@@ -171,7 +171,7 @@ private class accc_DefaultPlatformEventTest {
 		accc_DefaultPlatformEvent dpe = new accc_DefaultPlatformEvent();
 		try {
 			// act
-			dpe.process(new List<Account>(), handlers, attrs);
+			dpe.process(new List<AcccApplicationLog__c>(), handlers, attrs);
 		} catch (accc_PlatformEventException excp) {
 			exceptionCaught = true;
 		}

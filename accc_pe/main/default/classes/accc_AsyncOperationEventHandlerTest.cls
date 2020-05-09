@@ -85,8 +85,8 @@ private class accc_AsyncOperationEventHandlerTest {
     private static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
 
         // Given
-        Account testAccount = accc_AsyncOperationEventHandlerTest.createNewAccount(accc_TestBatchableErrorTestJob.CAUSE_BAD_ASYNC_FLOW_NAME);
-        List<Account> testRecords = new List<Account> { testAccount };
+        AcccApplicationLog__c testMsgLog = accc_AsyncOperationEventHandlerTest.createNewMsgLog(accc_TestBatchableErrorTestJob.CAUSE_BAD_ASYNC_FLOW_NAME);
+        List<AcccApplicationLog__c> testRecords = new List<AcccApplicationLog__c> { testMsgLog };
         accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
 
         // When
@@ -112,12 +112,12 @@ private class accc_AsyncOperationEventHandlerTest {
         return events;
     }// end of createLogEvents
 
-    static Account createNewAccount(String name) {
-        Account account = new Account();
-        account.Name = name;
+    static AcccApplicationLog__c createNewMsgLog(String name) {
+        AcccApplicationLog__c msglg = new AcccApplicationLog__c();
+        msglg.LogCode__c = name;
 
-        insert account;
-        return account;
+        insert msglg;
+        return msglg;
 
-    } // end of createNewAccount
+    } // end of createNewMsgLog
 }// end of accc_AsyncOperationEventHandlerTest

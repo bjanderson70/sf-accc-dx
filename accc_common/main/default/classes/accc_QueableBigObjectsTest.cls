@@ -51,7 +51,7 @@ private class accc_QueableBigObjectsTest {
 
 		// Validate that the job has run
 		// by verifying that the record was created.
-		// This query returns only the account created in test context by the
+		// This query returns only the AcccApplicationLog__c created in test context by the
 		// Queueable class method.
 		// assert
 		System.assertEquals(null, obj.theException);
@@ -130,9 +130,9 @@ private class accc_QueableBigObjectsTest {
 		for ( integer inx = 0; inx < 3; inx++) {
 			items.add(new accc_Org_Events__b (Event_Date__c = date.newinstance(year, month, day + inx),
 			                                  Event_Date_Day__c = day + inx,
-			                                  Event_Json__c = JSON.serialize(new Account(Name = 'test')),
+			                                  Event_Json__c = JSON.serialize(new AcccApplicationLog__c(Message__c = 'test')),
 			                                  Event_Date_Month__c = month,
-			                                  Event_Name__c = 'Account',
+			                                  Event_Name__c = 'AcccApplicationLog__c',
 			                                  Event_Truncated__c = 0,
 			                                  Event_Date_Year__c = year,
 			                                  Number_Of_Events__c = 1));

@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill Anderson.
- * All rights reserved.
+ * Copyright (c) 2019-2020, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -31,15 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- * @author Bill Anderson
- * @description test  CDC for Account
- * @group CDC Layer
- */
-trigger accc_cdcAccountHandler on AccountChangeEvent (after insert) {
-    // if you are not using the accc_TriggerMediator (hook it up with you domain)
-    // otherwise, to hook into trigger handler
-    //accc_ApexPlatformEventDispatcher.run(AccountChangeEvent.class );
-    //
-    // if you are not using the accc_TriggerMediator (hook it up with you domain)
-    system.debug('+++++ (accc_cdcAccountHandler is not using "accc_TriggerMediator" ) Trigger.New:' + Trigger.New);
-}
+ * @File Name          : accc_IApexJSONObjectParser.cls
+ * @Description        : Apex Object JSON Parser
+ * @Author             : Bill Anderson
+ * @Group              : Common
+ * @Modification Log   :
+ * Ver       Date            Author                 Modification
+ * 1.0    2/8/2020   Bill Anderson     Initial Version
+ **/
+public virtual interface accc_IApexJSONObjectParser {
+
+    /**
+     * parse
+     * @description parse a list of objects into JSON
+     * @param  theObjects the List of Objects
+     * @return JSON String
+     */
+    string parse(List<Object> theObjects);
+    /**
+     * parse
+     * @description parse an object into JSON
+     * @param  theObject the Object (not a collection)
+     * @return JSON String
+     */
+    string parse(Object theObject);
+    /**
+     * parse
+     * @description parse JSON string into Object
+     * @param  json json of a collection of objects
+     * @param theType the type expected returned (MUST be a COLLECTION Type)
+     * @return      return collection of objects
+     */
+    List<Object> parse(String json,Type theType);
+
+
+}// end of accc_IApexJSONObjectParser

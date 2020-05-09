@@ -77,24 +77,24 @@ private class  accc_ApexClassInstanceMgrTest {
 
 	@isTest
 	static void testaccc_ApexClassInstanceMgrCtor() {
-		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('Account');
+		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('AcccApplicationLog__c');
 
-		system.assertEquals(true, mgr.className == 'Account');
+		system.assertEquals(true, mgr.className == 'AcccApplicationLog__c');
 	} // end of testaccc_ApexClassInstanceMgrCtor
 
 	@isTest
 	static void testaccc_ApexClassInstanceMgrCtorWithAllParams() {
-		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('Account', 'Object');
+		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('AcccApplicationLog__c', 'Object');
 
-		system.assertEquals(true, mgr.className == 'Account');
+		system.assertEquals(true, mgr.className == 'AcccApplicationLog__c');
 		system.assertEquals(true, mgr.classInterfaceType == 'Object');
 
 	} // end of testaccc_ApexClassInstanceMgrCtorWithAllParams
 
 	@isTest
 	static void testgetClassInstance() {
-		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('Account');
-		Account expected = (Account) mgr.getClassInstance();
+		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('AcccApplicationLog__c');
+		AcccApplicationLog__c expected = (AcccApplicationLog__c) mgr.getClassInstance();
 
 		system.assertEquals(true, expected != null);
 
@@ -102,8 +102,8 @@ private class  accc_ApexClassInstanceMgrTest {
 
 	@isTest
 	static void testget() {
-		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('Account');
-		Account expected = (Account) mgr.get();
+		accc_ApexClassInstanceMgr mgr = new accc_ApexClassInstanceMgr('AcccApplicationLog__c');
+		AcccApplicationLog__c expected = (AcccApplicationLog__c) mgr.get();
 
 		system.assertEquals(true, expected != null);
 
