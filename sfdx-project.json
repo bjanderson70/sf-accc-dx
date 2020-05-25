@@ -13,7 +13,7 @@
             "default": true,
             "package": "Accc_Common",
             "versionName": "ACCC Common - Spring '20",
-            "versionNumber": "1.2.4.NEXT",
+            "versionNumber": "1.2.5.NEXT",
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {

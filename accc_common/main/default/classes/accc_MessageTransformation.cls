@@ -139,31 +139,42 @@ public without sharing class accc_MessageTransformation {
      * @return string, merge data of ApplicationLog
      */
     public static string mergeApplicationLogData(AcccApplicationLog__c datum) {
-        String result = '';
-        String placeholder = 'User Role Id: {0}\n,Debug Level: {1},\nMessage: {2},\nException: {3},\nIntegration Payload: {4},\nProfile Id: {5},\nReference Id: {6},\nReference Info: {7},\nSource: {8},\nSource Function: {9},\nStack Trace: {10}\nStatistics: {11}\nCreated Date: {12}\nLast Modified Date: {13}\n';
+        String result =accc_ApexConstants.EMPTY_JSON_s;
 
         if ( datum != null ) {
-            List<String> fillers = new List<String> {
+            try {
+                // json parse
+                result = accc_StringUtilities.toJsonString(datum);
+                // if unable to use json, use secondary
+                if ( result ==accc_ApexConstants.EMPTY_JSON_s ) {
+                    String placeholder = 'User Role Id: {0}\n,Debug Level: {1},\nMessage: {2},\nException: {3},\nIntegration Payload: {4},\nProfile Id: {5},\nReference Id: {6},\nReference Info: {7},\nSource: {8},\nSource Function: {9},\nStack Trace: {10}\nStatistics: {11}\nCreated Date: {12}\nLast Modified Date: {13}\n';
 
-                datum.UserRoleId__c
-                , datum.DebugLevel__c
-                , datum.Message__c
-                , datum.Exception__c
-                , datum.IntegrationPayload__c
-                , datum.InvocationType__c
-                , datum.profileId__c
-                , datum.ReferenceId__c
-                , datum.ReferenceInfo__c
-                , datum.Source__c
-                , datum.SourceFunction__c
-                , datum.StackTrace__c
-                , datum.Statistics__c
-                , string.valueOf(datum.createdDate)
-                , string.valueOf(datum.lastModifiedDate)
-            };
+                    List<String> fillers = new List<String> {
 
-            result = String.format(placeholder, fillers);
+                        datum.UserRoleId__c
+                        , datum.DebugLevel__c
+                        , datum.Message__c
+                        , datum.Exception__c
+                        , datum.IntegrationPayload__c
+                        , datum.InvocationType__c
+                        , datum.profileId__c
+                        , datum.ReferenceId__c
+                        , datum.ReferenceInfo__c
+                        , datum.Source__c
+                        , datum.SourceFunction__c
+                        , datum.StackTrace__c
+                        , datum.Statistics__c
+                        , string.valueOf(datum.createdDate)
+                        , string.valueOf(datum.lastModifiedDate)
+                    };
+
+                    result = String.format(placeholder, fillers);
+                }
+            } catch (Exception excp) {
+                accc_ApexUtilities.log(excp);
+            }
         }
+
         return result;
 
     } // end of mergeApplicationLogData

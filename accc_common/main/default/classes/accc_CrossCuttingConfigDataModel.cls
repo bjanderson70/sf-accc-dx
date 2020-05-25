@@ -72,6 +72,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
         , 'PreviousTransactionResultResource__c'
         , 'RuntimeEnvironment__c'
         , 'SendEmailChannel__c'
+        , 'DML_Provider__c'
 
     };
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +103,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
         public String sendEmailChannelClass;
         public String runtimeEnvironmentClass;
         public String factoryClass;
+        public String dmlProviderClass;
 
     } // end of CrossCuttingConfigInformation
 
@@ -157,7 +159,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
                 result.previousTransactionResultResourceClass = accc_Apexutilities.normalizeString(cmdt.PreviousTransactionResultResource__c, true);
                 result.sendEmailChannelClass = accc_Apexutilities.normalizeString(cmdt.SendEmailChannel__c, true);
                 result.runtimeEnvironmentClass = accc_Apexutilities.normalizeString(cmdt.RuntimeEnvironment__c, true);
-
+                result.dmlProviderClass =accc_Apexutilities.normalizeString (cmdt.DML_Provider__c, true);
                 results.add(result);
             }
         } // endif

@@ -89,6 +89,9 @@ public without sharing class accc_ApexUtilities {
     // holds valid event names
     @TestVisible
     private static Set<String> m_eventNames = new  Set<String>();
+    // holds the crud provider
+    @TestVisible
+    private static accc_IApexCRUDProvider m_dmlCRUDProvider=null;
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
@@ -302,7 +305,7 @@ public without sharing class accc_ApexUtilities {
      * @param sobj SObject
      * @param fieldName
      *
-     * @return [description]
+     * @return String value from SObject by field name
      */
     public static String getFieldFromSObjectSafe(SObject theSObject, String fieldName) {
         String result = accc_ApexConstants.EmptyString;
@@ -624,6 +627,22 @@ public without sharing class accc_ApexUtilities {
     } // end of log
 
     /**
+     * log
+     * @description Log Information, accounts for data objects
+     * @param Object message
+     */
+    public static void log(Object message) {
+        if ( message != null ) {
+            // for testing
+            if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                // used to test information sent from a test
+                accc_ApexUtilities.logForTesting(accc_StringUtilities.toJsonString(message));
+            }
+            // log it
+            accc_ApexEnvironment.getRuntimeEnvironment().logger().write(message);
+        }
+    }
+    /**
      *  @description convience routine to log exceptions via ApplicationLog
      *
      * @param excp Exception
@@ -671,7 +690,19 @@ public without sharing class accc_ApexUtilities {
             accc_ApexUtilities.writeDataForTesting(message);
         }
     } // end of logForTesting
-
+    /**
+     * dmlProvider 
+     * @description the DML Provider
+     * @return   accc_IApexCRUDProvider
+     */
+    public static accc_IApexCRUDProvider dmlProvider() {
+        // if no crud provider, get it
+        if ( accc_ApexUtilities.m_dmlCRUDProvider == null ) {
+            accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+            accc_ApexUtilities.m_dmlCRUDProvider= runtime.dmlProvider();
+        }
+        return accc_ApexUtilities.m_dmlCRUDProvider;
+    }// end of dmlProvider
     /**
      *  @description convert string of numbers to telephone #
      * [deprecating to accc_StringUtilities]

@@ -83,6 +83,7 @@ public class accc_ApexConstants {
     public static final String RuntimeEnvironment = 'Accc-RuntimeEnvironment';
     public static final String SendEmailChannel = 'Accc-SendEmailChannel';
     public static final String PreviousTransactionResultResource = 'Accc-PreviousTransactionResultResource';
+    public static final String DMLProvider = 'Accc-DMLProvider';
 
     //
     // List of ALL cross-cutting resource names
@@ -93,6 +94,7 @@ public class accc_ApexConstants {
         , CacheResource
         , CacheStrategyInvocation
         , ConfigurationResource
+        , DMLProvider
         , ExceptionHandler
         , ExceptionFormatter
         , ExceptionPolicyHandler
@@ -214,7 +216,7 @@ public class accc_ApexConstants {
     *
     * Current Version
     ************************************************************************************/
-    public static final String CURRENT_VERSION = '1.2.3.0';
+    public static final String CURRENT_VERSION = '1.2.5.0';
 
     /************************************************************************************
     *

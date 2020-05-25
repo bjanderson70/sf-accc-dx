@@ -19,6 +19,10 @@
         <value xsi:type="xsd:string">accc_VirtualCustomSettings</value>
     </values>
     <values>
+        <field>DML_Provider__c</field>
+        <value xsi:type="xsd:string">accc_ApexCRUDProvider</value>
+    </values>
+    <values>
         <field>ExceptionFormatter__c</field>
         <value xsi:type="xsd:string">accc_ExceptionFormatter</value>
     </values>

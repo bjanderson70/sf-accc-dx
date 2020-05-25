@@ -46,6 +46,10 @@
                 <behavior>Edit</behavior>
                 <field>LogFormatter__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>DML_Provider__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

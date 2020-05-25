@@ -86,7 +86,7 @@ public without sharing  class accc_PlatformEventMsgTransformation {
         AcccApplicationLog__c result = null;
 
         if ( datum != null ) {
-            Id userId = UserInfo.getUserId();
+            Id userId = datum.Username__c == null? UserInfo.getUserId() :datum.Username__c;
             result = new AcccApplicationLog__c(LogCode__c =  accc_ApexUtilities.toString(datum.LogCode__c),
                                                Message__c =   accc_ApexUtilities.toString(datum.Message__c),
                                                Source__c = 'Log Platform Event',

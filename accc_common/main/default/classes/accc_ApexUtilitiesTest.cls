@@ -168,6 +168,11 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, ns);
     } // end of testgetTypeFromSObject
 
+    @isTest static void dmlProviderTest(){
+        accc_IApexCRUDProvider provider= accc_ApexUtilities.dmlProvider();
+        // assert
+        System.assertEquals(true, provider != null);
+    }// end of dmlProviderTest
 
 
     @isTest static void testgetRecordIds() {
@@ -352,6 +357,34 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(true, result);
 
     } // end of testlog
+
+    @isTest
+    static void logTestWithObject() {
+        // assign
+        Boolean expected = true;
+        Boolean result;
+        AcccApplicationLog__c aal = new AcccApplicationLog__c(
+            LogCode__c = 'one',
+            ReferenceId__c = 'two',
+            ReferenceInfo__c = 'three',
+            SourceFunction__c = 'four',
+            Source__c = 'five'
+            );
+        List<String> expectedList = new List<String> {
+            'one','two','three','four','five',
+            'LogCode__c','ReferenceId__c',
+            'SourceFunction__c','ReferenceInfo__c',
+            'Source__c'
+        };
+
+        // act
+        accc_ApexUtilities.log(aal);
+        for (String item:expectedList ) {
+            // assert
+            System.assertEquals (true,accc_ApexUtilities.containsInTestLog(item));
+        }
+
+    }   // end of logTestWithObject
 
     @isTest
     static void testgetSObjectFieldsInformation() {

@@ -75,8 +75,8 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /*
-    * the cross cutting container
-    */
+     * the cross cutting container
+     */
     private static accc_BaseMdtDataModel CC_CONFIG = null;
 
     static {
@@ -212,9 +212,9 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     } // end of getInstanceCreator
 
     /**
-      * @description get the known classes ( looking in all categories; debug, production, etc.)
-      * @return map of classes by interface by category
-      */
+     * @description get the known classes ( looking in all categories; debug, production, etc.)
+     * @return map of classes by interface by category
+     */
     public Map<String, Map<String, String> > getClasses(string category) {
         Map<String, Map<String, String> >results = new Map<String, Map<String, String> >();
 
@@ -280,7 +280,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
      * @return boolean true if added
      */
     @TestVisible
-    private boolean addToInstanceList( string referenceName, Map<String, String> items , List<accc_ApexClassInstanceMgr> instances ) {
+    private boolean addToInstanceList( string referenceName, Map<String, String> items, List<accc_ApexClassInstanceMgr> instances ) {
 
         String classValue = items.get(referenceName);
         Boolean haveAddedInstance = false;
@@ -328,12 +328,12 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     @TestVisible
     private String getInterfaceNameFrom(string category, string className, String referenceName) {
         Boolean validCategory = !string.isBlank(category);
-        String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, referenceName) ;
+        String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, referenceName);
 
         // this may not be applicable, but bec/ others CAN change the fallback resources, we will still check
         // what we are wanting for the INTERFACE
         if ( result == null && validCategory && !string.isBlank(className) ) {
-            result = (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, className) ;
+            result = (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, className);
         }
         // are we still NULL, use the class name
         if ( result == null ) {
@@ -367,6 +367,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
         items.put(accc_ApexConstants.RuntimeEnvironment, cinfo.runtimeEnvironmentClass);
         items.put(accc_ApexConstants.SendEmailChannel, cinfo.sendEmailChannelClass);
         items.put(accc_ApexConstants.ConfigurationResource, cinfo.configurationClass);
+        items.put(accc_ApexConstants.DMLProvider, cinfo.dmlProviderClass);
 
         return items;
     } // end of addKnownConfigurationItems

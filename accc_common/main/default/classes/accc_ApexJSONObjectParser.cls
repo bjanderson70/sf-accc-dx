@@ -38,7 +38,7 @@
  * Ver       Date            Author                 Modification
  * 1.0    2/8/2020   Bill Anderson     Initial Version
  **/
-public virtual class accc_ApexJSONObjectParser {
+public virtual class accc_ApexJSONObjectParser implements accc_IApexJSONObjectParser {
     @TestVisible
     static Boolean CAUSE_EXCEPTION = false;
     /**
@@ -93,8 +93,8 @@ public virtual class accc_ApexJSONObjectParser {
      * @param  json json of a collection of objects
      * @return      return collection of objects
      */
-    public virtual List<Object> parse(String json,Type theType) {
-        List<Object> results=null;
+    public virtual Object parse(String json,Type theType) {
+        Object results=null;
         // if valid data
         if ( string.isNotBlank(json)
              && theType != null ) {
@@ -104,7 +104,7 @@ public virtual class accc_ApexJSONObjectParser {
                      && accc_ApexConstants.UNIT_TEST_RUNNING ) {
                     throw new accc_ApexApplicationException();
                 }
-                results=(List<Object>)System.JSON.deserialize(json, theType);
+                results=(Object)System.JSON.deserialize(json, theType);
             } catch (Exception excp) {
                 accc_ApexUtilities.log(excp);
             }

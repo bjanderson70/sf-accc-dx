@@ -39,7 +39,7 @@
  *
  * @group Log Aspects
  */
-public without sharing class accc_LogPlatformEventHandler extends accc_EventBase {
+public virtual without sharing class accc_LogPlatformEventHandler extends accc_EventBase {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members
@@ -58,11 +58,12 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
      *
      * @param List<SObject> list of new sobjects
      */
-    public override void onAfterInsertChild(List<SObject> newItems) {
+    public virtual override void onAfterInsertChild(List<SObject> newItems) {
 
         try {
             List<accc_Log__e> elogs = (List<accc_Log__e>)newItems;
-            List<AcccApplicationLog__c> theApplicationLogs = accc_PlatformEventMsgTransformation.translate(elogs);
+
+            this.theApplicationLogs = accc_PlatformEventMsgTransformation.translate(elogs);
             //
             // are we causing an exception during testing
             //
@@ -70,8 +71,8 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
                 throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
             }
             // any data to add
-            if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {
-                accc_SObjectBaseWriter writer = new accc_QueableSObjects(theApplicationLogs);
+            if ( this.theApplicationLogs != null && this.theApplicationLogs.size() > 0) {
+                accc_SObjectBaseWriter writer = new accc_QueableSObjects(this.theApplicationLogs);
                 writer.execute();
             }
         } catch (Exception excp) {
@@ -80,5 +81,18 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
         }
 
     } // end of onAfterInsertChild
+
+    /////////////////////////////////////////////////////////////////////////
+    // Protected Methods
+    /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Get/Set for AcccApplicationLog__c ( for children)
+     */
+    @TestVisible
+    protected List<AcccApplicationLog__c> theApplicationLogs {
+        get;
+        set;
+    }
 
 } // end of accc_LogPlatformEventHandler

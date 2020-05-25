@@ -47,18 +47,6 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     private static final String ResourceIdentifier_r = 'accc_ApexBaseRuntimeEnvironment-id';
     private static final accc_ApexLocalL1Cache ccResources = new accc_ApexLocalL1Cache(ResourceIdentifier_r);
 
-    private static accc_IApexFactory aFactory = null;
-    private static accc_IConfigurationProvider aProvider = null;
-    private static accc_ILogger aLogger = null;
-    private static accc_IFallbackResources aResource = null;
-    private static accc_IApexExceptionHandler anExceptionHandler = null;
-    private static accc_ICache aCache = null;
-    private static accc_IPreviousTransactionResult aTransactionResult = null;
-    private static accc_IApexCachePolicyStrategy aCachePolicyStrategy = null;
-    private static accc_IApexCacheStrategyInvocation aCacheStrategyInvocation = null;
-    private static accc_IApexMessageSender aMessageSender = null;
-
-
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors / Class Initialization
     ////////////////////////////////////////////////////////////////////////////////
@@ -212,6 +200,21 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
 
         return result;
     } // end of messageSender
+      /**
+       * @description get the dml provider runtime
+       *
+       */
+    public virtual accc_IApexCRUDProvider dmlProvider(){
+        accc_IApexCRUDProvider result = (accc_IApexCRUDProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.DMLProvider);
+        if ( result == null ) {
+            result   = (accc_IApexCRUDProvider)  this.objectFactory().create(accc_ApexConstants.DMLProvider);
+            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.DMLProvider,
+                                                            result);
+        }
+
+        return result;
+    }// end of dmlProvider
+
     //////////////////////////////////////////////////////////////////////
     // Setters
     //////////////////////////////////////////////////////////////////////
@@ -305,6 +308,14 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public void messageSender(accc_IApexMessageSender theMessageSender) {
         accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.SendEmailChannel, theMessageSender);
     } // end of messageSender
+      /**
+       * dmlProvider
+       * @description set the dml provider runtime
+       *
+       */
+    public void dmlProvider(accc_IApexCRUDProvider theDMLProvider) {
+        accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.DMLProvider, theDMLProvider);
+    } // end of dmlProvider
     ////////////////////////////////////////////////////////////////////////////////
     /// Protected  Properties
     ////////////////////////////////////////////////////////////////////////////////
@@ -437,4 +448,11 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
             return (accc_IApexMessageSender)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.SendEmailChannel);
         }
     } // end of theMessageSender
+
+    @TestVisible
+    protected accc_IApexCRUDProvider theDMLProvider {
+        get {
+            return (accc_IApexCRUDProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.DMLProvider);
+        }
+    } // end of theDMLProvider
 }

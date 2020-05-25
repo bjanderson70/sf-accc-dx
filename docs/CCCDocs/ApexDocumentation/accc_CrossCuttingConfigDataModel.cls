@@ -34,9 +34,9 @@
  * @description  External representation of the data cached metadata. Providing a
  * wrapper around the internal data mapper allows one to vary the metadata w/o having to
  * change ALL dependencies. [Added layer of indirection to adjust for change].
- * 
+ *
  * To Add a new resource: See Steps below
- * 
+ *
  * @group Common Layer
  */
 public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseMdtDataModel {
@@ -68,6 +68,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
         , 'PreviousTransactionResultResource__c'
         , 'RuntimeEnvironment__c'
         , 'SendEmailChannel__c'
+        , 'DMLProvider__c'
 
     };
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
     /**
      * @description data cache information - view representation , allows for changes
      * in the implementation (data representation) w/o affecting the consumption [DAO]
-     * 
+     *
      * To Added New Resouce classes (Step 1b: Add data member here (i.e.,'logFormatterClass'))
      *
      */
@@ -98,6 +99,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
         public String sendEmailChannelClass;
         public String runtimeEnvironmentClass;
         public String factoryClass;
+        public String dmlProviderClass;
 
     } // end of CrossCuttingConfigInformation
 
@@ -153,6 +155,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
                 result.previousTransactionResultResourceClass = accc_Apexutilities.normalizeString(cmdt.PreviousTransactionResultResource__c,true);
                 result.sendEmailChannelClass = accc_Apexutilities.normalizeString(cmdt.SendEmailChannel__c,true);
                 result.runtimeEnvironmentClass = accc_Apexutilities.normalizeString(cmdt.RuntimeEnvironment__c,true);
+ //result.dmlProviderClass = accc_Apexutilities.normalizeString(cmdt.DMLProvider__c,true);
 
                 results.add(result);
             }
