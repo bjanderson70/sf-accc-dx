@@ -59,9 +59,9 @@ public virtual interface accc_IApexJSONObjectParser {
      * @description parse JSON string into Object
      * @param  json json of a collection of objects
      * @param theType the type expected returned (MUST be a COLLECTION Type)
-     * @return      return collection of objects
+     * @return      return object (cast to collection if needed)
      */
-    List<Object> parse(String json,Type theType);
+    Object parse(String json,Type theType);
 
 
 }// end of accc_IApexJSONObjectParser

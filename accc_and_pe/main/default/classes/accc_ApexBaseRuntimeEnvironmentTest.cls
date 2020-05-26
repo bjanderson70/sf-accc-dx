@@ -54,6 +54,7 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
         accc_IApexCachePolicyStrategy cachePolicyStrategy = env.cachePolicyStrategy();
         accc_IApexCacheStrategyInvocation cacheStrategyInvocation = env.cacheStrategyInvocation();
         accc_IApexMessageSender messageSender = env.messageSender();
+        accc_IApexCRUDProvider dmlProvider = env.dmlProvider();
 
 
         system.assertEquals(accc_ApexTestUtilities.isProvider(provider), true);
@@ -67,6 +68,7 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
         system.assertEquals(accc_ApexTestUtilities.isCachePolicyStrategy(cachePolicyStrategy),  true);
         system.assertEquals(accc_ApexTestUtilities.isCacheStrategyInvocation(cacheStrategyInvocation), true);
         system.assertEquals(accc_ApexTestUtilities.isMessageSender(messageSender),  true);
+        system.assertEquals(accc_ApexTestUtilities.isDMLProvider(dmlProvider),  true);
 
     } // end of testMethodsValidity
 
@@ -83,6 +85,7 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
         accc_IApexCachePolicyStrategy cachePolicyStrategy = env.cachePolicyStrategy();
         accc_IApexCacheStrategyInvocation cacheStrategyInvocation = env.cacheStrategyInvocation();
         accc_IApexMessageSender messageSender = env.messageSender();
+        accc_IApexCRUDProvider dmlProvider = env.dmlProvider();
 
         system.assertNotEquals(accc_ApexTestUtilities.isLogger(provider), true);
         system.assertNotEquals(accc_ApexTestUtilities.isProvider(logger), true);
@@ -123,6 +126,8 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
         accc_IApexCacheStrategyInvocation cacheStrategyInvocation = env.cacheStrategyInvocation();
         env.messageSender(null);
         accc_IApexMessageSender messageSender = env.messageSender();
+        env.dmlProvider(null);
+        accc_IApexCRUDProvider dmlProvider = env.dmlProvider();
 
 
         system.assertNotEquals(accc_ApexTestUtilities.isLogger(provider), true);
@@ -136,6 +141,7 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
         system.assertNotEquals(accc_ApexTestUtilities.isCachePolicyStrategy(cacheStrategyInvocation), true);
         system.assertNotEquals(accc_ApexTestUtilities.isCacheStrategyInvocation(messageSender), true);
         system.assertNotEquals(accc_ApexTestUtilities.isMessageSender(cachePolicyStrategy), true);
+        system.assertNotEquals(accc_ApexTestUtilities.isDMLProvider(cachePolicyStrategy), true);
 
     } // end of testSetMethodsAreValid
 
@@ -152,7 +158,8 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
             'accc_IApexCachePolicyStrategy' => env.cachePolicyStrategy(),
             'accc_IApexCacheStrategyInvocation' => env.cacheStrategyInvocation(),
             'accc_IPreviousTransactionResult' => env.transactionResult(),
-            'accc_IApexMessageSender' => env.messageSender()
+            'accc_IApexMessageSender' => env.messageSender(),
+            'accc_IApexCRUDProvider' => env.dmlProvider()
         };
         for ( String key : getters.keyset()) {
             System.assertNotEquals(null, getters.get(key), ' Error :' + key + ' was NULL');
@@ -172,7 +179,8 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
             'accc_IApexCachePolicyStrategy' => env.theCachePolicyStrategy,
             'accc_IApexCacheStrategyInvocation' => env.theCacheStrategyInvocation,
             'accc_IPreviousTransactionResult' => env.thePreviousTransactionResult,
-            'accc_IApexMessageSender' => env.theMessageSender
+            'accc_IApexMessageSender' => env.theMessageSender,
+            'accc_IApexCRUDProvider' => env.theDMLProvider
         };
         for ( String key : getters.keyset()) {
             System.assertEquals(null, getters.get(key), ' Error :' + key + ' is NOT NULL');
@@ -186,7 +194,7 @@ private class accc_ApexBaseRuntimeEnvironmentTest {
     // Get the environment we are testing
     //
     private static accc_IApexRunEnvironment getTheEnvironment() {
-      
+
         if ( accc_ApexBaseRuntimeEnvironmentTest.theEnvironment == null ) {
             // need to ensure the ApexTestFactory is used as it includes
             // resources not found in the ApexFactory which is used in 'accc_ApexBaseRuntimeEnvironment'

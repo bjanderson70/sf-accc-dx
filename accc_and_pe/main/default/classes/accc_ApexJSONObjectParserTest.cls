@@ -99,7 +99,12 @@ private class accc_ApexJSONObjectParserTest {
         system.assertEquals(true, json.containsIgnoreCase('debug'));
         system.assertEquals(true, json.containsIgnoreCase('AcccApplicationLog__c'));
         system.assertEquals (true, json.containsIgnoreCase ('Source__c'));
-
+        // go back to original
+        AcccApplicationLog__c nlogdata = (AcccApplicationLog__c)parser.parse(json,AcccApplicationLog__c.class);
+        // assert
+        system.assertEquals(logdata.LogCode__c,nlogdata.LogCode__c );
+        system.assertEquals(logdata.DebugLevel__c,nlogdata.DebugLevel__c);
+        system.assertEquals (logdata.Source__c,nlogdata.Source__c);
 
     } // end of parseJSONTest
 
@@ -158,7 +163,7 @@ private class accc_ApexJSONObjectParserTest {
         // assert
         system.assertEquals(accc_ApexConstants.EMPTY_JSON_s, json);
         // act
-        List<Object> rlist  = parser.parse (accc_ApexConstants.EMPTY_JSON_s,List<AcccApplicationLog__c>.class);
+        Object rlist  = parser.parse (accc_ApexConstants.EMPTY_JSON_s,List<AcccApplicationLog__c>.class);
         // assert
         system.assertEquals(null, rlist);
         // act

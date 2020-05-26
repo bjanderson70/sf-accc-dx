@@ -258,18 +258,17 @@ private class accc_ApexBigObjectLoggerTest {
     //////////////////////////////////////////////////////////////////////////////////
 
     private static Boolean isBigObjectCorrect(String json, List<accc_Org_Events__b> item ) {
-        Boolean jsonFine=true;
-
-
+        Boolean jsonFine=false;
         List<String> items = accc_ApexUtilities.splitStringOnWhitespacesCommaOrSemiColon(json);
         for ( String val : items) {
-  
             for (accc_Org_Events__b big: item ) {
                 if ( big.Event_Json__c.contains(val)) {
                     jsonFine=true;
                     break;
-                } 
-                jsonFine=false;
+                }
+            }
+            if ( jsonFine) {
+                break;
             }
         }
         return

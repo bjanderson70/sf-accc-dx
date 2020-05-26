@@ -35,7 +35,7 @@
  */
 @isTest
 @TestVisible
-private without sharing class accc_ApexTestUtilities { 
+private without sharing class accc_ApexTestUtilities {
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members
     ////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ private without sharing class accc_ApexTestUtilities {
     //
     public static Boolean isCache(Object obj) {
         try {
-            accc_ICache  handler = (accc_ICache)obj;
+            accc_ICache handler = (accc_ICache)obj;
 
             if ( handler != null ) {
                 return true;
@@ -204,6 +204,21 @@ private without sharing class accc_ApexTestUtilities {
 
         return false;
     } // end of isMessageSender
+
+    //
+    // is a DML Provider handler
+    //
+    public static Boolean isDMLProvider(Object obj) {
+        try {
+            accc_IApexCRUDProvider handler = (accc_IApexCRUDProvider)obj;
+
+            if ( handler != null ) {
+                return true;
+            }
+        } catch (Exception excp) {}
+
+        return false;
+    }  // end of isDMLProvider
 
 
 } // end of accc_ApexTestUtilities

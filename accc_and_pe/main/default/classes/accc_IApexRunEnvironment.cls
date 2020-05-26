@@ -37,9 +37,9 @@
  *     However, if one of the resources you need does not have the method to expose the value.
  *     then use the 'objectFactory()' method to pull it out explicitly by name. For example,
  *     the 'logFormatter' is not an exposed method, but can be retrieved by :
- *     
+ *
  *           objectFactory().create(accc_ApexConstants.LogFormatter);
- *     
+ *
  * @group Common Interface Layer
  */
 public virtual interface accc_IApexRunEnvironment {
@@ -90,18 +90,24 @@ public virtual interface accc_IApexRunEnvironment {
      * @description cache strategy policy
      * @return accc_IApexCachePolicyStrategy the caching policy strategy
      */
-     accc_IApexCachePolicyStrategy cachePolicyStrategy();
+    accc_IApexCachePolicyStrategy cachePolicyStrategy();
     /**
      * @description cache strategy invocation
      * @return accc_IApexCacheStrategyInvocation the caching strategy
      */
     accc_IApexCacheStrategyInvocation cacheStrategyInvocation();
-       
+
     /**
      * @description send messages
      * @return accc_IApexMessageSender
      */
     accc_IApexMessageSender messageSender();
+
+    /**
+     * @description DML Provider
+     * @return accc_IApexCRUDProvider
+     */
+    accc_IApexCRUDProvider dmlProvider();
 
     ////////////////////////////////////////////////////////////////////////
     //
@@ -143,34 +149,42 @@ public virtual interface accc_IApexRunEnvironment {
 
     /**
      * @description set cache handler
-     * 
+     *
      * @param transacitonResult ICache
      */
     void cache(accc_ICache runTimeCache);
 
     /**
      * @description set previous transaciton result
-     * 
+     *
      * @param transacitonResult accc_IPreviousTransactionResult
      */
     void transactionResult(accc_IPreviousTransactionResult transacitonResult);
 
     /**
-    * @description set the cache strategy invocation
-    *
-    * @param accc_IApexCacheStrategyInvocation cache strategy
-    */
+     * @description set the cache strategy invocation
+     *
+     * @param accc_IApexCacheStrategyInvocation cache strategy
+     */
     void cacheStrategyInvocation(accc_IApexCacheStrategyInvocation cacheStrategyInvo);
- 
+
     /**
-    * @description set the cache strategy polict
-    *
-    * @param accc_IApexCachePolicyStrategy cache policy
-    */
+     * @description set the cache strategy polict
+     *
+     * @param accc_IApexCachePolicyStrategy cache policy
+     */
     void cachePolicyStrategy(accc_IApexCachePolicyStrategy theCachePolicyStrategy);
     /**
      * @description set the message sender
      * @param accc_IApexMessageSender set message channel
      */
-    void messageSender(accc_IApexMessageSender theMessageSender) ;
+    void messageSender(accc_IApexMessageSender theMessageSender);
+
+    /**
+     * @description sets the dml provider runtime
+     *
+     * @param theDMLProvider accc_IApexCRUDProvider that provide dml aspects
+     */
+    void dmlProvider(accc_IApexCRUDProvider theDMLProvider);
+
 } // end of accc_IApexRunEnvironment

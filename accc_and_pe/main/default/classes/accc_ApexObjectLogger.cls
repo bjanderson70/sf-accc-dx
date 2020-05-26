@@ -170,7 +170,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
         List<AcccApplicationLog__c> appLogs = new List<AcccApplicationLog__c>();
         integer size = result != null ? result.size() : 0;
 
-        // create  log
+        // create  log (TBD -- use json to convert ALL at once)
         for ( integer inx = 0; inx < size; ++inx) {
             appLogs.add(accc_MessageTransformation.translate(level, result[inx]));
         }
