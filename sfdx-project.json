@@ -3,9 +3,9 @@
         {
             "path": "accc_and_pe",
             "default": true,
-            "package": "Accc_and_PE",
+            "package": "ACCC_and_PE_One_Package",
             "versionName": "ACCC Common and ACCC Platform Events - Spring '20",
-            "versionNumber": "1.2.3.NEXT",
+            "versionNumber": "1.2.4.NEXT",
             "definitionFile": "config/project-scratch-def.json"
         }
     ],
@@ -13,7 +13,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "Accc_and_PE": "0Ho4R000000fxT9SAI",
-        "Accc_and_PE@1.2.3-1": "04t4R000001lcJ0QAI"
+        "ACCC_and_PE_One_Package": "0Ho4R000000XZBFSA4",
+        "ACCC_and_PE_One_Package@1.2.4.0-1": "04t4R000001NO3zQAG"
     }
 }
