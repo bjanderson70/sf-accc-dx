@@ -26,7 +26,8 @@ uncrustify.cfg
 
 # MacOS system files
 .DS_Store
-
+# Misc
+*.txt
 # Windows system files
 Thumbs.db
 ehthumbs.db

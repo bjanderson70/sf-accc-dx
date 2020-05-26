@@ -5,12 +5,12 @@
             "default": false,
             "package": "Accc_Domain",
             "versionName": "ACCC Domain - Spring '20",
-            "versionNumber": "0.5.0.NEXT",
+            "versionNumber": "0.5.1.NEXT",
             "definitionFile": "config/project-scratch-def.json"
         },
         {
             "path": "accc_common",
-            "default": true,
+            "default": false,
             "package": "Accc_Common",
             "versionName": "ACCC Common - Spring '20",
             "versionNumber": "1.2.5.NEXT",
@@ -18,7 +18,7 @@
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
+                    "versionNumber": "0.5.1.LATEST"
                 }
             ]
         },
@@ -35,16 +35,16 @@
             "package": "Accc_PE",
             "versionName": "ACCC Platform Events - Spring '20",
             "versionNumber": "1.0.1.NEXT",
-            "default": false,
+            "default": true,
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
+                    "versionNumber": "0.5.1.LATEST"
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.4.LATEST"
+                    "versionNumber": "1.2.5.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -57,16 +57,16 @@
             "default": false,
             "package": "Accc_TH",
             "versionName": "ACCC Trigger Handler - Spring '20",
-            "versionNumber": "0.6.0.NEXT",
+            "versionNumber": "0.7.0.NEXT",
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.0.LATEST"
+                    "versionNumber": "0.5.1.LATEST"
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.4.LATEST"
+                    "versionNumber": "1.2.5.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -74,7 +74,7 @@
                 },
                 {
                     "package": "Accc_PE",
-                    "versionNumber": "1.0.0.LATEST"
+                    "versionNumber": "1.0.1.LATEST"
                 }
             ]
         }
@@ -86,12 +86,12 @@
         "Accc_Domain": "0Ho4R000000XZAqSAO",
         "Accc_Common": "0Ho4R000000XZAWSA4",
         "Accc_PE_Domain": "0Ho4R000000XZAvSAO",
-        "Accc_PE": "0Ho4R000000XZAlSAO",
+		"Accc_PE": "0Ho4R000000XZAlSAO",
         "Accc_TH": "0Ho4R000000XZB0SAO",
-        "Accc_Domain@0.5.0-1": "04t4R000001NNuSQAW",
-        "Accc_Common@1.2.4-1": "04t4R000001NO1ZQAW",
+        "Accc_Domain@0.5.1-1": "04t4R000001NO3fQAG",
+        "Accc_Common@1.2.5-1": "04t4R000001NO3kQAG",
         "Accc_PE_Domain@0.5.0-1": "04t4R000001NNuhQAG",
-        "Accc_PE@1.0.0-1": "04t4R000001NNurQAG",
-        "Accc_TH@0.6.0-1": "04t4R000001NNvaQAG"
+        "Accc_PE@1.0.1-1": "04t4R000001NO3pQAG",
+		"Accc_TH@0.7.0-1": "04t4R000001NO3uQAG"
     }
 }
