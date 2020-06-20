@@ -34,7 +34,7 @@
  *
  * @group Common Layer
  **/
-public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter {
+public inherited sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -151,17 +151,18 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
      */
     @TestVisible
     protected override void process() {
-         try {
+        try {
             integer size = this.entries.size();
             // used for testing
             if (accc_ApexConstants.UNIT_TEST_RUNNING) {
                 // testing async ??
                 if ( accc_SyncAsyncWriter.m_makeAsync) {
                     size = USE_FOR_TESTING_DATASIZE;
+                    // now reset
+                    accc_SyncAsyncWriter.m_makeAsync=false;
                 }
             }
-
-            // determine the best course ;
+             // determine the best course ;
             // Check to see if user wants async ...
             // Or, write synchronously assuming  DML limits (150) are not exceeded,
             // Or do so asynchronously assuming the Queueable limit (50) is abided by;
@@ -178,39 +179,45 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
                 // are we asynch and not exceeded out limits
             } else if ( !this.isSynchronousOnly
                         && Limits.getQueueableJobs() < Limits.getLimitQueueableJobs()) {
+              
                 // we would exceed out governor limits, so process in separate transaction
                 this.isAsyncWrite = true;
-                 // enqueue the writer
-				System.enqueueJob(accc_SObjectBaseWriter.queuableWriter(this.entries,
-				                  										this.actions,
-				                  										super.isBigObject
-				                                                       )
-				                 );
+                // we are queuing a writer; will need to copy DML options
+                accc_SObjectBaseWriter qwriter=accc_SObjectBaseWriter.queuableWriter (this.entries,
+                                                                                      this.actions,
+                                                                                      super.isBigObject);
+                /************************************************
+                 * need to make sure the queueable has the same permissions set for the provider as this
+                 **************************************************/
+                // copy caller's options
+                qwriter.theDMLProvider.setDmlOptions(this.theDMLProvider.getDmlOptions());
+                // enqueue the writer
+                System.enqueueJob(qwriter);
 
-			} else {
-				String excpMsg = '+++ Not Written - Governor Limit exception would occur. +++ '
-				                 + accc_ApexConstants.NewLine
-				                 + '{ getLimitQueueableJobs:' + Limits.getLimitQueueableJobs()
-				                 + ', getQueueableJobs:' + Limits.getQueueableJobs()
-				                 + ', getLimitDMLStatements:' + Limits.getLimitDMLStatements()
-				                 + ', getDMLStatements: ' + Limits.getDMLStatements()
-				                 + ', NumberOfEntries:' + size
-				                 + ', getDMLRows:' + Limits.getDMLRows()
-				                 + ', is BigObject:' + this.isBigObject
-				                 + ', is SynchronousOnly:' + this.isSynchronousOnly
-				                 + ', force Async write:' + this.forceAsyncWrite
-				                 + '}';
+            } else {
+                String excpMsg = '+++ Not Written - Governor Limit exception would occur. +++ '
+                                 + accc_ApexConstants.NewLine
+                                 + '{ getLimitQueueableJobs:' + Limits.getLimitQueueableJobs()
+                                 + ', getQueueableJobs:' + Limits.getQueueableJobs()
+                                 + ', getLimitDMLStatements:' + Limits.getLimitDMLStatements()
+                                 + ', getDMLStatements: ' + Limits.getDMLStatements()
+                                 + ', NumberOfEntries:' + size
+                                 + ', getDMLRows:' + Limits.getDMLRows()
+                                 + ', is BigObject:' + this.isBigObject
+                                 + ', is SynchronousOnly:' + this.isSynchronousOnly
+                                 + ', force Async write:' + this.forceAsyncWrite
+                                 + '}';
 
-				throw new accc_ApexApplicationException(excpMsg);
-			}
-		} catch (Exception excp) {
+                throw new accc_ApexApplicationException(excpMsg);
+            }
+        } catch (Exception excp) {
 
-			// more than likely, Governor limts hit
-			this.theException = excp;
-			// process exception
-			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
-		}
+            // more than likely, Governor limts hit
+            this.theException = excp;
+            // process exception
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
+        }
 
-	} // end of process
+    } // end of process
 
 } // end of accc_SyncAsyncWriter

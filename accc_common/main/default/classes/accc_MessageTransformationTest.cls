@@ -81,12 +81,28 @@ private class accc_MessageTransformationTest {
         // act
         for (AcccApplicationLog__c item : entries) {
             String result=accc_MessageTransformation.mergeApplicationLogData(item);
-          
+
             system.assertEquals(true,  result.contains('Message__c'));
             system.assertEquals (true,  result.contains ('Source__c'));
-			system.assertEquals (true,  result.contains ('SourceFunction__c'));
+            system.assertEquals (true,  result.contains ('SourceFunction__c'));
         }
     }// end of mergeApplicationLogDataTest
+
+    @isTest
+    static void mergeApplicationLogDataForcingEmptyTest() {
+        // assign
+        accc_MessageTransformation.FORCE_EMPTY_TEST=true;
+        AcccApplicationLog__c entry=new AcccApplicationLog__c();
+        // act
+        String result=accc_MessageTransformation.mergeApplicationLogData(entry);
+
+        system.assertEquals(true,  result.contains('Debug Level'));
+        system.assertEquals (true,  result.contains ('Message'));
+        system.assertEquals (true,  result.contains ('Integration Payload'));
+        system.assertEquals (true,  result.contains ('User Role Id'));
+        system.assertEquals (true,  result.contains ('Profile Id'));
+        
+    } // end of mergeApplicationLogDataTest
 
     /////////////////////////////////////////////////////////////////////////////////////
     // Helper Method

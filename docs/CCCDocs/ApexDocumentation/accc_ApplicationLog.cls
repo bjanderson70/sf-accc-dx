@@ -68,10 +68,10 @@ public without sharing class accc_ApplicationLog {
 
     } // end of ctor
     /**
-    *
-    * @description ctor (copy ctor, no automatic logging)
-    * @param appLogEntry the application log
-    */
+     *
+     * @description ctor (copy ctor, no automatic logging)
+     * @param appLogEntry the application log
+     */
     public accc_ApplicationLog(AcccApplicationLog__c appLogEntry) {
         this.entry = appLogEntry;
     }// end of ctor
@@ -93,11 +93,11 @@ public without sharing class accc_ApplicationLog {
         this( excp, accc_ApexConstants.Unknown, accc_ApexConstants.Unknown);
     } // end of ctor
     /**
-    *
-    * @description ctor (no automatic logging)
-    * @param className the class name
-    * @param methodName the method name
-    */
+     *
+     * @description ctor (no automatic logging)
+     * @param className the class name
+     * @param methodName the method name
+     */
     public accc_ApplicationLog(String className, String methodName) {
         this(null, className, methodName, null, null);
     } // end of ctor
@@ -362,24 +362,24 @@ public without sharing class accc_ApplicationLog {
         // ensure string correctness
         this.ensureStringCorrectness(logEntries);
         accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+        accc_IApexCRUDProvider dbProvider = runtime.dmlProvider();
+        accc_GenericDbResultHandler dbResult=null;
 
         if ( (Limits.getDMLRows() < Limits.getLimitDMLRows()) &&
-                (Limits.getDMLStatements() < Limits.getLimitDMLStatements()) ) {
+             (Limits.getDMLStatements() < Limits.getLimitDMLStatements()) ) {
             List<Database.SaveResult> savedResults = null;
             // will only check the first entry id
             this.entryId = logEntries[0].Id;
 
             if ( this.entryId == null) {
                 // insert the information
-                savedResults = Database.insert(logEntries, true);
+                dbResult = dbProvider.insertDb(logEntries);
             } else {
                 // someone must have insert this before as it already has an Id
-                savedResults = Database.update(logEntries, true);
+                dbResult = dbProvider.updateDb(logEntries);
             }
-            // set the db results
-            runtime.transactionResult().databaseResult(savedResults);
             // process errors, if any; if we did not have errors, 'processErrors' returns false
-            result = runtime.transactionResult().processErrors(true) == false;
+            result = !dbResult.hasErrors(); 
             // no errors process ( atomic )
             if ( result == true) {
                 this.itemsLogged = logEntries.size();

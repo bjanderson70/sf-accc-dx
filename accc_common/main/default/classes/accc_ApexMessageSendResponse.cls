@@ -33,7 +33,7 @@
  * @description SMessage sent response
  * @group Common Layer
  */
-global without sharing class accc_ApexMessageSendResponse {
+global inherited sharing class accc_ApexMessageSendResponse {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

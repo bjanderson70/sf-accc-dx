@@ -35,7 +35,7 @@
  *
  * @group Log Aspects
  */
-public without sharing class accc_ApplicationLog {
+public inherited sharing class accc_ApplicationLog {
 
     //////////////////////////////////////////////////////////////////////////////////////
     // Data Members
@@ -277,7 +277,7 @@ public without sharing class accc_ApplicationLog {
      */
     public Boolean log(AcccApplicationLog__c logEntry) {
         Boolean result = logEntry == null ? false : true;
-        
+
         try {
             // if we have an entry, log it
             if ( result == true ) {
@@ -367,6 +367,9 @@ public without sharing class accc_ApplicationLog {
             this.ensureStringCorrectness(logEntries);
             // process the entries synchronously or asynchronously ( depends on Limits)
             accc_SObjectBaseWriter syncAsyncWriter = new accc_SyncAsyncWriter(logEntries);
+            // Application Log executes in system mode
+            syncAsyncWriter.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
             // process the entries
             syncAsyncWriter.execute();
             // ensure there is no issues; otherwise rethrow
@@ -384,7 +387,7 @@ public without sharing class accc_ApplicationLog {
             this.handleExceptionResults(logEntries,
                                         LoggingLevel.ERROR,
                                         this.logExcp
-                                       );
+                                        );
 
         }
 

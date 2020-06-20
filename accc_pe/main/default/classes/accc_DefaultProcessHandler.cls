@@ -42,7 +42,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing class accc_DefaultProcessHandler implements accc_IProcessEventHandler {
+public virtual inherited sharing class accc_DefaultProcessHandler implements accc_IProcessEventHandler {
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Data Members

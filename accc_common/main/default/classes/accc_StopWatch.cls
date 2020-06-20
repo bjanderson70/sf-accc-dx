@@ -34,7 +34,7 @@
  * @description Used to clock time; very rudimentary/simple encapsulation
  * @group Common Layer
  */
-public without sharing class accc_StopWatch {
+public inherited sharing class accc_StopWatch {
 
 	/////////////////////////////////////////////////////////////////////////
 	// Properties

@@ -1,5 +1,35 @@
 #!/usr/bin/env bash
-
+############################################################################
+# Copyright (c) 2020, Salesforce.  All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+#   + Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#   + Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in
+#     the documentation and/or other materials provided with the
+#     distribution.
+#
+#   + Neither the name of Salesforce nor the names of its
+#     contributors may be used to endorse or promote products derived
+#     from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+############################################################################
 #######################################################
 #
 # Core functions used by scripts
@@ -94,13 +124,12 @@ function help() {
 
     echo "${green}${bold}"
     echo ""
-    echo "Usage: $0 [ -u <username|targetOrg> | -t | -v | -q | -b | -h ]"
+    echo "Usage: $0 [ -u <username|targetOrg> | -t | -v | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
 	printf "\n\t -t run unit tests"
 	printf "\n\t -v turn on debug"
     printf "\n\t -q run quietly"
-    printf "\n\t -b install Only ACCC base (i.e. ACCC Common -- NO Platform Events/CDC)"
-	printf "\n\t -h the help\n"
+    printf "\n\t -h the help\n"
     resetCursor;
 	exit 0
 }
@@ -150,6 +179,9 @@ function createScratchOrg() {
         # get username
         orgName=`$SFDX_CLI_EXEC force:org:create -s -f config/project-scratch-def.json -d 2 --json |  grep username | awk '{ print $2}' | sed 's/"//g'`
         print "Scratch org created (user=$orgName)."
+		if [  -z $orgName ]; then
+			handleError "Problem creating scratch Org (could be network issues, permissions, or limits) [sfdx force:org:create -s -f config/project-scratch-def.json -d 2 --json] "
+		fi
     fi
 }
 
@@ -171,8 +203,7 @@ function runApexTests() {
 #######################################################
 function setPermissions() {
     print "Setting up permissions."
-    $SFDX_CLI_EXEC force:user:permset:assign -n ACCC_Org_Events_BigObject -u "$orgName"
-    $SFDX_CLI_EXEC force:user:permset:assign -n Accc_Application_Log -u "$orgName"
+	# place here, if any
 }
 #######################################################
 # Install Packages
@@ -189,15 +220,7 @@ function installPackages() {
             local name=`echo $line | awk '{print $1}'`
             print "Installing package $name ($pgkId) for $orgName"
             $SFDX_CLI_EXEC force:package:install -a package --package "$pgkId" --wait 20 --publishwait 20 -u "$orgName" 
-            #check for install just the base/common
-            if [ ! -z $installBase ]; then
-                ((step=step+1));
-            fi
-            # just installing the common ??
-            if [ $step -eq 2 ]; then
-                print "Only Accc Common installed!"
-                break;
-            fi
+            ((step=step+1));
         done
     fi
 
@@ -227,6 +250,5 @@ function openOrg() {
 #
 #######################################################
 function complete() {
-    print "Note: Cache Partion ('work') is created but you must allocate Organization Space [due to fault in cache partition initialization]."
-    print "      *** If you forget to set the partition ApexCacheTest and ApexCacheMgrTest will fail. ***"
+    print "      *** Completed ***"
 }

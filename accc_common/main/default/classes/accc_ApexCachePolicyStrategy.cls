@@ -34,7 +34,7 @@
  * @description How to handle caching. Based on the policy (DataCaching__mdt) and soql query
  * @group Cache Aspects
  */
-public virtual without sharing class accc_ApexCachePolicyStrategy implements accc_IApexCachePolicyStrategy {
+public virtual inherited sharing class accc_ApexCachePolicyStrategy implements accc_IApexCachePolicyStrategy {
 	/*---------------------------------------------------------------------------------------
 	 * CTORS
 	 *---------------------------------------------------------------------------------------

@@ -45,7 +45,7 @@
  *
  * @group Log Aspects
  */
-public without sharing class accc_LogEventHandler extends accc_EventBase {
+public inherited sharing class accc_LogEventHandler extends accc_EventBase {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members

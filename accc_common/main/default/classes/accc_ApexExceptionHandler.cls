@@ -34,7 +34,7 @@
  * a more secure exception.
  * @group Exception Handling
  */
-public virtual without sharing class accc_ApexExceptionHandler implements accc_IApexExceptionHandler {
+public virtual inherited sharing class accc_ApexExceptionHandler implements accc_IApexExceptionHandler {
 
     /*---------------------------------------------------------------------------------------
      * DATA MEMBERS

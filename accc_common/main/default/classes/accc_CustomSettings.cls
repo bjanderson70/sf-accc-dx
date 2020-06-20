@@ -39,7 +39,7 @@
  * @group Common Layer
  *
  */
-public without sharing class accc_CustomSettings implements accc_IConfigurationProvider {
+public inherited sharing class accc_CustomSettings implements accc_IConfigurationProvider {
   /////////////////////////////////////////////////////////////////////////////////////////////
   //++++++++++++++++++++++++++++++++++ Data Members +++++++++++++++++++++++++++++++++++++++++++
   /////////////////////////////////////////////////////////////////////////////////////////////

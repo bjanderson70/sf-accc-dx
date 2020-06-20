@@ -34,7 +34,7 @@
  * @description Implementation of the log formatter.
  * @group Log Aspects
  */
-public virtual without sharing class accc_ApexLogFormatter implements accc_IDataFormat {
+public virtual inherited sharing class accc_ApexLogFormatter implements accc_IDataFormat {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //

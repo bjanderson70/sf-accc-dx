@@ -48,6 +48,9 @@ private class accc_SObjectBaseWriterTest {
         AcccApplicationLog__c acct = createALog(msg,false);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<AcccApplicationLog__c> {acct });
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
         writer.execute();
         Test.stopTest();
 
@@ -77,6 +80,9 @@ private class accc_SObjectBaseWriterTest {
         System.assertEquals(msg, returnedAccts[0].Message__c);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<AcccApplicationLog__c> {acct }, true);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
         writer.execute();
         Test.stopTest();
 
@@ -100,6 +106,9 @@ private class accc_SObjectBaseWriterTest {
         AcccApplicationLog__c acct = createALog(msg,false);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(null, true);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
         writer.execute();
         Test.stopTest();
 
@@ -143,6 +152,9 @@ private class accc_SObjectBaseWriterTest {
         AcccApplicationLog__c acct = createALog(msg,false);
         // act
         accc_SObjectBaseWriter writer = new accc_SObjectBaseWriter(new List<Sobject> {acct});
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
         // assert
         System.assertEquals(false, writer.hasID());
         writer.execute();

@@ -35,7 +35,7 @@
  *     It is assumed that all UI exceptions must be translated to a more secure text.
  * @group Exception Handling
  */
-global without sharing class accc_ApexExceptionPolicyStrategy implements accc_IApexExceptionPolicyStrategy {
+global inherited sharing class accc_ApexExceptionPolicyStrategy implements accc_IApexExceptionPolicyStrategy {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

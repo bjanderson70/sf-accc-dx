@@ -36,7 +36,7 @@
  *
  * @group Common Layer
  */
-public without sharing class accc_ApexPlatformEventDispatcher {
+public inherited sharing class accc_ApexPlatformEventDispatcher {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members

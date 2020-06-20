@@ -47,6 +47,8 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
     accc_ApexDMLOptions mOptions = null;
     @TestVisible
     static apexAccessFactory theFactory = new apexAccessFactory();
+    @TestVisible
+    static Boolean forTestingConditions = false;
     /**
      * Our exception
      */
@@ -115,10 +117,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         if ( theObjects == null ) {
             result= new accc_GenericDbResultHandler((List<Database.SaveResult>)null);
         } else {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.theDMLOptions.theExecutionMode);
-            provider.setDmlOptions(this.theDMLOptions);
-            List<SObject> results=provider.getAccessibleRecords(theObjects,System.AccessType.CREATABLE);
-            result= provider.insertDb(results);
+            result=  this.getProvider().insertDb(theObjects);
         }
         return result;
     }
@@ -136,11 +135,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         if ( theObjects == null ) {
             result= new accc_GenericDbResultHandler((List<Database.SaveResult>)null);
         } else {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.theDMLOptions.theExecutionMode);
-            provider.setDmlOptions(this.theDMLOptions);
-            List<SObject> results=provider.getAccessibleRecords(theObjects,System.AccessType.UPDATABLE);
-
-            result= provider.updateDb(results);
+            result=  this.getProvider().updateDb(theObjects);
         }
         return result;
     }// end of updateDb
@@ -157,10 +152,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         if ( theObjects == null ) {
             result= new accc_GenericDbResultHandler((List<Database.UpsertResult>)null);
         } else {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.theDMLOptions.theExecutionMode);
-            provider.setDmlOptions(this.theDMLOptions);
-            List<SObject> results=provider.getAccessibleRecords(theObjects,System.AccessType.UPSERTABLE);
-            result= provider.upsertDb(results);
+            result= this.getProvider().upsertDb(theObjects);
         }
         return result;
     }// end of upsertDb
@@ -177,10 +169,8 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         if ( theObjects == null ) {
             result= new accc_GenericDbResultHandler((List<Database.DeleteResult>)null);
         } else {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.theDMLOptions.theExecutionMode);
-            provider.setDmlOptions(this.theDMLOptions);
-            List<SObject> results=provider.getAccessibleRecords(theObjects);
-            result= provider.deleteDb(results);
+            accc_IApexCRUDProvider provider= this.getProvider();
+            result= provider.deleteDb(theObjects);
         }
         return result;
     }// end of deleteDb
@@ -196,9 +186,14 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         set { this.mOptions=value;}
     }// end of theDMLOptions
 
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    ///////////////////////////////////////////////////////////////////////////////////
     /**
      * getAccessibleRecords
-     * @description in user  or inherited mode we need to get the proper records
+     * @description in user  or inherited mode we need to get the proper records. This method CAN throw an Insufficient Exception
+     * as it performs a StripInAccessible for NON System Mode!
      * @param  theObjects theObjects
      * @param AccessType access type
      * @return acceptable records
@@ -208,8 +203,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         List<SObject> results=null;
         // valid data
         if ( theObjects != null ) {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.getDmlOptions().theExecutionMode);
-            results= provider.getAccessibleRecords(theObjects,aType);
+            results= this.getProvider().getAccessibleRecords(theObjects,aType);
         }
         return results;
     }// end of getAccessibleRecords
@@ -224,8 +218,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         List<SObject> results=null;
         // valid data
         if ( theObjects != null ) {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.getDmlOptions().theExecutionMode);
-            results= provider.getAccessibleRecords(theObjects);
+            results= this.getProvider().getAccessibleRecords(theObjects);
         }
         return results;
     }// end of getAccessibleRecords
@@ -241,9 +234,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         Boolean results=true;
         // valid data
         if ( theObjects != null ) {
-            accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.theDMLOptions.theExecutionMode);
-            provider.setDmlOptions(this.theDMLOptions);
-            results= provider.determineDMLAllowed(theObjects,dmlAction);
+            results= this.getProvider().determineDMLAllowed(theObjects,dmlAction);
         }
         return results;
 
@@ -251,8 +242,23 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
     ///////////////////////////////////////////////////////////////////////////////////
     // Private
     ///////////////////////////////////////////////////////////////////////////////////
+
     /**
+     * getProvider
+     * @description Get the CRUD Provider
+     * @return   return accc_IApexCRUDProvider
+     */
+    @TestVisible
+    private accc_IApexCRUDProvider getProvider() {
+        accc_IApexCRUDProvider provider=  accc_ApexCRUDProvider.theFactory.create(this.getDmlOptions().theExecutionMode);
+        provider.setDmlOptions(this.theDMLOptions);
+        return provider;
+    }// end of getProvider
+
+    /************************************************************************************
+     *
      * Our Internal Providers ( allowing one to swith execution modes)
+     *************************************************************************************
      */
 
     /**
@@ -311,7 +317,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
          */
         public virtual accc_ApexDMLOptions getDmlOptions() {
             return this.theDMLOptions;
-        }
+        }// end of getDmlOptions
         /**
          * setDmlOptions
          * @description set the DML options, returning the previous setting
@@ -324,7 +330,7 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
                 this.theDMLOptions=options;
             }
             return last;
-        }
+        }// end of setDmlOptions
 
         /**
          * insertDb
@@ -335,19 +341,23 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
          */
         public virtual accc_GenericDbResultHandler insertDb(List<SObject> theObjects){
             List<Database.SaveResult> results=null;
-            accc_ApexDMLOptions options = this.getDmlOptions();
 
             try {
-                if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.SYNC) {
-                    results=Database.insert(theObjects,options.getDmlOptions());
-                } else if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
+                accc_ApexDMLOptions options = this.getDmlOptions();
+                // can we insert
+                List<SObject> sanitizedRecords=this.getAccessibleRecords(theObjects,System.AccessType.CREATABLE);
+                if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
                     // this is awful; but not going to mock as one still does not execute the insert
-                    if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                    if ( accc_ApexConstants.UNIT_TEST_RUNNING
+                         && accc_ApexCRUDProvider.forTestingConditions == true) {
                         results=accc_ApexCRUDProvider.getTestResultsForInsertUpdateImmediate();
                     } else {
-                        results=Database.insertImmediate(theObjects);
+                        results=Database.insertImmediate(sanitizedRecords);
                     }
+                } else {
+                    results=Database.insert(sanitizedRecords,options.getDmlOptions());
                 }
+
             } catch (Exception excp) {
                 results = new  List<Database.SaveResult> {
                     // create SaveResult exception
@@ -369,18 +379,23 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
          */
         public virtual accc_GenericDbResultHandler updateDb(List<SObject> theObjects){
             List<Database.SaveResult> results=null;
-            accc_ApexDMLOptions options = this.getDmlOptions();
+
             try {
-                if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.SYNC) {
-                    results=Database.update(theObjects,options.getDmlOptions());
-                } else if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
+                accc_ApexDMLOptions options = this.getDmlOptions();
+                // can we update
+                List<SObject> sanitizedRecords=this.getAccessibleRecords(theObjects,System.AccessType.UPDATABLE);
+                if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
                     // this is awful; but not going to mock as one still does not execute the update
-                    if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                    if ( accc_ApexConstants.UNIT_TEST_RUNNING
+                         && accc_ApexCRUDProvider.forTestingConditions == true) {
                         results=accc_ApexCRUDProvider.getTestResultsForInsertUpdateImmediate();
                     } else {
                         results=Database.updateImmediate(theObjects);
                     }
+                } else {
+                    results=Database.update(theObjects,options.getDmlOptions());
                 }
+
             } catch (Exception excp) {
                 results = new  List<Database.SaveResult> {
                     // create SaveResult exception
@@ -408,10 +423,12 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
             // SObjects not allowed [vote] https ://success.salesforce.com/ideaView?id=08730000000aNhVAAU
             accc_ApexDMLOptions options = this.getDmlOptions();
             try {
-                //  String name=accc_ApexUtilities.getSobjectName(theObjects);
-                List<SObject> specificSObject = accc_ApexSObjectTypesUtils.createSObjectAndCopy(theObjects); //( List<SObject>)Type.ForName('List<' + name + '>').newInstance();
+                // can we upsert
+                List<SObject> sanitizedRecords=this.getAccessibleRecords(theObjects,System.AccessType.UPSERTABLE);
+                // Note -- no check for Sync/Async/Immediate ; only sync
                 // have to copy, cannot just assign (by reference)
-                //specificSObject.addAll(theObjects);
+                List<SObject> specificSObject = accc_ApexSObjectTypesUtils.createSObjectAndCopy(sanitizedRecords);
+                // upsert
                 results=Database.upsert(specificSObject,options.getDmlOptions().OptAllOrNone);
 
             } catch (Exception excp) {
@@ -439,21 +456,26 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
          */
         public virtual accc_GenericDbResultHandler deleteDb(List<SObject> theObjects){
             List<Database.DeleteResult> results=null;
-            accc_ApexDMLOptions options = this.getDmlOptions();
+
             try {
+                accc_ApexDMLOptions options = this.getDmlOptions();
                 // could be null , check
                 if ( theObjects != null ) {
-                    if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.SYNC) {
-                        results=Database.delete(theObjects,options.getDmlOptions().OptAllOrNone);
-                    } else if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
+                    // see if we can delete records ( checking the record if not system mode)
+                    List<SObject> sanitizedRecords=this.getAccessibleRecords(theObjects);
+                    if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
                         // this is awful; but not going to mock as one still does not execute the delete
-                        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                        if ( accc_ApexConstants.UNIT_TEST_RUNNING
+                             && accc_ApexCRUDProvider.forTestingConditions == true ) {
                             results=accc_ApexCRUDProvider.getTestResultsForDeleteImmediate();
                         } else {
-                            results=Database.deleteImmediate(theObjects);
+                            results=Database.deleteImmediate(sanitizedRecords);
                         }
-                    } 
+                    } else {
+                        results=Database.delete(sanitizedRecords,options.getDmlOptions().OptAllOrNone);
+                    }
                 }
+
             } catch (Exception excp) {
                 results = new  List<Database.DeleteResult> {
                     // create DeleteResult exception
@@ -487,7 +509,8 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
                                                   System.AccessType aType){
             List<SObject> results = theObjects;
             accc_ApexDMLOptions options = this.getDmlOptions();
-            // if we are not in system mode, then strip out fields
+
+            // if we are not in system mode, then strip out fields (can throw an exception)
             if ( options.theExecutionMode != accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE) {
                 SObjectAccessDecision securityDecision = Security.stripInaccessible(
                     aType,
@@ -498,19 +521,28 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
             return results;
 
         }// end of getAccessibleRecords
-         /**
-          * getAccessibleRecords
-          * @description get accessible record based on mode for delete ONLY
-          * @param  theObjects the Object collection
-          * @return accesible records based on access and mode
-          */
+        /**
+         * getAccessibleRecords
+         * @description get accessible record based on mode for delete ONLY (can throw exception NoAccessException)
+         * @param  theObjects the Object collection
+         * @return accesible records based on access and mode
+         */
         public List<SObject> getAccessibleRecords(List<SObject> theObjects){
             List<SObject> results = theObjects;
             accc_ApexDMLOptions options = this.getDmlOptions();
             // if we are not in system mode, then check if deleteable
             if ( options.theExecutionMode != accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE) {
-                // we don't handled MIXED MODE
-                Boolean canDelete = theObjects[0].getSObjectType().getDescribe().isDeletable();
+                integer size = theObjects.size();
+                Boolean canDelete = true;
+                // look at the records and determine deletion
+                for ( integer inx=0; inx< size; inx++) {
+                    // if we cannot delete, set flag and break out
+                    if ( !theObjects[inx].getSObjectType().getDescribe().isDeletable() ) {
+                        canDelete = false;
+                        break;
+                    }
+                }
+                // if cannot delete, throw an exception
                 if ( canDelete == false ) {
                     throw new System.NoAccessException();
                 }
@@ -541,7 +573,8 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
             DescribeSObjectResult theDescribeObject =null;
             // determine additional actions
             if ( dmlAction == accc_ApexDMLOptions.DMLAction.ALL) {
-                canRead = canInsert = canDelete = canUpdate = true;
+                // no need to check read as the others imply it
+                canInsert = canDelete = canUpdate = true;
             } else if ( canUpsert ) {
                 canInsert =  canUpdate  = true;
             }
@@ -573,7 +606,8 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
                 index++;
             }
             return result;
-        } // end of determineDMLAllowed
+        }// end of determineDMLAllowed
+
     }// end of accc_ApexCRUDBaseProvider
 
     /****************************************************************************************
@@ -612,16 +646,16 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
             }
 
             return access;
-        }     // end of create
-              /*
-               * findProviderByMode
-               * @description find provider by mode
-               */
+        }// end of create
+        /*
+         * findProviderByMode
+         * @description find provider by mode
+         */
         public accc_IApexCRUDProvider findProviderByMode(accc_ApexDMLOptions.ExecutionMode smode) {
             return this.mKnowns.get(smode);
-        }     // end of findProviderByMode;
+        }// end of findProviderByMode;
 
-    }     // end of AccessControlFactory
+    }// end of AccessControlFactory
 
     /**
      * @description used for testing  results (immediate)
@@ -642,12 +676,12 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         }
         return results;
 
-    } // end of getTestResultsForDeleteImmediate
-      /**
-       * @description used for testing  results (immediate)
-       *
-       * @return   List<Database.DeleteResult> Db Results
-       */
+    }// end of getTestResultsForDeleteImmediate
+    /**
+     * @description used for testing  results (immediate)
+     *
+     * @return   List<Database.DeleteResult> Db Results
+     */
     @TestVisible
     private static List<Database.SaveResult> getTestResultsForInsertUpdateImmediate() {
         List<Database.SaveResult> results = null;
@@ -662,6 +696,6 @@ global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
         }
         return results;
 
-    } // end of getTestResultsForInsertUpdateImmediate
+    }// end of getTestResultsForInsertUpdateImmediate
 
 }// end of accc_ApexCRUDProvider

@@ -36,7 +36,7 @@
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
  * @group Common Trigger Layer
  **/
-public virtual with sharing class accc_VirtualTriggerHandlerChain implements accc_IHandlerChain {
+public virtual inherited sharing class accc_VirtualTriggerHandlerChain implements accc_IHandlerChain {
 
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Member

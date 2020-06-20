@@ -34,7 +34,7 @@
  * @description attributes for the pub/sub of platform events
  * @group Common Layer
  */
-public without sharing  class accc_PlatformEventAttrs {
+public inherited sharing  class accc_PlatformEventAttrs {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members

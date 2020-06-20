@@ -34,7 +34,7 @@
  * @description define the default implementation of the core platform event event handlers container
  * @group Common  Layer
  */
-public without sharing class accc_DefaultProcessEventHandlers implements accc_IProcessEventHandlers {
+public inherited sharing class accc_DefaultProcessEventHandlers implements accc_IProcessEventHandlers {
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Data Members

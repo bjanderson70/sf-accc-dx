@@ -37,7 +37,7 @@
  *
  * @group Common Layer
  **/
-public virtual without sharing class accc_ApexPerformanceMetrics {
+public virtual inherited sharing class accc_ApexPerformanceMetrics {
 
     // our default user message
     public static final String PERF_MESSAGE = 'PerformanceMetrics';

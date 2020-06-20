@@ -36,8 +36,8 @@
  *
  * @group Test Layer
  **/
-
-public with sharing class accc_TestTriggerHandlerForAccount extends accc_TriggerHandlerBase {
+@isTest
+public class accc_TestTriggerHandlerForAccount extends accc_TriggerHandlerBase {
   
     //////////////////////////////////////////////////////////////////
     //

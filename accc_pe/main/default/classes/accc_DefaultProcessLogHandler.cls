@@ -35,7 +35,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing class accc_DefaultProcessLogHandler  extends accc_DefaultProcessHandler {
+public virtual inherited sharing class accc_DefaultProcessLogHandler  extends accc_DefaultProcessHandler {
 
 
 	////////////////////////////////////////////////////////////////////////

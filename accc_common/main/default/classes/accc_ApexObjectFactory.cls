@@ -35,7 +35,7 @@
  * all our Known (as well as not known classes/types). The
  * @group Common Layer
  */
-public virtual without sharing class accc_ApexObjectFactory implements accc_IApexFactory {
+public virtual inherited sharing class accc_ApexObjectFactory implements accc_IApexFactory {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

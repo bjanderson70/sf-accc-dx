@@ -36,8 +36,8 @@
  * NOTE: JUST USED FOR TESTING
  *  @group Test Layer
  **/
-
-public with sharing class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
+@isTest
+public class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
 	
 	public static final String OBIC = accc_TriggerHandlerBase.OBIC + '- accc_TestTriggerHandlerForContact';
 	public static final String OAUC = accc_TriggerHandlerBase.OAUC + '- accc_TestTriggerHandlerForContact';

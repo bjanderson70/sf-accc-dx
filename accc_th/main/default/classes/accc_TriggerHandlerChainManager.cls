@@ -115,7 +115,7 @@
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
  * @group Common Trigger Layer
  **/
-public with sharing class accc_TriggerHandlerChainManager {
+public inherited sharing class accc_TriggerHandlerChainManager {
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Members
 	////////////////////////////////////////////////////////////////////////////////

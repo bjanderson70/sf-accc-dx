@@ -41,7 +41,7 @@
  *
  * @group Log Aspects
  */
-global virtual without sharing class accc_ApexLogger implements accc_ILogger {
+global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

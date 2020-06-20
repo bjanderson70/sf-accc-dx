@@ -37,7 +37,7 @@
  *
  * @group Test Layer
  */
-public without sharing class accc_ForTestingOnlyPEEventHandler extends accc_EventBase {
+public inherited sharing class accc_ForTestingOnlyPEEventHandler extends accc_EventBase {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members
@@ -81,7 +81,7 @@ public without sharing class accc_ForTestingOnlyPEEventHandler extends accc_Even
         //
         // A sample Platform Event Consumer (and now you would TEST ONLY one METHOD -- 'consumePlatformEvent'):
         //
-        // public with sharing class mySamplePEConsumer extends accc_DefaultPEConsumer {
+        // public inherited sharing class mySamplePEConsumer extends accc_DefaultPEConsumer {
         //
         //
         //   @TestVisible

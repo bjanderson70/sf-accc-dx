@@ -34,7 +34,7 @@
  * @description handle database results. Salesforce needs to refactor this result class to make more polymorphic!
  * @group Common Layer
  */
-global without sharing class accc_GenericDbResultHandler {
+global inherited sharing class accc_GenericDbResultHandler {
 
 
     ////////////////////////////////////////////////////////////////////////

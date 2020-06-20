@@ -49,7 +49,7 @@
 
  * @group Common Layer
  **/
-public virtual without sharing class accc_TriggerMediator {
+public virtual inherited sharing class accc_TriggerMediator {
     //==============================================================
     // Data members
     //==============================================================
@@ -330,36 +330,6 @@ public virtual without sharing class accc_TriggerMediator {
                                                continueIfException,
                                                performanceMetrics,
                                                exceptionMessage);
-            /*
-               // if the trigger handler was valid (of type accc_ITriggerHandler ) continue
-               if ( handler != null ) {
-                // pass previous resources from trigger onto the next
-                handler.handlerResources(resources);
-                // we have a handler, then true, this resets
-                // the state as the user sets 'continueIfException' to true
-                successful = true;
-                // call the handler in the chain, return the exception, if any
-                hasException = this.callHandler(handler, state, existingRecords, performanceMetrics);
-                // set our state
-                successful= hasException == null;
-                // set internal handler's  resource state ( handlers in the following chain can determine state better, if continuing)
-                // as the handler that follows (should we continue) can determine corrective measures
-                handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,
-                       hasException);
-                // do we continue after an exception
-                if ( !successful && !continueIfException ) {
-                    return successful;
-                }
-
-               } else {
-                // we have no handler
-                successful = false;
-                // our handler was bad ( probably inherited from the wrong type or
-                // incorrectly entered by name ). This is why we TEST
-                accc_ApexUtilities.log(excpMsg + '-' + chain);
-                // we DO NOT break at this point (as someone may have put in a bad handler name)
-               }// end if handler
-             */
             // get the next trigger handler in the chain
             chain = chain.getNext();
 

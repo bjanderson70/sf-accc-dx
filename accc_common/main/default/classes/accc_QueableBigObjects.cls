@@ -33,7 +33,7 @@
  * @description Queuable for Big Objects
  * @group Common Layer
  */
-public virtual without sharing class accc_QueableBigObjects extends accc_QueableSObjects {
+public virtual inherited sharing class accc_QueableBigObjects extends accc_QueableSObjects {
 
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members

@@ -39,7 +39,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing class accc_DefaultPEConsumer extends accc_DefaultPlatformEvent {
+public virtual inherited sharing class accc_DefaultPEConsumer extends accc_DefaultPlatformEvent {
 
     ////////////////////////////////////////////////////////////////////////
     // Data Members

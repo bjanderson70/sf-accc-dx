@@ -34,9 +34,13 @@
  * @description  Translate messages from one type to another
  * @group Common Layer
  */
-public without sharing class accc_MessageTransformation {
+public inherited sharing class accc_MessageTransformation {
+
 
     public static final String ACCCAPPLICATION_LOG_NAME = 'AcccApplicationLog__c';
+    // force an empty json test ARGH!
+    @TestVisible
+    static Boolean FORCE_EMPTY_TEST = false;
     /**
      * @description translate a log record into an AcccApplicationLog__c
      *
@@ -143,8 +147,14 @@ public without sharing class accc_MessageTransformation {
 
         if ( datum != null ) {
             try {
+
                 // json parse
                 result = accc_StringUtilities.toJsonString(datum);
+                // force empty string
+                if ( accc_ApexConstants.UNIT_TEST_RUNNING && accc_MessageTransformation.FORCE_EMPTY_TEST ) {
+                    result =accc_ApexConstants.EMPTY_JSON_s;
+                }
+
                 // if unable to use json, use secondary
                 if ( result ==accc_ApexConstants.EMPTY_JSON_s ) {
                     String placeholder = 'User Role Id: {0}\n,Debug Level: {1},\nMessage: {2},\nException: {3},\nIntegration Payload: {4},\nProfile Id: {5},\nReference Id: {6},\nReference Info: {7},\nSource: {8},\nSource Function: {9},\nStack Trace: {10}\nStatistics: {11}\nCreated Date: {12}\nLast Modified Date: {13}\n';

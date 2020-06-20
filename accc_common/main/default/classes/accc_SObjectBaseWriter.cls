@@ -34,7 +34,7 @@
  *
  * @group Common Layer
  **/
-public virtual without sharing class accc_SObjectBaseWriter implements Database.RaisesPlatformEvents  {
+public virtual inherited sharing class accc_SObjectBaseWriter implements Database.RaisesPlatformEvents  {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Data Members
@@ -55,6 +55,7 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
     private Exception m_exception = null;
     @TestVisible
     static Boolean m_testToCaseException = false;
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -80,13 +81,20 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
     public accc_SObjectBaseWriter(List<SObject> sentries, boolean remove) {
         this.entries = sentries;
         this.actions = remove;
+        /*
+         * When we get the provider, we do not set the mode (Inherited Mode and Sync)
+         * as this is the default behavior. The caller can adjust
+         * if needed. (Do not cache as this would conflict with user modifications)
+         */
+        this.theDMLProvider =   accc_ApexUtilities.dmlProvider();
+
     }// end ctor
 
     /////////////////////////////////////////////////////////////////////////
     // Public Properties
     /////////////////////////////////////////////////////////////////////////
     /**
-     * Getter/sSetter for the exception, if any
+     * Getter/Setter for the exception, if any
      */
     @TestVisible
     public Exception theException {
@@ -94,8 +102,18 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
         protected set { this.m_exception = value;}
     } // end of theException
 
+
     /**
-     * Getter/sSetter of SObject collection
+     * Getter/Setter for the crud provider, if any
+     */
+    @TestVisible
+    public accc_IApexCRUDProvider theDMLProvider {
+        get;
+        set;
+    } // end of theDMLProvider
+
+    /**
+     * Getter/Setter of SObject collection
      */
     @TestVisible
     public List<SObject> entries {
@@ -150,12 +168,17 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
                                                         boolean remove,
                                                         Boolean isThisABigObject) {
         accc_SObjectBaseWriter writer = null;
+        /*
+         * The below is not right in design; child calling a parent!!!
+         * Needs to be FIXED ...
+         */
         // have to treat operations differently ... REFACTOR in order to avoid the 'if'
         if ( isThisABigObject ) {
             writer = new accc_QueableBigObjects(sentries, remove);
         } else {
             writer = new accc_QueableSObjects(sentries, remove);
         }
+
         return writer;
     } // end of queuableWriter
 
@@ -185,7 +208,7 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
             // Exception occurred, output the exception message
             accc_ApexUtilities.log(excp);
         }
-        //return this.theException == null;
+
     } // end of process
     /**
      * @description perform the db op
@@ -212,20 +235,21 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
     @TestVisible
     protected virtual accc_GenericDbResultHandler dataIOSObject(boolean action) {
         accc_GenericDbResultHandler result = null;
+
         if ( !this.isBigObject ) {
+
             // ++++ Inserting/Updating
             if ( action == false ) {
                 // only look at the first one
                 if ( false == this.hasId() ) {
-                    result=new accc_GenericDbResultHandler (Database.insert(this.entries));
+                   result = this.theDMLProvider.insertDb(this.entries);
                 } else {
                     // We cannot use upsert for generic!!!
-                    result = new accc_GenericDbResultHandler( Database.update(this.entries));
+                    result = this.theDMLProvider.updateDb(this.entries);
                 }
             } else {
                 // Deleting
-                // Use appropriate function for BO
-                result = new accc_GenericDbResultHandler( Database.delete(this.entries));
+                result =  this.theDMLProvider.deleteDb(this.entries);
             }
         }
         return result;
@@ -239,19 +263,23 @@ public virtual without sharing class accc_SObjectBaseWriter implements Database.
     @TestVisible
     protected virtual accc_GenericDbResultHandler dataIOBigObject(boolean action) {
         accc_GenericDbResultHandler result = null;
+
+
         // ensure we are dealing with Big Object
         if ( this.isBigObject ) {
+            // ensure immediate DML mode ( for Big Object)
+            this.theDMLProvider.getDmlOptions().theDMLMode= accc_ApexDMLOptions.DMLMode.IMMEDIATE;
+
             // are we testing
             if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 result = getTestResultsForBigObject();
             } else {
                 // ++++ Inserting
                 if ( action == false ) {
-                    result = new accc_GenericDbResultHandler( Database.insertImmediate(this.entries));
-                    // Deleting
+                    result = this.theDMLProvider.insertDb(this.entries);
                 } else {
-                    // Use appropriate function for BO
-                    result = new accc_GenericDbResultHandler( Database.deleteImmediate(this.entries));
+                    // Deleting
+                    result = this.theDMLProvider.deleteDb(this.entries);
                 }
             }
         }

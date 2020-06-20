@@ -169,9 +169,15 @@ private class accc_ApexUtilitiesTest {
     } // end of testgetTypeFromSObject
 
     @isTest static void dmlProviderTest(){
-        accc_IApexCRUDProvider provider= accc_ApexUtilities.dmlProvider();
+        accc_IApexCRUDProvider provider= accc_ApexUtilities.dmlProvider(true),
+                               provider2= accc_ApexUtilities.dmlProvider(false);
+
         // assert
         System.assertEquals(true, provider != null);
+        System.assertEquals(true, provider2 != null);
+        System.assertEquals(accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE,  provider.getDmlOptions().theExecutionMode);
+        System.assertEquals(accc_ApexDMLOptions.ExecutionMode.INHERITED_MODE ,  provider2.getDmlOptions().theExecutionMode);
+
     }// end of dmlProviderTest
 
 

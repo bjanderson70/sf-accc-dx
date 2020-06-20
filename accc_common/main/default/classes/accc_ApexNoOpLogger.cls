@@ -37,7 +37,7 @@
  * loggers can be changed via the custom metadata type 'Apex Code Configurations'.
  * @group Log Aspects
  */
-global without sharing class accc_ApexNoOpLogger extends accc_ApexLogger {
+global inherited sharing class accc_ApexNoOpLogger extends accc_ApexLogger {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// CTORS

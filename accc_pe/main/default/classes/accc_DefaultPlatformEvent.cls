@@ -47,7 +47,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing class accc_DefaultPlatformEvent implements accc_IEventHandler {
+public virtual inherited sharing class accc_DefaultPlatformEvent implements accc_IEventHandler {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members

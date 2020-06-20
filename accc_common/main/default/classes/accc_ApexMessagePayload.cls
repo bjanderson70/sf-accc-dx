@@ -33,7 +33,7 @@
  * @description Used for sending/receiving payload of data
  * @group Common Layer
  */
-public without sharing class accc_ApexMessagePayload {
+public inherited sharing class accc_ApexMessagePayload {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
     // CTORS

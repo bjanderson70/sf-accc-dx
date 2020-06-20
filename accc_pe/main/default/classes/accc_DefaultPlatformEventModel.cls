@@ -34,7 +34,7 @@
  * @description define the concrete implementation of the core platform event model
  * @group Common Layer
  */
-public virtual without sharing class accc_DefaultPlatformEventModel implements accc_IPlatformEventModel {
+public virtual inherited sharing class accc_DefaultPlatformEventModel implements accc_IPlatformEventModel {
 
     ////////////////////////////////////////////////////////////////////////
     // Data Members

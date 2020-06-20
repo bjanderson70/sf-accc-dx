@@ -36,7 +36,7 @@
  *
  * @group Miscellaneous
  */
-public without sharing class accc_ApexUtilities {
+public inherited sharing class accc_ApexUtilities {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members
@@ -89,9 +89,6 @@ public without sharing class accc_ApexUtilities {
     // holds valid event names
     @TestVisible
     private static Set<String> m_eventNames = new  Set<String>();
-    // holds the crud provider
-    @TestVisible
-    private static accc_IApexCRUDProvider m_dmlCRUDProvider=null;
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
@@ -691,18 +688,33 @@ public without sharing class accc_ApexUtilities {
         }
     } // end of logForTesting
     /**
-     * dmlProvider 
+     * dmlProvider
      * @description the DML Provider
      * @return   accc_IApexCRUDProvider
      */
     public static accc_IApexCRUDProvider dmlProvider() {
-        // if no crud provider, get it
-        if ( accc_ApexUtilities.m_dmlCRUDProvider == null ) {
-            accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
-            accc_ApexUtilities.m_dmlCRUDProvider= runtime.dmlProvider();
-        }
-        return accc_ApexUtilities.m_dmlCRUDProvider;
+        // do not cache the dml-provider, as it may change between consumers
+        // Use Defaulr Mode (Inherited)
+        return accc_ApexUtilities.dmlProvider(false);
+
     }// end of dmlProvider
+     /**
+      * dmlProvider
+      * @description the DML Provider
+      * @param isSystemMode system mode; or use default to inherited mode
+      * @return   accc_IApexCRUDProvider
+      */
+    public static accc_IApexCRUDProvider dmlProvider(boolean isSystemMode) {
+        // do not cache the dml-provider, as it may change between consumers
+        accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+        accc_IApexCRUDProvider provider = runtime.dmlProvider();
+        // use system mode
+        if ( isSystemMode ) {
+            provider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+        }
+        return provider;
+
+    } // end of dmlProvider
     /**
      *  @description convert string of numbers to telephone #
      * [deprecating to accc_StringUtilities]

@@ -67,7 +67,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing  class accc_CrossCuttingConfigMgr {
+public virtual inherited sharing  class accc_CrossCuttingConfigMgr {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //

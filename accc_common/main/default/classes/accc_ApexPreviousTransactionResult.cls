@@ -19,7 +19,7 @@
  * @description Holder of the last transaction operations
  * @group Common Layer
  */
-public without sharing class accc_ApexPreviousTransactionResult implements accc_IPreviousTransactionResult {
+public inherited sharing class accc_ApexPreviousTransactionResult implements accc_IPreviousTransactionResult {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
     //Private Methods
@@ -57,7 +57,8 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @description et last database result
+     * databaseResult
+     * @description get last database result
      * @return  SaveResult
      */
     public List<Database.SaveResult> databaseResult() {
@@ -65,6 +66,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
     }
 
     /**
+     * databaseResult
      * @description set last database result
      *
      * @param result SaveResult
@@ -73,6 +75,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
         this.lastResult = result;
     }
     /**
+     * processErrors
      * @description process the errors in the result set
      *
      * @return boolean, true if errors were processed
@@ -83,14 +86,14 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
     } // end of processErrors
 
     /**
-      * @description process the errors from the saved results. This functionality usually means
-      * wrting the information to the active logger ( as found in the factory). Bec/ we may
-      * be writing to a loger (via the logger), indicated to the method to redirect output to SF debug log
-      *
-      * @param boolean, true if writing to the SF debug log
-      *
-      * @return boolean, true if errors were processed
-      */
+     * processErrors
+     * @description process the errors from the saved results. This functionality usually means
+     * writing the information to the active logger ( as found in the factory). Bec/ we may
+     * be writing to a loger (via the logger), indicated to the method to redirect output to SF debug log
+     *
+     * @param boolean, true if writing to the SF debug log
+     * @return boolean, true if errors were processed
+     */
     public boolean processErrors(boolean toSFDebugLogger) {
         boolean result = false;
         if ( this.lastResult != null ) {
@@ -106,7 +109,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
                     if ( toSFDebugLogger ) {
                         String current = saved.getErrors().get(0).getMessage();
                         if ( last == null ||
-                                (current != null && !current.equals(last))) {
+                             (current != null && !current.equals(last))) {
                             last = current;
                             excps.add(new accc_ApexApplicationException('Database.SaveResults :' + current));
                         }
@@ -119,9 +122,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
 
             // log errors, if any
             if ( excps.size() > 0 ) {
-                accc_ILogger logger = accc_ApexEnvironment.getRuntimeEnvironment().logger() ;
-
-                logger.write(excps);
+                accc_ApexEnvironment.getRuntimeEnvironment().logger().write(excps);
             }
         }
         return result;

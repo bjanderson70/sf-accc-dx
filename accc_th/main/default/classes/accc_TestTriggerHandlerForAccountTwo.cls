@@ -36,8 +36,8 @@
  *
  *@group Test Layer
  **/
-
-public with sharing class accc_TestTriggerHandlerForAccountTwo extends accc_TriggerHandlerBase {
+@isTest
+public class accc_TestTriggerHandlerForAccountTwo extends accc_TriggerHandlerBase {
 	public static final String OBDC = '++++++++++++++ OBDC - accc_TestTriggerHandlerForAccountTwo';
 	
 	

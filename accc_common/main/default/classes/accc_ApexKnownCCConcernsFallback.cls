@@ -42,7 +42,7 @@
  *
  * @group Fallback Resources
  */
-public without sharing class accc_ApexKnownCCConcernsFallback extends accc_ApexBaseFallback {
+public inherited sharing class accc_ApexKnownCCConcernsFallback extends accc_ApexBaseFallback {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

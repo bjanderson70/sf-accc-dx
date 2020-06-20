@@ -35,7 +35,7 @@
  *     This class is a convience class as these values can be extracted from the factory, if so loaded.
  * @group Common Layer
  */
-public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements accc_IApexRunEnvironment {
+public virtual inherited sharing class accc_ApexBaseRuntimeEnvironment implements accc_IApexRunEnvironment {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members
@@ -205,14 +205,14 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
        *
        */
     public virtual accc_IApexCRUDProvider dmlProvider(){
-        accc_IApexCRUDProvider result = (accc_IApexCRUDProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.DMLProvider);
-        if ( result == null ) {
-            result   = (accc_IApexCRUDProvider)  this.objectFactory().create(accc_ApexConstants.DMLProvider);
-            accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.DMLProvider,
-                                                            result);
-        }
+        // accc_IApexCRUDProvider result = (accc_IApexCRUDProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.DMLProvider);
+        // if ( result == null ) {
+        //     result   = (accc_IApexCRUDProvider)  this.objectFactory().create(accc_ApexConstants.DMLProvider);
+        //     accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.DMLProvider,
+        //                                                     result);
+        // }
 
-        return result;
+        return (accc_IApexCRUDProvider)  this.objectFactory().create(accc_ApexConstants.DMLProvider);
     }// end of dmlProvider
 
     //////////////////////////////////////////////////////////////////////

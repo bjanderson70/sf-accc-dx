@@ -33,7 +33,7 @@
  * @description Manager to create class instances. Lazy create
  * @group Common Layer
  */
-public virtual without sharing class accc_ApexClassInstanceMgr implements accc_IApexObjectGetter {
+public virtual inherited sharing class accc_ApexClassInstanceMgr implements accc_IApexObjectGetter {
     /*---------------------------------------------------------------------------------------
     * PUBLIC PROPERTIES
     *---------------------------------------------------------------------------------------

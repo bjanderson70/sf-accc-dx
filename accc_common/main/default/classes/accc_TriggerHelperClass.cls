@@ -33,7 +33,7 @@
  * @description Encapsulates all behaviour logic relating to the Trigger invocation
  * @group Common Layer
  */
-public without sharing class accc_TriggerHelperClass {
+public inherited sharing class accc_TriggerHelperClass {
     // Trigger states
     public enum TriggerState {
         BeforeInsert,

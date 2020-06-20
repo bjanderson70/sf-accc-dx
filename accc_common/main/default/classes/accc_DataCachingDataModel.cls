@@ -36,7 +36,7 @@
  * change ALL dependencies. [DAO]
  * @group Common Layer
  */
-public without sharing class accc_DataCachingDataModel extends accc_BaseMdtDataModel {
+public inherited sharing class accc_DataCachingDataModel extends accc_BaseMdtDataModel {
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//

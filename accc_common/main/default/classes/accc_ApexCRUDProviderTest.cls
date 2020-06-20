@@ -42,9 +42,20 @@
 private class accc_ApexCRUDProviderTest {
     // default values in object
     static final Set<String> DEFAULT_SETTINGS = new Set<String> {
-        'Debug','Info'
+        'Debug',
+        'Info'
     };
+    static final String WARNING = 'Warning';
+    static final String ERROR = 'Error';
 
+    @isTest
+    static void getProviderTest() {
+        // assign /act
+        accc_ApexCRUDProvider provider = new accc_ApexCRUDProvider();
+        //assert
+        system.assertNotEquals (null, provider.getProvider());
+
+    }
     @isTest
     static void ctorTest() {
         // assign /act
@@ -65,7 +76,6 @@ private class accc_ApexCRUDProviderTest {
         system.assertEquals(true, options.getDmlOptions().OptAllOrNone);
         system.assertEquals(accc_ApexDMLOptions.DMLMode.SYNC, options.theDMLMode);
         system.assertEquals(accc_ApexDMLOptions.ExecutionMode.USER_MODE, options.theExecutionMode);
-
     }
     @isTest
     static void ctorWithDMLOptionTest() {
@@ -84,7 +94,6 @@ private class accc_ApexCRUDProviderTest {
         system.assertEquals(true, options.getDmlOptions().allowFieldTruncation);
         system.assertEquals(accc_ApexDMLOptions.DMLMode.SYNC, options.theDMLMode);
         system.assertEquals(accc_ApexDMLOptions.ExecutionMode.INHERITED_MODE, options.theExecutionMode);
-
 
     }
     @isTest
@@ -153,7 +162,7 @@ private class accc_ApexCRUDProviderTest {
             insert logs;
         }
         // allowed to create
-        User ruser = setTestUser(false,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
         List<AcccApplicationLog__c> result=null;
         System.runAs(ruser) {
             Boolean noAccess = false;
@@ -191,7 +200,7 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void determineDMLAllowedTest() {
         // allowed to create, edit
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = createTestLogs();
             final integer size = logs.size();
@@ -233,7 +242,7 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void determineDMLAllowedWithNoAccessTest() {
         // not allowed to create, edit, create
-        User ruser = setTestUser(false,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = createTestLogs();
             final integer size = logs.size();
@@ -306,16 +315,17 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void insertImmediateDataWithCreateUserTest() {
         // allowed to create
-        User ruser = setTestUser(true,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,false,false);
         System.runAs(ruser) {
             final List<accc_Org_Events__b> logs = accc_ApexCRUDProviderTest.createBigObjectTestLogs();
             final integer size = logs.size();
             accc_ApexDMLOptions options = new accc_ApexDMLOptions();
             options.theDMLMode= accc_ApexDMLOptions.DMLMode.IMMEDIATE;
             options.theExecutionMode= accc_ApexDMLOptions.ExecutionMode.USER_MODE;
-            // this test user mode (with sharing)
+            // this test user mode (inherited sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(options);
-
+            // cannot do immediate calls in tests (if there is no permissions, an error would occur)
+            accc_ApexCRUDProvider.forTestingConditions = true;
             Test.startTest();
             // act
             accc_GenericDbResultHandler result=provider.insertDb(logs);
@@ -331,11 +341,11 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void insertDataWithCreateUserTest() {
         // allowed to create, update
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
             final integer size = logs.size();
-            // this test user mode (with sharing)
+            // this test user mode (inherited sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(accc_ApexDMLOptions.ExecutionMode.USER_MODE);
 
             Test.startTest();
@@ -357,26 +367,23 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void insertDataWithNoCreateUserTest() {
         // not allowed to create, update
-        User ruser = setTestUser(false,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
         Boolean hasException=false;
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
             final integer size = logs.size();
-            // this test user mode (with sharing)
+            // this test user mode (inherited sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(accc_ApexDMLOptions.ExecutionMode.USER_MODE);
 
             Test.startTest();
             // act
-            try {
-                accc_GenericDbResultHandler result=provider.insertDb(logs);
-            } catch ( System.NoAccessException excp) {
-                hasException=true;
-            }
+            accc_GenericDbResultHandler result=provider.insertDb(logs);
+
             // get logs
             List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
             Test.stopTest();
             // assert insert
-            system.assertEquals(true, hasException);
+            system.assertEquals(true, result.hasErrors());
             system.assertEquals(0, foundLogs.size());
 
         }
@@ -387,7 +394,7 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void insertDataWithCreateInheritedTest() {
         // allowed to create
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
             final integer size = logs.size();
@@ -410,25 +417,21 @@ private class accc_ApexCRUDProviderTest {
 
     @isTest
     static void insertDataWithNoCreateInheritedTest() {
-        // not allowed to create
-        User ruser = setTestUser(false,true,false);
+        // not allowed to create/edit
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
         System.runAs(ruser) {
             final List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
-            Boolean hasException =false;
             // this test inherited mode
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider();
             Test.startTest();
             // act
-            try {
-                accc_GenericDbResultHandler result=provider.insertDb(logs);
-            } catch ( System.NoAccessException excp) {
-                hasException=true;
-            }
+            accc_GenericDbResultHandler result=provider.insertDb(logs);
+
             // get logs
             List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
             Test.stopTest();
             // assert insert
-            system.assertEquals(true, hasException);
+            system.assertEquals(true, result.hasErrors());
             system.assertEquals(0, foundLogs.size());
         }
     }
@@ -438,7 +441,7 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void updateImmediateDataWithCreateUserTest() {
         // allowed to create
-        User ruser = setTestUser(true,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,false,false);
         Boolean noAccess=false;
         System.runAs(ruser) {
             final List<accc_Org_Events__b> logs = accc_ApexCRUDProviderTest.createBigObjectTestLogs();
@@ -446,20 +449,18 @@ private class accc_ApexCRUDProviderTest {
             accc_ApexDMLOptions options = new accc_ApexDMLOptions();
             options.theDMLMode= accc_ApexDMLOptions.DMLMode.IMMEDIATE;
             options.theExecutionMode= accc_ApexDMLOptions.ExecutionMode.USER_MODE;
-            // this test user mode (with sharing)
+            // this test user mode (inherited sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(options);
+            // immediates cannot be made in test calls, so fake the update
+            accc_ApexCRUDProvider.forTestingConditions = true;
 
             Test.startTest();
             // act
-            try {
-                // user has no update access
-                accc_GenericDbResultHandler result=provider.updateDb(logs);
-            } catch (Exception excp ) {
-                noAccess=true;
-            }
+            accc_GenericDbResultHandler result=provider.updateDb(logs);
+
             Test.stopTest();
             // assert insert
-            system.assertEquals(true,noAccess);
+            system.assertEquals(true,result.hasErrors());
 
         }
     }
@@ -469,7 +470,7 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void updateImmediateDataWithCreateSystemTest() {
         // allowed to create
-        User ruser = setTestUser(true,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,false,false);
 
         System.runAs(ruser) {
             final List<accc_Org_Events__b> logs = accc_ApexCRUDProviderTest.createBigObjectTestLogs();
@@ -479,7 +480,8 @@ private class accc_ApexCRUDProviderTest {
             options.theExecutionMode= accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
             // this test user mode (without sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(options);
-
+            // immediates cannot be made in test calls, so fake the update
+            accc_ApexCRUDProvider.forTestingConditions = true;
             Test.startTest();
             // act
             // system has  update access
@@ -497,34 +499,36 @@ private class accc_ApexCRUDProviderTest {
     static void updateDataWithCreateInheritedTest() {
         List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
 
-        // insert our records to updated
+        //  records to be updated
         System.runAs ( new User(Id = UserInfo.getUserId()) ) {
             insert logs;
         }
         // user has edit mode
-        User ruser = setTestUser(false,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,true,false);
 
         System.runAs(ruser) {
             final Set<String> expectedStrings = new Set<String> {
-                'Error','Warn'
+                ERROR,WARNING
             };
             final integer size = logs.size();
             Test.startTest();
             // this test inherited mode
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider();
-            logs = [select Id,DebugLevel__c from AcccApplicationLog__c];
-            logs[0].DebugLevel__c ='Error';
-            logs[1].DebugLevel__c ='Warn';
+
+            logs[0].DebugLevel__c =ERROR;
+            logs[1].DebugLevel__c =WARNING;
             // act
             accc_GenericDbResultHandler result=provider.updateDb(logs);
             // ensure logs present
-            List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
+            List<AcccApplicationLog__c> foundLogs = [select Id, DebugLevel__c from AcccApplicationLog__c];
             Test.stopTest();
-            // assert insert
+            // assert inseupdatert
             system.assertEquals(false, result.hasErrors());
             system.assertEquals(size, foundLogs.size());
+            // the data is written ( assuming the permission set was properly installed)
+            // the FLS (no permission to DebugLevel__c) should be stripped out
             for (AcccApplicationLog__c item: foundLogs ) {
-                system.assertEquals(true, expectedStrings.contains(item.DebugLevel__c));
+                system.assertEquals(false, !expectedStrings.contains(item.DebugLevel__c));
             }
         }
     }
@@ -537,25 +541,21 @@ private class accc_ApexCRUDProviderTest {
         System.runAs ( new User(Id = UserInfo.getUserId()) ) {
             insert logs;
         }
+        // get logs
+        List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
         // user not allowed to update
-        User ruser = setTestUser(true,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,false,false);
         System.runAs(ruser) {
 
-            Boolean hasException =false;
             // this test inherited mode
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider();
             Test.startTest();
             // act
-            try {
-                accc_GenericDbResultHandler result=provider.updateDb(logs);
-            } catch ( System.NoAccessException excp) {
-                hasException=true;
-            }
-            // get logs
-            List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
+            accc_GenericDbResultHandler result=provider.updateDb(logs);
+
             Test.stopTest();
             // assert insert
-            system.assertEquals(true, hasException);
+            system.assertEquals(true, result.hasErrors());
             // previous inserts should be present
             system.assertEquals(2, foundLogs.size());
         }
@@ -573,12 +573,12 @@ private class accc_ApexCRUDProviderTest {
             insert logs;
         }
         // user has edit mode
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
 
         System.runAs(ruser) {
             Set<String> expectedStrings = DEFAULT_SETTINGS;
-            expectedStrings.add('Error');
-            expectedStrings.add('Warn');
+            expectedStrings.add(ERROR);
+            expectedStrings.add(WARNING);
 
             final integer size = logs.size();
             // this test inherited mode
@@ -586,8 +586,8 @@ private class accc_ApexCRUDProviderTest {
             Test.startTest();
             // act
             accc_GenericDbResultHandler result=provider.upsertDb (new List<SObject> {
-                createALog('Error'),
-                createALog('Warn')
+                createALog(ERROR),
+                createALog(WARNING)
             });
             // ensure logs present
             List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
@@ -609,8 +609,11 @@ private class accc_ApexCRUDProviderTest {
         System.runAs ( new User(Id = UserInfo.getUserId()) ) {
             insert logs;
         }
+        // get logs
+        List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
+
         // user not allowed to update
-        User ruser = setTestUser(true,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,false,false);
         System.runAs(ruser) {
 
             Boolean hasException =false;
@@ -618,16 +621,11 @@ private class accc_ApexCRUDProviderTest {
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider();
             Test.startTest();
             // act
-            try {
-                accc_GenericDbResultHandler result=provider.upsertDb(logs);
-            } catch ( System.NoAccessException excp) {
-                hasException=true;
-            }
-            // get logs
-            List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
+            accc_GenericDbResultHandler result=provider.upsertDb(logs);
+
             Test.stopTest();
             // assert insert
-            system.assertEquals(true, hasException);
+            system.assertEquals(true, result.hasErrors());
             // previous inserts should be present
             system.assertEquals(2, foundLogs.size());
         }
@@ -640,7 +638,7 @@ private class accc_ApexCRUDProviderTest {
         List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
 
         // user can delete
-        User ruser = setTestUser(true,true,true);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,true);
 
         System.runAs(ruser) {
             Test.startTest();
@@ -667,7 +665,7 @@ private class accc_ApexCRUDProviderTest {
             insert logs;
         }
         // user not allowed to delete mode
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
         System.runAs(ruser) {
 
             Boolean hasException =false;
@@ -694,7 +692,7 @@ private class accc_ApexCRUDProviderTest {
     //++++++++++++++++++++
     @isTest
     static void deleteImmediateDataWithCreateUserAndSystemTest() {
-        User ruser = setTestUser(true,true,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,false);
         System.runAs(ruser) {
             Boolean noAccess=false;
             final List<accc_Org_Events__b> logs = accc_ApexCRUDProviderTest.createBigObjectTestLogs();
@@ -702,7 +700,7 @@ private class accc_ApexCRUDProviderTest {
             accc_ApexDMLOptions options = new accc_ApexDMLOptions();
             options.theDMLMode= accc_ApexDMLOptions.DMLMode.IMMEDIATE;
             options.theExecutionMode= accc_ApexDMLOptions.ExecutionMode.USER_MODE;
-            // this test user mode (with sharing)
+            // this test user mode (inherited sharing)
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(options);
 
             Test.startTest();
@@ -721,6 +719,8 @@ private class accc_ApexCRUDProviderTest {
             options = new accc_ApexDMLOptions();
             options.theDMLMode= accc_ApexDMLOptions.DMLMode.IMMEDIATE;
             options.theExecutionMode= accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+            // required otherwise, throws an exception (esp. using immediate)
+            accc_ApexCRUDProvider.forTestingConditions = true;
             // this test user mode (without sharing)
             provider = new accc_ApexCRUDProvider(options);
             accc_GenericDbResultHandler result=provider.deleteDb(logs);
@@ -738,7 +738,7 @@ private class accc_ApexCRUDProviderTest {
         List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
 
         // user has remove rights (but using system mode)
-        User ruser = setTestUser(true,true,true);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,true);
 
         System.runAs(ruser) {
             Test.startTest();
@@ -759,8 +759,8 @@ private class accc_ApexCRUDProviderTest {
     @isTest
     static void deleteDataWithNoCreateSystemTest() {
         List<AcccApplicationLog__c> logs = accc_ApexCRUDProviderTest.createTestLogs();
-        // user has rights and allowed to delete mode [role heirarchy]
-        User ruser = setTestUser(true,true,true);
+        // user has rights and allowed to delete mode
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(true,true,true);
         System.runAs(ruser) {
 
             Boolean hasException =false;
@@ -795,18 +795,18 @@ private class accc_ApexCRUDProviderTest {
             insert logs;
         }
         // user (no permissions)
-        User ruser = setTestUser(false,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
 
         System.runAs(ruser) {
             Set<String> expectedStrings = DEFAULT_SETTINGS;
-            expectedStrings.add('Error');
+            expectedStrings.add(ERROR);
 
             final integer size = logs.size();
             // this test System mode
             accc_IApexCRUDProvider provider = new accc_ApexCRUDProvider(accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE);
             Test.startTest();
             // act
-            accc_GenericDbResultHandler result=provider.upsertDb (new List<SObject> {createALog('Error')});
+            accc_GenericDbResultHandler result=provider.upsertDb (new List<SObject> {createALog(ERROR)});
             // ensure logs present
             List<AcccApplicationLog__c> foundLogs = [select DebugLevel__c from AcccApplicationLog__c];
             Test.stopTest();
@@ -828,7 +828,7 @@ private class accc_ApexCRUDProviderTest {
             insert logs;
         }
         // user (no permisions - except read)
-        User ruser = setTestUser(false,false,false);
+        User ruser = accc_ApexCRUDProviderTest.setTestUser(false,false,false);
         System.runAs(ruser) {
 
             Boolean hasException =true;
@@ -941,7 +941,7 @@ private class accc_ApexCRUDProviderTest {
                                             Boolean remove){
 
         PermissionSet ps = new PermissionSet(Name = 'TestIt'+ DateTime.now().millisecond(),
-                                             Label = 'Test It ' + objectType+ ' LogTest');
+                                             Label = 'Test It ' + DateTime.now().millisecond() + objectType+ ' LogTest');
         insert ps;
 
         ObjectPermissions oPerm = null;

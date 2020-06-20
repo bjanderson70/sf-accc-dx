@@ -33,7 +33,7 @@
  * @description Name / Value Pair
  * @group Common Layer
  */
-public without sharing class accc_NameValuePair {
+public inherited sharing class accc_NameValuePair {
 
     /**
      * @description Getter

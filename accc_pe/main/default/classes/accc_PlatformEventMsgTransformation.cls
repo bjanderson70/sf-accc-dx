@@ -34,7 +34,7 @@
  * @description  Translate event messages to another type
  * @group Event Layer
  */
-public without sharing  class accc_PlatformEventMsgTransformation {
+public inherited sharing  class accc_PlatformEventMsgTransformation {
 
     /**
      * @description translate a ApplicationLog to a accc_Log__e
