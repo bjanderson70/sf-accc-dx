@@ -36,7 +36,7 @@
  * change ALL dependencies. [Added layer of indirection to adjust for change]
  * @group Common Layer
  */
-public without sharing class accc_CrossCuttingUtilityDataModel extends accc_BaseMdtDataModel {
+public inherited sharing class accc_CrossCuttingUtilityDataModel extends accc_BaseMdtDataModel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //

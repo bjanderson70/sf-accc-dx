@@ -35,7 +35,7 @@
  *
  * @group Fallback Resources
  */
-public virtual without sharing class accc_ApexBaseFallback implements accc_IFallbackResources {
+public virtual inherited sharing class accc_ApexBaseFallback implements accc_IFallbackResources {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

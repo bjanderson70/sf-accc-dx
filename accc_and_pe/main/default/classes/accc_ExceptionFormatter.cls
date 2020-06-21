@@ -34,7 +34,7 @@
  * @description Implementation of the exception formatter.
  * @group Exception Handling
  */
-public without sharing class accc_ExceptionFormatter implements accc_IDataFormat {
+public inherited sharing class accc_ExceptionFormatter implements accc_IDataFormat {
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // CTORS

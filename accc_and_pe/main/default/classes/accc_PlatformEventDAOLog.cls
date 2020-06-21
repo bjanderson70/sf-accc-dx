@@ -34,7 +34,7 @@
  * into the Big Object and Back out again
  * @group Logging Data Access Object
  */
-public virtual without sharing class accc_PlatformEventDAOLog {
+public virtual inherited sharing class accc_PlatformEventDAOLog {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members

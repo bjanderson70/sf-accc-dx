@@ -36,7 +36,7 @@
  *
  * TBD -- localization
  */
-public without sharing abstract class accc_ApexBaseMessageSender implements accc_IApexMessageSender {
+public inherited sharing abstract class accc_ApexBaseMessageSender implements accc_IApexMessageSender {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

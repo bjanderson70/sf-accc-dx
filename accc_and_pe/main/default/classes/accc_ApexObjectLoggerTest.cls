@@ -83,6 +83,13 @@ private class accc_ApexObjectLoggerTest {
     }// end of testwriteWithTrueSendLogger
 
     @isTest
+    static void testwriteNullToLogger() {
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, (Object) null, true);
+        System.assertEquals(null, logger.lastMessage());
+    } // end of testwriteNullToLogger
+
+    @isTest
     static void testwriteWithFalseSendLogger() {
         final String value = 'data';
         accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
@@ -176,13 +183,31 @@ private class accc_ApexObjectLoggerTest {
         logger.write(LoggingLevel.DEBUG, values);
         List<AcccApplicationLog__c> items = [select Id,Message__c,LogCode__c,DebugLevel__c, SourceFunction__c from AcccApplicationLog__c ];
         Test.stopTest();
- 
+
         for ( AcccApplicationLog__c item: items) {
             System.assertEquals(true, item.SourceFunction__c=='data' || item.SourceFunction__c=='two');
             System.assertEquals(SDEBUG, item.LogCode__c.toUpperCase());
             System.assertEquals(SDEBUG, item.DebugLevel__c.toUpperCase());
         }
     } // end of testwriteWithListArrayOfAppLog
+
+    @isTest
+    static void writeOutputTest() {
+        // assign
+        final String value = 'data';
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.DEBUG);
+
+
+        final string SDEBUG= LoggingLevel.DEBUG.name().toUpperCase();
+        // act
+        List<AcccApplicationLog__c> items = logger.writeOutput(LoggingLevel.DEBUG, value,true);
+        List<AcccApplicationLog__c> inObj = [SELECT Message__c from AcccApplicationLog__c ];
+        // assert
+        System.assertEquals(inObj.size(), items.size());
+        for ( AcccApplicationLog__c item: inObj) {
+            System.assertEquals(true, item.Message__c.contains(value));
+        }
+    }// end of writeOutputTest
     //////////////////////////////////////////////////////////////////////////////////
     // PRIVATE METHODS
     //////////////////////////////////////////////////////////////////////////////////

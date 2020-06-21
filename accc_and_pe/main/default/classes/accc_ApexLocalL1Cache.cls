@@ -45,7 +45,7 @@
  *    	All --> name/value, name2/value2, name3/value3 ...
  * @group Cache Aspects
  */
-public without sharing class accc_ApexLocalL1Cache {
+public inherited sharing class accc_ApexLocalL1Cache {
     /*---------------------------------------------------------------------------------------
     * DATA MEMBERS
     *---------------------------------------------------------------------------------------

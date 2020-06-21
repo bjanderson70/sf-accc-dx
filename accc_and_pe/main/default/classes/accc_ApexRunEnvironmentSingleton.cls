@@ -34,7 +34,7 @@
  * @description Creates singleton for accc_ApexBaseRuntimeEnvironment
  * @group Common Layer
  */
-public without sharing class accc_ApexRunEnvironmentSingleton extends accc_ApexBaseRuntimeEnvironment {
+public inherited sharing class accc_ApexRunEnvironmentSingleton extends accc_ApexBaseRuntimeEnvironment {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

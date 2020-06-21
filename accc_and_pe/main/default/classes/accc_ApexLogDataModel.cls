@@ -34,7 +34,7 @@
  * @description The data captured when you 'write' to the logger
  * @group Log Aspects
  */
-global without sharing class accc_ApexLogDataModel {
+global inherited sharing class accc_ApexLogDataModel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //

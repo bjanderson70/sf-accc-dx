@@ -39,7 +39,7 @@
  *
  * @group Common Layer
  */
-public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseMdtDataModel {
+public inherited sharing class accc_CrossCuttingConfigDataModel extends accc_BaseMdtDataModel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //

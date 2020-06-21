@@ -36,7 +36,7 @@
  * Modification : BJA , Added ensureEnviromentIsCorrectOtherwiseDebug to allow specification of environment
  * @group Miscellaneous
  */
-public without sharing class accc_ApexEnvironment {
+public inherited sharing class accc_ApexEnvironment {
 
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Members

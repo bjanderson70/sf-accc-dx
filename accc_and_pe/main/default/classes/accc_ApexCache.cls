@@ -47,7 +47,7 @@
  * https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_cache_partition_setup.htm
  * @group Cache Aspects
  */
-public virtual without sharing class accc_ApexCache implements accc_ICache {
+public virtual inherited sharing class accc_ApexCache implements accc_ICache {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Data Members

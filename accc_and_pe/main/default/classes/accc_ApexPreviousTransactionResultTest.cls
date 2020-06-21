@@ -44,7 +44,7 @@ private class accc_ApexPreviousTransactionResultTest {
         // act
         List<Database.SaveResult>  db = result.databaseResult();
         // assert
-        System.assert(db == null, 'accc_ApexPreviousTransactionResultTest ctor null');
+        System.assert (db == null, 'accc_ApexPreviousTransactionResultTest ctor null');
     } // end of Testctor
 
     @isTest
@@ -55,7 +55,7 @@ private class accc_ApexPreviousTransactionResultTest {
         // act
         List<Database.SaveResult>  dbResult = result.databaseResult();
         // assert
-        System.assert(dbResult != null, 'accc_ApexPreviousTransactionResultTest  databaseResult != null');
+        System.assert (dbResult != null, 'accc_ApexPreviousTransactionResultTest  databaseResult != null');
     } // end of TestctorInjection
     @isTest
     static void TestprocessError() {
@@ -65,23 +65,50 @@ private class accc_ApexPreviousTransactionResultTest {
         // act
         Boolean result = trans.processErrors();
         // assert
-        System.assert(result == false, 'accc_ApexPreviousTransactionResultTest  result != false');
+        System.assert (result == false, 'accc_ApexPreviousTransactionResultTest  result != false');
     } // end of TestprocessError
 
     @isTest
     static void TestprocessErrorWithSavedResult() {
         // assign
-        Account[] accts = new List<Account> {
-            new Account(Name = 'Log1'),
-            new Account(),
-            new Account()
-        };
-        Database.SaveResult[] srList = Database.insert(accts, false);
+        Database.SaveResult[] srList = accc_ApexPreviousTransactionResultTest.getTestResultsWithErrorsForInsert();
         accc_IPreviousTransactionResult trans = new accc_ApexPreviousTransactionResult(srList);
         // act ( expect errors to be processed)
         Boolean result = trans.processErrors(true);
         // assert
-        System.assert(result == true, 'accc_ApexPreviousTransactionResultTest  result != true');
+        System.assert (result == true, 'accc_ApexPreviousTransactionResultTest  result != true');
     } // end of TestprocessErrorWithSavedResult
 
+    @isTest
+    static void TestprocessErrorWithSavedResultNoLogger() {
+        // assign
+        Database.SaveResult[] srList = accc_ApexPreviousTransactionResultTest.getTestResultsWithErrorsForInsert();
+        accc_IPreviousTransactionResult trans = new accc_ApexPreviousTransactionResult(srList);
+        // act ( expect errors NOT to be logged)
+        Boolean result = trans.processErrors(false);
+        // assert
+        System.assert (result == true, 'accc_ApexPreviousTransactionResultTest  result != true');
+    } // end of TestprocessErrorWithSavedResultNoLogger
+
+    ///////////////////////////////////////////////////////////////////////
+    // Helpers
+    ///////////////////////////////////////////////////////////////////////
+    /**
+     * @description used for testing  results
+     *
+     * @return   List<Database.DeleteResult> Db Results
+     */
+    @TestVisible
+    private static List<Database.SaveResult> getTestResultsWithErrorsForInsert() {
+        // SIMULATING RESULTS
+        List<Database.SaveResult> results =   new  List<Database.SaveResult> {
+            (Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),
+            (Database.SaveResult)JSON.deserialize('{"id":"000000000000000BAA","success":true,"errors":[]}', Database.SaveResult.class),
+            (Database.SaveResult)JSON.deserialize('{"id":"000000000000000CAA","success":true,"errors":[]}', Database.SaveResult.class),
+            (Database.SaveResult)JSON.deserialize('{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}', Database.SaveResult.class)
+
+        };
+        return results;
+
+    } // end of getTestResultsWithErrorsForInsert
 } // end of accc_ApexPreviousTransactionResultTest

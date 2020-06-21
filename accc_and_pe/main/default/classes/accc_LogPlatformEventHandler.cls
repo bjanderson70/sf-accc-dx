@@ -39,7 +39,7 @@
  *
  * @group Log Aspects
  */
-public virtual without sharing class accc_LogPlatformEventHandler extends accc_EventBase {
+public virtual inherited sharing class accc_LogPlatformEventHandler extends accc_EventBase {
 
     /////////////////////////////////////////////////////////////////////////
     // Data Members
@@ -73,6 +73,9 @@ public virtual without sharing class accc_LogPlatformEventHandler extends accc_E
             // any data to add
             if ( this.theApplicationLogs != null && this.theApplicationLogs.size() > 0) {
                 accc_SObjectBaseWriter writer = new accc_QueableSObjects(this.theApplicationLogs);
+                // set system mode
+                writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
                 writer.execute();
             }
         } catch (Exception excp) {

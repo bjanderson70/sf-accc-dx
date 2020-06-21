@@ -31,13 +31,14 @@
  *
  * @File Name          : accc_ApexDMLOptions.cls
  * @Description        : Apex DML Options for CRUD
+ *                     : The default modes are Inherited Mode and Synchronous
  * @Author             : Bill Anderson
  * @Group              : Common
  * @Modification Log   :
  * Ver       Date            Author                 Modification
  * 1.0    1/8/2017   Bill Anderson     Initial Version
  **/
-global with sharing class accc_ApexDMLOptions {
+global inherited sharing class accc_ApexDMLOptions {
 
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -51,8 +52,9 @@ global with sharing class accc_ApexDMLOptions {
      * bec/ of constraints of communities, Big Objects, etc.
      */
     global enum DMLMode {
-        SYNC,
-        IMMEDIATE
+        SYNC,   // Default Mode
+        ASYNC,  // not supported yet!
+        IMMEDIATE // i.e. Big Objects
     }
     /**
      * Run in System,User Mode, Inherited
@@ -60,19 +62,19 @@ global with sharing class accc_ApexDMLOptions {
     global enum ExecutionMode {
         USER_MODE,
         SYSTEM_MODE,
-        INHERITED_MODE
+        INHERITED_MODE // Default Mode
     }
     /**
      * Dml Action
      */
     global enum DMLAction {
-        UPDATEABLE ,
-        INSERTABLE ,
+        UPDATEABLE,
+        INSERTABLE,
         UPSERTABLE,
-        DELETABLE ,
+        DELETABLE,
         READABLE,
         ALL
-    } 
+    }
     /**
      * Our Database DMLOptions
      */

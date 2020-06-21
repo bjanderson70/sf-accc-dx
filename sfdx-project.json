@@ -4,8 +4,8 @@
             "path": "accc_and_pe",
             "default": true,
             "package": "ACCC_and_PE_One_Package",
-            "versionName": "ACCC Common and ACCC Platform Events - Spring '20",
-            "versionNumber": "1.2.4.NEXT",
+            "versionName": "ACCC Common and ACCC Platform Events - Summer '20",
+            "versionNumber": "1.3.0.NEXT",
             "definitionFile": "config/project-scratch-def.json"
         }
     ],
@@ -14,6 +14,6 @@
     "sourceApiVersion": "48.0",
     "packageAliases": {
         "ACCC_and_PE_One_Package": "0Ho4R000000XZBFSA4",
-        "ACCC_and_PE_One_Package@1.2.4.0-1": "04t4R000001NO3zQAG"
+        "ACCC_and_PE_One_Package@1.3.0.0-1": "04t4R000001NOAgQAO"
     }
 }

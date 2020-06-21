@@ -135,7 +135,7 @@ private class accc_DefaultPEPublisherTest {
         List<SObject> evt = new List<SObject> { new pe_test__e()};
         accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
         publisher.useParentProcessResults=true;
-		
+
         Test.startTest();
         // act - Publish test event
         result = publisher.process(evt, handlers, attrs);
@@ -268,5 +268,20 @@ private class accc_DefaultPEPublisherTest {
 
 
     } // end of testprocessResults
+
+    @isTest
+    static void formErrorMessageTest() {
+
+        // assign
+        List<Database.SaveResult> results = new  List<Database.SaveResult> {
+            (Database.SaveResult)JSON.deserialize('{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}', Database.SaveResult.class)
+        };
+        final String eventName = 'junk';
+        accc_PublisherTest publisher = new accc_PublisherTest(eventName);
+        // act
+        String result=publisher.formErrorMessage(results[0].getErrors()[0]);
+        // assert
+        System.assertEquals(true, result.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION') );
+    }
 
 }

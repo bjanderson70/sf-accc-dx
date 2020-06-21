@@ -36,7 +36,7 @@
  *
  * @group Miscellaneous
  */
-public without sharing class accc_ApexUtilities {
+public inherited sharing class accc_ApexUtilities {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members
@@ -89,9 +89,6 @@ public without sharing class accc_ApexUtilities {
     // holds valid event names
     @TestVisible
     private static Set<String> m_eventNames = new  Set<String>();
-    // holds the crud provider
-    @TestVisible
-    private static accc_IApexCRUDProvider m_dmlCRUDProvider=null;
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
@@ -159,67 +156,6 @@ public without sharing class accc_ApexUtilities {
         return result;
     } // end of getSobjectName
 
-    /**
-     *  @description form the provder name for entity access
-     * [deprecating to accc_StringUtilities]
-     * @param namespace String
-     * @param section String
-     *
-     * @return String -- 'ns:section'
-     */
-    public static String formProviderNameAccess(String namespace, String section) {
-        return accc_StringUtilities.formProviderNameAccess(namespace, section);
-    } // end of formProviderNameAccess
-    /**
-     *  @description get namespace  ( w/ delimiter of ':')
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @return String namespace
-     */
-    public static String getNamespace(String value) {
-        return accc_StringUtilities.getNamespace(value);
-    } // end of getNamespace
-
-    /**
-     *  @description get namespace
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @param delimiter String
-     *
-     * @return String namespace
-     */
-    public static String getNamespace(String value, String delimiter) {
-        return accc_StringUtilities.getNamespace(value, delimiter);
-    } // end of getNamespace
-
-    /**
-     *  @description get section ( w/ delimiter of ':')
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @return String
-     */
-    public static String getSection(String value) {
-        return accc_StringUtilities.getSection(value, accc_ApexConstants.ColonDelimiter, 1);
-    } // end of getSection
-    /**
-     * @description get section
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @param delimiter String
-     *
-     * @return string section
-     */
-    public static String getSection(String value, String delimiter, Integer index) {
-        return accc_StringUtilities.getSection(value, delimiter, index);
-    } // end of getSection
-    /**
-     * @description Unique Guid
-     * [deprecating to accc_StringUtilities]
-     * @return String unique
-     */
-    public static String newGuid() {
-        return accc_StringUtilities.newGuid();
-    } // end of newGuid
     /**
      * @description get the string of the value
      * [deprecating to accc_StringUtilities]
@@ -691,18 +627,33 @@ public without sharing class accc_ApexUtilities {
         }
     } // end of logForTesting
     /**
-     * dmlProvider 
+     * dmlProvider
      * @description the DML Provider
      * @return   accc_IApexCRUDProvider
      */
     public static accc_IApexCRUDProvider dmlProvider() {
-        // if no crud provider, get it
-        if ( accc_ApexUtilities.m_dmlCRUDProvider == null ) {
-            accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
-            accc_ApexUtilities.m_dmlCRUDProvider= runtime.dmlProvider();
-        }
-        return accc_ApexUtilities.m_dmlCRUDProvider;
+        // do not cache the dml-provider, as it may change between consumers
+        // Use Defaulr Mode (Inherited)
+        return accc_ApexUtilities.dmlProvider(false);
+
     }// end of dmlProvider
+     /**
+      * dmlProvider
+      * @description the DML Provider
+      * @param isSystemMode system mode; or use default to inherited mode
+      * @return   accc_IApexCRUDProvider
+      */
+    public static accc_IApexCRUDProvider dmlProvider(boolean isSystemMode) {
+        // do not cache the dml-provider, as it may change between consumers
+        accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+        accc_IApexCRUDProvider provider = runtime.dmlProvider();
+        // use system mode
+        if ( isSystemMode ) {
+            provider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+        }
+        return provider;
+
+    } // end of dmlProvider
     /**
      *  @description convert string of numbers to telephone #
      * [deprecating to accc_StringUtilities]

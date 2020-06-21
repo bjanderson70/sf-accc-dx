@@ -35,7 +35,7 @@
  *     Application Log (AcccApplicationLog__c)
  * @group Log Aspects
  */
-global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
+global virtual inherited sharing class accc_ApexObjectLogger extends accc_ApexLogger {
 
     // pass information to the logger -- will only use one; if needed, instantiate when used TBD
     final static accc_ApplicationLog theAppLog = new accc_ApplicationLog();

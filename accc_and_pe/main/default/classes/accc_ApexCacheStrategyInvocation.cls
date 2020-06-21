@@ -34,7 +34,7 @@
  * @description Defines how to invoke the cache strategy
  * @group Cache Aspects
  */
-public virtual without sharing class accc_ApexCacheStrategyInvocation implements accc_IApexCacheStrategyInvocation {
+public virtual inherited sharing class accc_ApexCacheStrategyInvocation implements accc_IApexCacheStrategyInvocation {
 
 	/*---------------------------------------------------------------------------------------
 	 * DATA MEMBERS

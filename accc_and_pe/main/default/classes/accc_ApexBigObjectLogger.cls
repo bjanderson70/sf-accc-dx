@@ -35,7 +35,7 @@
  *     Big Object (AcccApplicationLog__c)
  * @group Log Aspects
  */
-global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexObjectLogger {
+global virtual inherited sharing class accc_ApexBigObjectLogger extends accc_ApexObjectLogger {
 
     @TestVisible
     static Boolean m_forceException = false;
@@ -116,12 +116,19 @@ global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexO
      */
     @TestVisible
     protected virtual accc_SObjectBaseWriter getWriter(List<SObject> entries) {
-        return new accc_SyncAsyncWriter(entries,
-                                        false, // Do NOT Delete these items (upsert)
-                                        false, // Is Synchronous Only (grandfathered in)
-                                        true,  // Is Big Object
-                                        true   // Force Async
-                                        );
+        accc_SObjectBaseWriter writer= new accc_SyncAsyncWriter(entries,
+                                                                false, // Do NOT Delete these items (upsert)
+                                                                false, // Is Synchronous Only (grandfathered in)
+                                                                true, // Is Big Object
+                                                                true // Force Async
+                                                                );
+        // Big Objects Immediate Mode
+        writer.theDMLProvider.getDmlOptions().theDMLMode = accc_ApexDMLOptions.DMLMode.IMMEDIATE;
+        // we execute in system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
+        return writer;
+
     } // end of getWriter
 
 } // end of accc_ApexBigObjectLogger

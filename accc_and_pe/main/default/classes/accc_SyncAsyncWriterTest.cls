@@ -48,154 +48,201 @@ private class accc_SyncAsyncWriterTest {
         Test.startTest();
         AcccApplicationLog__c acct =  createALog(msg, true);
         theId = acct.Id;
-		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
-		writer.execute();
-		Test.stopTest();
+        // act
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
 
-		// Validate that the job has run
-		// by verifying that the record was created.
-		// This query returns only the log created in test context by the
-		// Queueable class method.
-		// assert
-		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
-		System.assertNotEquals(null, returnedAccts);
-		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(theId, returnedAccts[0].Id);
+        writer.execute();
+        Test.stopTest();
 
-		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
-		System.assertEquals(true, writer.theException == null);
-	}
+        // Validate that the job has run
+        // by verifying that the record was created.
+        // This query returns only the log created in test context by the
+        // Queueable class method.
+        // assert
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
+        System.assertNotEquals(null, returnedAccts);
+        System.assertEquals(1, returnedAccts.size());
+        System.assertEquals(theId, returnedAccts[0].Id);
 
-	@isTest
-	static  void testSyncAsyncWriterRemove() {
-		// arrange
-		final String msg = 'Testaccc_QueableSObjectsTest';
+        System.assertEquals(isAsyncDone, writer.isAsyncWrite);
+        System.assertEquals(true, writer.theException == null);
+    }
 
-		Boolean isAsyncDone = false;
+    @isTest
+    static void testSyncAsyncWriterRemove() {
+        // arrange
+        final String msg = 'Testaccc_QueableSObjectsTest';
+
+        Boolean isAsyncDone = false;
 
 
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		AcccApplicationLog__c acct =  createALog(msg, true);
-		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
-		// assert
-		System.assertNotEquals(null, returnedAccts);
-		System.assertEquals(1, returnedAccts.size());
-		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, true);
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        AcccApplicationLog__c acct =  createALog(msg, true);
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
+        // assert
+        System.assertNotEquals(null, returnedAccts);
+        System.assertEquals(1, returnedAccts.size());
+        // act
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, true);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
 
-		writer.execute();
+        writer.execute();
 
-		Test.stopTest();
+        Test.stopTest();
 
-		// Validate that the job has run
-		// by verifying that the record was created.
-		// This query returns only the Log created in test context by the
-		// Queueable class method.
-		// assert
-		returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
-		System.assertEquals(0, returnedAccts.size());
+        // Validate that the job has run
+        // by verifying that the record was created.
+        // This query returns only the Log created in test context by the
+        // Queueable class method.
+        // assert
+        returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
+        System.assertEquals(0, returnedAccts.size());
 
-		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
-		System.assertEquals(true, writer.theException == null);
+        System.assertEquals(isAsyncDone, writer.isAsyncWrite);
+        System.assertEquals(true, writer.theException == null);
 
-	}
+    }
 
-	@isTest
-	static  void testSyncAsyncWriterBadData() {
-		// arrange
-		Boolean isAsyncDone = false;
+    @isTest
+    static void testSyncAsyncWriterBadData() {
+        // arrange
+        Boolean isAsyncDone = false;
 
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(null);
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        // act
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(null);
 
-		writer.execute();
+        writer.execute();
 
-		Test.stopTest();
+        Test.stopTest();
 
-		// Validate that the job
-		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
-		System.assertEquals(true, writer.theException == null);
-	}
-	//
-	@isTest
-	static  void testSyncAsyncWriterAddAsync() {
-		// arrange
-		final String msg = 'Testaccc_QueableSObjectsTest';
+        // Validate that the job
+        System.assertEquals(isAsyncDone, writer.isAsyncWrite);
+        System.assertEquals(true, writer.theException == null);
+    }
+    //
+    @isTest
+    static void testSyncAsyncWriterAddAsync() {
+        // arrange
+        final String msg = 'Testaccc_QueableSObjectsTest';
 
-		Boolean isAsyncDone = true;
+        Boolean isAsyncDone = true;
 
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		AcccApplicationLog__c acct = createALog(msg, false);
-		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
-		accc_SyncAsyncWriter.m_makeAsync = true;
-		writer.execute();
-		writer.theException = new accc_ApexApplicationException('Test');
-		Test.stopTest();
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        AcccApplicationLog__c acct = createALog(msg, false);
+        // act
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
 
-		// Validate that the job has run
-		// by verifying that the record was created.
-		// This query returns only the AcccApplicationLog__c created in test context by the
-		// Queueable class method.
-		// assert
-		List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c  FROM AcccApplicationLog__c  ];
-		System.assertNotEquals(null, returnedAccts);
-		System.assertEquals(1, returnedAccts.size());
-		System.assertEquals(msg, returnedAccts[0].Message__c);
+        accc_SyncAsyncWriter.m_makeAsync = true;
+        writer.execute();
+        writer.theException = new accc_ApexApplicationException('Test');
+        Test.stopTest();
 
-		System.assertEquals(isAsyncDone, writer.isAsyncWrite);
-		System.assertEquals(true, writer.theException != null);
-	}
+        // Validate that the job has run
+        // by verifying that the record was created.
+        // This query returns only the AcccApplicationLog__c created in test context by the
+        // Queueable class method.
+        // assert
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c FROM AcccApplicationLog__c  ];
+        System.assertNotEquals(null, returnedAccts);
+        System.assertEquals(1, returnedAccts.size());
+        System.assertEquals(msg, returnedAccts[0].Message__c);
 
-	@isTest
-	static  void testSyncAsyncWriterForceSyncCauseException() {
-		// arrange
-		final String msg = 'Testaccc_QueableSObjectsTest';
+        System.assertEquals(isAsyncDone, writer.isAsyncWrite);
+        System.assertEquals(true, writer.theException != null);
+    }
 
-		Boolean isAsyncDone = true;
+    @isTest
+    static void syncAsyncWriterAddUsingInheritedModeAsyncTest() {
+        // arrange
+        final String msg = 'Testaccc_QueableSObjectsTest-No Access';
 
-		// startTest/stopTest block to force async processes
-		// to run in the test.
-		Test.startTest();
-		AcccApplicationLog__c acct =  createALog(msg, false);
+        Boolean isAsyncDone = true;
 
-		// act
-		accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false, true);
-		accc_SyncAsyncWriter.m_makeAsync = true;
-		writer.execute();
 
-		Test.stopTest();
+        AcccApplicationLog__c acct = createALog(msg, false);
+        User rUsr=accc_ApexCRUDFunctionTest.setTestUser(accc_ApexCRUDFunctionTest.READ_ONLY,false,false,false);
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false);
+        // set user mode ( user's FLS should not have any access to field]
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.USER_MODE;
 
-		// Validate that the job has run
-		// by verifying that the record was created.
-		// This query returns only the AcccApplicationLog__c created in test context by the
-		// Queueable class method.
-		// assert
-		List<AcccApplicationLog__c> returnedAccts = [SELECT Id  FROM AcccApplicationLog__c];
-		System.assertEquals(0, returnedAccts.size());
-		System.assertEquals(true, writer.theException != null);
-	}
-	/**
-	 * @description create an log -- may need to plug into your log creator for tests
-	 *
-	 * @param msg msg for the AcccApplicationLog__c
-	 * @param doInsert do insert
-	 *
-	 * @return an AcccApplicationLog__c
-	 */
-	static AcccApplicationLog__c createALog(String msg, Boolean doInsert) {
-		AcccApplicationLog__c aal = new AcccApplicationLog__c (Message__c = msg );
-		if ( doInsert ) {
-			insert aal;
-		}
-		return aal;
-	} // end of createALog
+        accc_SyncAsyncWriter.m_makeAsync = true;
+        System.runAs(rUsr){
+            // startTest/stopTest block to force async processes
+			//   to run in the test.
+			Test.startTest();
+			// act
+            writer.execute();
+           Test.stopTest();
+        }
+        // Validate that the job has run
+        // by verifying that the record was not created.
+        // 
+
+        // assert
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id,Message__c FROM AcccApplicationLog__c  ];
+        System.assertNotEquals(null, returnedAccts);
+        // it does not writes (read-only)
+        System.assertEquals(0, returnedAccts.size());
+        System.assertEquals(isAsyncDone, writer.isAsyncWrite);
+
+    }
+
+    @isTest
+    static void testSyncAsyncWriterForceSyncCauseException() {
+        // arrange
+        final String msg = 'Testaccc_QueableSObjectsTest';
+
+        Boolean isAsyncDone = true;
+
+        // startTest/stopTest block to force async processes
+        // to run in the test.
+        Test.startTest();
+        AcccApplicationLog__c acct =  createALog(msg, false);
+
+        // act
+        accc_SyncAsyncWriter writer = new accc_SyncAsyncWriter(new List<AcccApplicationLog__c> {acct }, false, true);
+        // set system mode
+        writer.theDMLProvider.getDmlOptions().theExecutionMode = accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE;
+
+        accc_SyncAsyncWriter.m_makeAsync = true;
+        writer.execute();
+
+        Test.stopTest();
+
+        // Validate that the job has run
+        // by verifying that the record was created.
+        // This query returns only the AcccApplicationLog__c created in test context by the
+        // Queueable class method.
+        // assert
+        List<AcccApplicationLog__c> returnedAccts = [SELECT Id FROM AcccApplicationLog__c];
+        System.assertEquals(0, returnedAccts.size());
+        System.assertEquals(true, writer.theException != null);
+    }
+    /**
+     * @description create an log -- may need to plug into your log creator for tests
+     *
+     * @param msg msg for the AcccApplicationLog__c
+     * @param doInsert do insert
+     *
+     * @return an AcccApplicationLog__c
+     */
+    static AcccApplicationLog__c createALog(String msg, Boolean doInsert) {
+        AcccApplicationLog__c aal = new AcccApplicationLog__c (Message__c = msg );
+        if ( doInsert ) {
+            insert aal;
+        }
+        return aal;
+    } // end of createALog
 }

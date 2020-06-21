@@ -34,4 +34,4 @@
  * @description Apex Application Exception
  * @group Exception Handling
  */
-public without sharing class accc_ApexApplicationException extends Exception {}
+public inherited sharing class accc_ApexApplicationException extends Exception {}

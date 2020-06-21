@@ -401,7 +401,7 @@ private class accc_CDCEventBaseTest {
             result.changedFields = new List<String> { 'Name'};
         }
         result.sequencenumber = 1;
-        result.transactionkey = accc_ApexUtilities.newGuid();
+        result.transactionkey = accc_StringUtilities.newGuid();
         return result;
     } // end of createEventBase
 

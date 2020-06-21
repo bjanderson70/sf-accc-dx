@@ -122,8 +122,8 @@ private class accc_PlatformEventMsgTransformationTest {
 
         for ( integer inx=0; inx < count; inx++) {
             entries.add( new ACCC_Log_Event__e( Action__c= accc_CDCEventBase.CDC_KNOWN_CHANGE_TYPES[index++],
-                                                External_Id__c=accc_ApexUtilities.newGuid(),
-                                                TransactionId__c = accc_ApexUtilities.newGuid(),
+                                                External_Id__c=accc_StringUtilities.newGuid(),
+                                                TransactionId__c = accc_StringUtilities.newGuid(),
                                                 Exception__c = (index == 3) ? 'accc_ApexApplicationException {}' : '',
                                                 Payload__c = JSON.serialize(acct),
                                                 UserId__c = userId,

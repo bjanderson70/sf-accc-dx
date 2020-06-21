@@ -37,7 +37,7 @@
  * @group Common Layer
  */
 
-public without sharing class accc_PlatformEvtBuilder {
+public inherited sharing class accc_PlatformEvtBuilder {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////

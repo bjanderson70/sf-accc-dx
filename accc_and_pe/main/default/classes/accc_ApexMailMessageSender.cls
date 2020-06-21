@@ -36,7 +36,7 @@
  *
  * TBD -- localization
  */
-global without sharing class accc_ApexMailMessageSender extends accc_ApexBaseMessageSender {
+global inherited sharing class accc_ApexMailMessageSender extends accc_ApexBaseMessageSender {
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctor

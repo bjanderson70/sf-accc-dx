@@ -43,7 +43,7 @@
  *
  * @group Cache Aspects
  */
-public virtual without sharing class accc_ApexCacheMgr {
+public virtual inherited sharing class accc_ApexCacheMgr {
     /*---------------------------------------------------------------------------------------
      * DATA MEMBERS
      *---------------------------------------------------------------------------------------

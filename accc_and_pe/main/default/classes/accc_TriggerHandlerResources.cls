@@ -33,7 +33,7 @@
  * @description Encapsulates all behaviour logic relating to the management of Trigger Resources
  * @group Trigger Layer
  */
-public without sharing class accc_TriggerHandlerResources implements accc_ITriggerHandlerResources {
+public inherited sharing class accc_TriggerHandlerResources implements accc_ITriggerHandlerResources {
 
     //==============================================================
     // Data Members

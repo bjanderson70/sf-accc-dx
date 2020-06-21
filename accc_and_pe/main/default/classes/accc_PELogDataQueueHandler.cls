@@ -33,7 +33,7 @@
  * @description Platform Event queuable to insert or delete into/from BO
  * @group Data
  */
-public class accc_PELogDataQueueHandler extends accc_QueableBigObjects {
+public  with sharing class accc_PELogDataQueueHandler extends accc_QueableBigObjects {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////

@@ -33,4 +33,4 @@
  * @description Platform Event Exception
  * @group Exception Handling
  */
-public without sharing class  accc_PlatformEventException extends Exception {}
+public inherited sharing class  accc_PlatformEventException extends Exception {}
