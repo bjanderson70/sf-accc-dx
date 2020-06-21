@@ -61,6 +61,18 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetClassName
 
+    /**
+     * @description Test a valid event name
+     */
+    @isTest static void validEventNameTest() {
+        //assign
+        final String evtName = 'pe_test__e';
+        // act
+        Boolean result = accc_ApexUtilities.validEventName(evtName);
+        // assert
+        System.assertEquals(true, result);
+    }  // end of validEventNameTest
+
     @isTest static void testgetSobjectName() {
         //assign
         String expected = 'Account';
@@ -115,11 +127,9 @@ private class accc_ApexUtilitiesTest {
 
     @isTest static void testgetSobjectNameWithList() {
         //assign
-        String expected = 'Account';
-        List<SObject> alist = new List<Account> {
-            new account(Name = 'Acme', Description = 'Acme Account')
-        };
-        insert alist;
+        String expected = 'AcccApplicationLog__c';
+        List<SObject> alist =insertApplicationLogData(1);
+
         // act
         String result = accc_ApexUtilities.getSobjectName(alist);
         // assert
@@ -176,22 +186,15 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(true, provider != null);
         System.assertEquals(true, provider2 != null);
         System.assertEquals(accc_ApexDMLOptions.ExecutionMode.SYSTEM_MODE,  provider.getDmlOptions().theExecutionMode);
-        System.assertEquals(accc_ApexDMLOptions.ExecutionMode.INHERITED_MODE ,  provider2.getDmlOptions().theExecutionMode);
+        System.assertEquals(accc_ApexDMLOptions.ExecutionMode.INHERITED_MODE,  provider2.getDmlOptions().theExecutionMode);
 
     }// end of dmlProviderTest
 
 
     @isTest static void testgetRecordIds() {
         //assign
-        List<SObject> sObjectsList = new List<SObject> {
-            new account(Name = 'Acme-0', Description = 'Acme Account')
-            , new account(Name = 'Acme-1', Description = 'Acme Account')
-            , new account(Name = 'Acme-2', Description = 'Acme Account')
-        };
+        List<SObject> sObjectsList = insertApplicationLogData(3);
 
-        Test.startTest();
-        insert sObjectsList;
-        Test.stopTest();
         Map<Id, SObject> mapOfIds = new Map<Id, SObject> ();
         for (Sobject lObject : sObjectsList) {
             mapOfIds.put(lObject.Id, lObject);
@@ -207,15 +210,8 @@ private class accc_ApexUtilitiesTest {
 
     @isTest static void testconvertMapOfIdsToListOfIds() {
         //assign
-        List<SObject> sObjectsList = new List<SObject> {
-            new account(Name = 'Acme-0', Description = 'Acme Account')
-            , new account(Name = 'Acme-1', Description = 'Acme Account')
-            , new account(Name = 'Acme-2', Description = 'Acme Account')
-        };
+        List<SObject> sObjectsList = insertApplicationLogData(3);
 
-        Test.startTest();
-        insert sObjectsList;
-        Test.stopTest();
         Map<Id, SObject> mapOfIds = new Map<Id, SObject> ();
         for (Sobject lObject : sObjectsList) {
             mapOfIds.put(lObject.Id, lObject);
@@ -232,15 +228,8 @@ private class accc_ApexUtilitiesTest {
 
     @isTest static void testconvertMapOfValuesToListOfValues() {
         //assign
-        List<SObject> sObjectsList = new List<SObject> {
-            new account(Name = 'Acme-0', Description = 'Acme Account')
-            , new account(Name = 'Acme-1', Description = 'Acme Account')
-            , new account(Name = 'Acme-2', Description = 'Acme Account')
-        };
+        List<SObject> sObjectsList = insertApplicationLogData(3);
 
-        Test.startTest();
-        insert sObjectsList;
-        Test.stopTest();
         Map<Id, SObject> mapOfObjects = new Map<Id, SObject> ();
         for (Sobject lObject : sObjectsList) {
             mapOfObjects.put(lObject.Id, lObject);
@@ -256,16 +245,7 @@ private class accc_ApexUtilitiesTest {
 
     @isTest static void testconvertListToMapOfValues() {
         //assign
-        List<SObject> sObjectsList = new List<SObject> {
-            new account(Name = 'Acme-0', Description = 'Acme Account')
-            , new account(Name = 'Acme-1', Description = 'Acme Account')
-            , new account(Name = 'Acme-2', Description = 'Acme Account')
-        };
-
-        Test.startTest();
-        insert sObjectsList;
-        Test.stopTest();
-
+        List<SObject> sObjectsList = insertApplicationLogData(3);
         // act
         Map<Id, SObject> results = accc_ApexUtilities.convertListToMapOfValues(sObjectsList);
         Map<Id, SObject> nullResults = accc_ApexUtilities.convertListToMapOfValues(null);
@@ -629,7 +609,7 @@ private class accc_ApexUtilitiesTest {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+ START
     // These tests below will be deprecated once the delegated fuctionality is moved out of
-    // accc_ApexUtilities and rest completely in accc_ApexUtilities
+    // accc_ApexUtilities and rest completely in accc_ApexStringUtilities
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @isTest
@@ -709,25 +689,6 @@ private class accc_ApexUtilitiesTest {
         system.assertEquals(expected[2], accc_ApexUtilities.makeCacheIdentifier(null, label));
 
     } // end of testmakeCacheIdentifier
-    @isTest
-    static void testgetNamespace() {
-        string ns = 'highlevel',
-               section = 'caching',
-               hier = accc_ApexUtilities.formProviderNameAccess (ns, section);
-        string result = accc_ApexUtilities.getNamespace(hier);
-        system.assertEquals(ns, result);
-
-    }     // end of testgetNamespace
-
-    @isTest
-    static void testsection() {
-        string ns = 'highlevel',
-               section = 'caching',
-               hier =  accc_ApexUtilities.formProviderNameAccess (ns, section);
-        string result = accc_ApexUtilities.getSection(hier);
-        system.assertEquals(section, result );
-
-    }     // end of testsection
 
     @isTest
     static void testmakeLocalCacheKey() {
@@ -813,25 +774,7 @@ private class accc_ApexUtilitiesTest {
             inx++;
         }
     }     // end of testsplitStringOnExpression
-    /**
-     * @description Try a bad/invalid name
-     */
-    @isTest static void testnewGuid() {
-        //assign
-        String expected = accc_ApexUtilities.newGuid();
-        String result = accc_ApexUtilities.newGuid();
-        // assert
-        System.assertNotEquals(expected, result);
-    }    // end of testnewGuid
 
-    @isTest static void testgetSection() {
-        //assign
-        String known = 'DataCaching.All';
-        // act
-        String ns = accc_ApexUtilities.getSection(known);
-        // assert
-        System.assertNotEquals(accc_ApexConstants.All_s, ns);
-    }    // end of testgetSection
     @isTest
     static void testsplitStringOnExpressionWithBadParams() {
         // assign
@@ -984,5 +927,24 @@ private class accc_ApexUtilitiesTest {
 // These tests above will be deprecated once the delegated fuctionality is moved out of
 // accc_ApexUtilities and rest completely in accc_ApexUtilities
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Helpers
+    /////////////////////////////////////////////////////////////////////////////
+    /**
+     * insertApplicationLogData
+     * @description insert application log data
+     * @param  count # of records
+     * @return   colleciton of records
+     */
+    private static List<SObject> insertApplicationLogData(integer count) {
+        List<SObject> entries =new  List<SObject>();
+        for (integer inx=0; inx<count; inx++) {
+            entries.add(new AcccApplicationLog__c(Message__c = 'Acme'+inx));
+        }
+
+        insert entries;
+        return entries;
+    }// end of insertApplicationLogData
 
 } // end of accc_ApexUtilitiesTest

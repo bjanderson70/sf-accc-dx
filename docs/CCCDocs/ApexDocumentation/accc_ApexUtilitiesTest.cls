@@ -125,16 +125,6 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(expected, result);
     } // end of testgetClassNameNull
-    /**
-     * @description Try a bad/invalid name
-     */
-    @isTest static void testnewGuid() {
-        //assign
-        String expected = accc_ApexUtilities.newGuid();
-        String result = accc_ApexUtilities.newGuid();
-        // assert
-        System.assertNotEquals(expected, result);
-    } // end of testnewGuid
 
     @isTest static void testgetSection() {
         //assign

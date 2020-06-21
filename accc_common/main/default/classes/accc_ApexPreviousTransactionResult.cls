@@ -16,7 +16,7 @@
  *
  *
  * @author Bill Anderson
- * @description Holder of the last transaction operations
+ * @description Holder of the last transaction operations (TBD -- needs to accomodate other Database Results)
  * @group Common Layer
  */
 public inherited sharing class accc_ApexPreviousTransactionResult implements accc_IPreviousTransactionResult {
@@ -107,11 +107,13 @@ public inherited sharing class accc_ApexPreviousTransactionResult implements acc
                 if ( !saved.isSuccess() ) {
                     result = true;
                     if ( toSFDebugLogger ) {
-                        String current = saved.getErrors().get(0).getMessage();
-                        if ( last == null ||
-                             (current != null && !current.equals(last))) {
-                            last = current;
-                            excps.add(new accc_ApexApplicationException('Database.SaveResults :' + current));
+                        List<Database.Error> errors = saved.getErrors();
+                        String current = errors != null && errors.size() > 0 ? errors.get(0).getMessage() : null;
+                        if ( current != null ) {
+                            if (  last == null ||  !current.equals(last)) {
+                                last = current;
+                                excps.add(new accc_ApexApplicationException('Database.SaveResults :' + current));
+                            }
                         }
                     } else {
                         // if we are not writing to log, break out
@@ -121,8 +123,8 @@ public inherited sharing class accc_ApexPreviousTransactionResult implements acc
             } //endfor
 
             // log errors, if any
-            if ( excps.size() > 0 ) {
-                accc_ApexEnvironment.getRuntimeEnvironment().logger().write(excps);
+            if ( last != null ) {
+                accc_ApexUtilities.log(excps);
             }
         }
         return result;

@@ -589,7 +589,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
                 '001000200000002'
             };
             result.sequencenumber = 1;
-            result.transactionkey = accc_ApexUtilities.newGuid();
+            result.transactionkey = accc_StringUtilities.newGuid();
         }
         return result;
     }    // end of getChangeEventHeaderForTesting

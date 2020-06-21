@@ -157,67 +157,6 @@ public inherited sharing class accc_ApexUtilities {
     } // end of getSobjectName
 
     /**
-     *  @description form the provder name for entity access
-     * [deprecating to accc_StringUtilities]
-     * @param namespace String
-     * @param section String
-     *
-     * @return String -- 'ns:section'
-     */
-    public static String formProviderNameAccess(String namespace, String section) {
-        return accc_StringUtilities.formProviderNameAccess(namespace, section);
-    } // end of formProviderNameAccess
-    /**
-     *  @description get namespace  ( w/ delimiter of ':')
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @return String namespace
-     */
-    public static String getNamespace(String value) {
-        return accc_StringUtilities.getNamespace(value);
-    } // end of getNamespace
-
-    /**
-     *  @description get namespace
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @param delimiter String
-     *
-     * @return String namespace
-     */
-    public static String getNamespace(String value, String delimiter) {
-        return accc_StringUtilities.getNamespace(value, delimiter);
-    } // end of getNamespace
-
-    /**
-     *  @description get section ( w/ delimiter of ':')
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @return String
-     */
-    public static String getSection(String value) {
-        return accc_StringUtilities.getSection(value, accc_ApexConstants.ColonDelimiter, 1);
-    } // end of getSection
-    /**
-     * @description get section
-     * [deprecating to accc_StringUtilities]
-     * @param value String
-     * @param delimiter String
-     *
-     * @return string section
-     */
-    public static String getSection(String value, String delimiter, Integer index) {
-        return accc_StringUtilities.getSection(value, delimiter, index);
-    } // end of getSection
-    /**
-     * @description Unique Guid
-     * [deprecating to accc_StringUtilities]
-     * @return String unique
-     */
-    public static String newGuid() {
-        return accc_StringUtilities.newGuid();
-    } // end of newGuid
-    /**
      * @description get the string of the value
      * [deprecating to accc_StringUtilities]
      *

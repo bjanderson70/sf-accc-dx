@@ -97,7 +97,7 @@ private class accc_ApexCacheTest {
     static void TestgetString() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
@@ -111,7 +111,7 @@ private class accc_ApexCacheTest {
     static void TestgetStringByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
@@ -125,7 +125,7 @@ private class accc_ApexCacheTest {
     static void TestputString() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
@@ -140,7 +140,7 @@ private class accc_ApexCacheTest {
     static void TestputStringByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
@@ -162,7 +162,7 @@ private class accc_ApexCacheTest {
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
             for (Integer inx = 0; inx < 100; inx++) {
-                key = accc_ApexUtilities.newGuid();
+                key = accc_StringUtilities.newGuid();
                 keys.add( key);
                 mcache.put(key, key);
                 System.assert ((String)mcache.get(mcache.theCachePartition(), key) == key, 'TestgetKeys expected entry, not found');
@@ -189,7 +189,7 @@ private class accc_ApexCacheTest {
         // these tests can ONLY run if the 'work' partition is SETUP
         if ( mcache.isAvailable()) {
             for (Integer inx = 0; inx < 100; inx++) {
-                key = accc_ApexUtilities.newGuid();
+                key = accc_StringUtilities.newGuid();
                 keys.add( key);
                 mcache.put(mcache.theCachePartition(), key, key);
                 System.assert ((String)mcache.get(mcache.theCachePartition(), key) == key, 'TestgetKeys expected entry, not found');
@@ -209,7 +209,7 @@ private class accc_ApexCacheTest {
     static void Testcontains() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key =  accc_ApexUtilities.newGuid();
+        String key =  accc_StringUtilities.newGuid();
 
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
@@ -226,7 +226,7 @@ private class accc_ApexCacheTest {
     static void TestcontainsByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key =  accc_ApexUtilities.newGuid();
+        String key =  accc_StringUtilities.newGuid();
 
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
@@ -243,7 +243,7 @@ private class accc_ApexCacheTest {
     static void TestputStringTTL() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
@@ -260,7 +260,7 @@ private class accc_ApexCacheTest {
     static void Testremove() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
@@ -277,7 +277,7 @@ private class accc_ApexCacheTest {
     static void TestremoveByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         // these tests can ONLY run if the 'work' partition is SETUP
@@ -294,7 +294,7 @@ private class accc_ApexCacheTest {
     static void TestpartitionName() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         String expNS = accc_ApexCache.CACHE_NS;
         String expPN = accc_ApexConstants.DefaultCachePartitionName_s;
         String expected = expNS + '.' + expPN;

@@ -16,7 +16,7 @@
  *
  *
  * @author Bill Anderson
- * @description Holder of the last transaction operations
+ * @description Holder of the last transaction operations (TBD -- needs to accomodate other Database Results)
  * @group Common Layer
  */
 public without sharing class accc_ApexPreviousTransactionResult implements accc_IPreviousTransactionResult {
@@ -83,14 +83,14 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
     } // end of processErrors
 
     /**
-      * @description process the errors from the saved results. This functionality usually means
-      * wrting the information to the active logger ( as found in the factory). Bec/ we may
-      * be writing to a loger (via the logger), indicated to the method to redirect output to SF debug log
-      *
-      * @param boolean, true if writing to the SF debug log
-      *
-      * @return boolean, true if errors were processed
-      */
+     * @description process the errors from the saved results. This functionality usually means
+     * wrting the information to the active logger ( as found in the factory). Bec/ we may
+     * be writing to a loger (via the logger), indicated to the method to redirect output to SF debug log
+     *
+     * @param boolean, true if writing to the SF debug log
+     *
+     * @return boolean, true if errors were processed
+     */
     public boolean processErrors(boolean toSFDebugLogger) {
         boolean result = false;
         if ( this.lastResult != null ) {
@@ -105,8 +105,8 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
                     result = true;
                     if ( toSFDebugLogger ) {
                         String current = saved.getErrors().get(0).getMessage();
-                        if ( last == null ||
-                                (current != null && !current.equals(last))) {
+                        if ( last == null
+                             || (current != null && !current.equals(last))) {
                             last = current;
                             excps.add(new accc_ApexApplicationException('Database.SaveResults :' + current));
                         }
@@ -119,9 +119,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
 
             // log errors, if any
             if ( excps.size() > 0 ) {
-                accc_ILogger logger = accc_ApexEnvironment.getRuntimeEnvironment().logger() ;
-
-                logger.write(excps);
+                accc_ApexUtilities.log(excps);
             }
         }
         return result;

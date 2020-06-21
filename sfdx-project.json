@@ -13,7 +13,7 @@
             "default": false,
             "package": "Accc_Common",
             "versionName": "ACCC Common - Spring '20",
-            "versionNumber": "1.2.5.NEXT",
+            "versionNumber": "1.2.6.NEXT",
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
@@ -22,7 +22,7 @@
                 }
             ]
         },
-        {
+		{
             "path": "accc_pe_domain",
             "default": false,
             "package": "Accc_PE_Domain",
@@ -34,7 +34,7 @@
             "path": "accc_pe",
             "package": "Accc_PE",
             "versionName": "ACCC Platform Events - Spring '20",
-            "versionNumber": "1.0.1.NEXT",
+            "versionNumber": "1.1.1.NEXT",
             "default": true,
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
@@ -44,7 +44,7 @@
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.5.LATEST"
+                    "versionNumber": "1.2.6.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -57,7 +57,7 @@
             "default": false,
             "package": "Accc_TH",
             "versionName": "ACCC Trigger Handler - Spring '20",
-            "versionNumber": "0.7.1.NEXT",
+            "versionNumber": "0.8.1.NEXT",
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
@@ -66,7 +66,7 @@
                 },
                 {
                     "package": "Accc_Common",
-                    "versionNumber": "1.2.5.LATEST"
+                    "versionNumber": "1.2.6.LATEST"
                 },
                 {
                     "package": "Accc_PE_Domain",
@@ -74,7 +74,7 @@
                 },
                 {
                     "package": "Accc_PE",
-                    "versionNumber": "1.0.2.LATEST"
+                    "versionNumber": "1.1.1.LATEST"
                 }
             ]
         }
@@ -85,15 +85,12 @@
     "packageAliases": {
         "Accc_Domain": "0Ho4R000000XZAqSAO",
         "Accc_Common": "0Ho4R000000XZAWSA4",
-        "Accc_PE_Domain": "0Ho4R000000XZAvSAO",
+		"Accc_PE_Domain": "0Ho4R000000XZAvSAO",
 		"Accc_PE": "0Ho4R000000XZAlSAO",
-        "Accc_TH": "0Ho4R000000XZB0SAO",
-        "Accc_Domain@0.5.1-1": "04t4R000001NO3fQAG",
-        "Accc_Common@1.2.5-3": "04t4R000001NOA7QAO",
-        "Accc_PE_Domain@0.5.0-1": "04t4R000001NNuhQAG",
-        "Accc_PE@1.0.1-1": "04t4R000001NO3pQAG",
-        "Accc_PE@1.0.2-1": "04t4R000001NOACQA4",
-        "Accc_TH@0.7.0-1": "04t4R000001NO3uQAG",
-        "Accc_TH@0.7.1-1": "04t4R000001NOAHQA4"
+		"Accc_TH": "0Ho4R000000XZB0SAO",
+		"Accc_Domain@0.5.1-1": "04t4R000001NO3fQAG",
+		"Accc_Common@1.2.6.0-1": "04t4R000001NOARQA4",
+		"Accc_PE@1.1.1.0-1" : "04t4R000001NOAWQA4",
+		"Accc_TH@0.8.1.0-1" : "04t4R000001NOAbQAO"
     }
 }

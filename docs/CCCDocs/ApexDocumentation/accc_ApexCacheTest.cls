@@ -92,7 +92,7 @@ private class accc_ApexCacheTest {
     static void TestgetString() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         String result = (String)mcache.get(key);
         // assert
@@ -103,7 +103,7 @@ private class accc_ApexCacheTest {
     static void TestgetStringByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         String result = (String)mcache.get(mcache.theCachePartition(), key);
         // assert
@@ -114,7 +114,7 @@ private class accc_ApexCacheTest {
     static void TestputString() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         mcache.put(key, key);
         String result = (String)mcache.get(key);
@@ -126,7 +126,7 @@ private class accc_ApexCacheTest {
     static void TestputStringByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         // act
         mcache.put(mcache.theCachePartition(), key, key);
         String result = (String)mcache.get(mcache.theCachePartition(), key);
@@ -143,7 +143,7 @@ private class accc_ApexCacheTest {
         String key;
         // act
         for (Integer inx = 0; inx < 100; inx++) {
-            key = accc_ApexUtilities.newGuid();
+            key = accc_StringUtilities.newGuid();
             keys.add( key);
             mcache.put(key, key);
             System.assert((String)mcache.get(mcache.theCachePartition(), key) == key, 'TestgetKeys expected entry, not found');
@@ -167,7 +167,7 @@ private class accc_ApexCacheTest {
         String key;
         // act
         for (Integer inx = 0; inx < 100; inx++) {
-            key = accc_ApexUtilities.newGuid();
+            key = accc_StringUtilities.newGuid();
             keys.add( key);
             mcache.put(mcache.theCachePartition(), key, key);
             System.assert((String)mcache.get(mcache.theCachePartition(), key) == key, 'TestgetKeys expected entry, not found');
@@ -186,7 +186,7 @@ private class accc_ApexCacheTest {
     static void Testcontains() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key =  accc_ApexUtilities.newGuid();
+        String key =  accc_StringUtilities.newGuid();
 
         // act
         mcache.put(key, 'key');
@@ -200,7 +200,7 @@ private class accc_ApexCacheTest {
     static void TestcontainsByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key =  accc_ApexUtilities.newGuid();
+        String key =  accc_StringUtilities.newGuid();
 
         // act
         mcache.put(mcache.theCachePartition(), key, 'key');
@@ -214,7 +214,7 @@ private class accc_ApexCacheTest {
     static void TestputStringTTL() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         mcache.put(key, (Object)key, accc_ApexCache.DEFAULT_MIN_TTL_IN_SECS);
@@ -228,7 +228,7 @@ private class accc_ApexCacheTest {
     static void Testremove() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         mcache.put(key, key);
@@ -242,7 +242,7 @@ private class accc_ApexCacheTest {
     static void TestremoveByPartition() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
 
         // act
         mcache.put(mcache.theCachePartition(), key, key);
@@ -256,7 +256,7 @@ private class accc_ApexCacheTest {
     static void TestpartitionName() {
         // assign
         accc_ICache mcache = new accc_ApexCache();
-        String key = accc_ApexUtilities.newGuid();
+        String key = accc_StringUtilities.newGuid();
         String expNS = accc_ApexCache.CACHE_NS;
         String expPN = accc_ApexConstants.DefaultCachePartitionName_s;
         String expected = expNS + '.' + expPN;

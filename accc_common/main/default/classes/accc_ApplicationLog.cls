@@ -122,7 +122,7 @@ public inherited sharing class accc_ApplicationLog {
      * @param true to log automatically
      */
     public accc_ApplicationLog(String message, Boolean logIt) {
-        this(null, null, null, accc_ApexUtilities.newGuid(), message, logIt);
+        this(null, null, null, accc_StringUtilities.newGuid(), message, logIt);
     } // end of ctor
     /**
      * @description ctor (no automatic logging))
