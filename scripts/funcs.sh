@@ -60,7 +60,8 @@ scratchOrg=
 runUnitTests=
 quietly=
 installBase=
-
+shellLocation=`basename $0`;
+numOfSODays=2;
 #######################################################
 # Utility to  reset cursor
 #
@@ -114,7 +115,7 @@ function print(){
 #
 #######################################################
 function checkForSFDX(){
-	type $SFDX_CLI_EXEC >/dev/null 2>&1 || { handleError " $0 requires sfdx but it's not installed or found in PATH."; }
+	type $SFDX_CLI_EXEC >/dev/null 2>&1 || { handleError " $shellLocation requires sfdx but it's not installed or found in PATH."; }
 }
 #######################################################
 # Utility for help
@@ -124,10 +125,10 @@ function help() {
 
     echo "${green}${bold}"
     echo ""
-    echo "Usage: $0 [ -u <username|targetOrg> | -t | -v | -q | -h ]"
+    echo "Usage: $shellLocation [ -u <username|targetOrg> | -l <num of Days to keep Scratch Org, default to 2> | -t | -d | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
 	printf "\n\t -t run unit tests"
-	printf "\n\t -v turn on debug"
+	printf "\n\t -d turn on debug"
     printf "\n\t -q run quietly"
     printf "\n\t -h the help\n"
     resetCursor;
@@ -139,18 +140,19 @@ function help() {
 #
 #######################################################
 function getCommandLineArgs() {
-	while getopts u:svhqtb option
+	while getopts u:l:svhqtb option
 	do
-		case "${option}"
-		in
-			u) orgName=${OPTARG};;
-			v) set -xv;;
+	   case "${option}"
+	   in
+	    u) orgName=${OPTARG};;
+	    l) numOfSODays=${OPTARG};;
+	    d) set -xv;;
             s) scratchOrg=1;;
-			t) runUnitTests=1;;
+	    t) runUnitTests=1;;
             b) installBase=1;;
             q) quietly=1;;
-			h) help; exit 1;;
-		esac
+	    h) help; exit 1;;
+	   esac
 	done
     #if no org, then creating a scratch org
     if [ -z $orgName ]; then
@@ -177,11 +179,11 @@ function createScratchOrg() {
     if [ ! -z $scratchOrg ]; then
         print "Creating Scratch org..."
         # get username
-        orgName=`$SFDX_CLI_EXEC force:org:create -s -f config/project-scratch-def.json -d 2 --json |  grep username | awk '{ print $2}' | sed 's/"//g'`
+        orgName=`$SFDX_CLI_EXEC force:org:create -s -f config/project-scratch-def.json -d $numOfSODays --json |  grep username | awk '{ print $2}' | sed 's/"//g'`
         print "Scratch org created (user=$orgName)."
-		if [  -z $orgName ]; then
-			handleError "Problem creating scratch Org (could be network issues, permissions, or limits) [sfdx force:org:create -s -f config/project-scratch-def.json -d 2 --json] "
-		fi
+	if [  -z $orgName ]; then
+	   handleError "Problem creating scratch Org (could be network issues, permissions, or limits) [sfdx force:org:create -s -f config/project-scratch-def.json -d $numOfSODays --json] "
+	fi
     fi
 }
 
@@ -195,7 +197,7 @@ function runApexTests() {
        print "Running Apex Unit Tests (target=$orgName) [w/ core-coverage]"
        # run tests
        $SFDX_CLI_EXEC force:apex:test:run -r human -c -u "$orgName" -w 30 
-     fi
+   fi
 }
 #######################################################
 # set permissions
@@ -211,7 +213,7 @@ function setPermissions() {
 #######################################################
 function installPackages() {
 
-    if [ ! -z $orgName ]; then
+     if [ ! -z $orgName ]; then
         local step=0;
         
         # get our package ids ( do not want to keep updating this script)
@@ -219,8 +221,16 @@ function installPackages() {
             local pgkId=`echo $line | awk '{print $2}'`
             local name=`echo $line | awk '{print $1}'`
             print "Installing package $name ($pgkId) for $orgName"
-            $SFDX_CLI_EXEC force:package:install -a package --package "$pgkId" --wait 20 --publishwait 20 -u "$orgName" 
-            ((step=step+1));
+            $SFDX_CLI_EXEC force:package:install -a package --package "$pgkId" --wait 30 --publishwait 30 -u "$orgName" 
+            #check for install just the base/common
+            if [ ! -z $installBase ]; then
+                ((step=step+1));
+            fi
+            # just installing the common ??
+            if [ $step -eq 2 ]; then
+                print "Only Accc Common installed!"
+                break;
+            fi
         done
     fi
 
