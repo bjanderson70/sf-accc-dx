@@ -127,6 +127,7 @@ function help() {
     echo ""
     echo "Usage: $shellLocation [ -u <username|targetOrg> | -l <num of Days to keep Scratch Org, default to 2> | -t | -d | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
+	printf "\n\t -l <# of days to keep scratch org , defaults to 2 days>"
 	printf "\n\t -t run unit tests"
 	printf "\n\t -d turn on debug"
     printf "\n\t -q run quietly"
