@@ -22,7 +22,7 @@
                 }
             ]
         },
-		{
+        {
             "path": "accc_pe_domain",
             "default": false,
             "package": "Accc_PE_Domain",
@@ -35,7 +35,7 @@
             "package": "Accc_PE",
             "versionName": "ACCC Platform Events - Spring '20",
             "versionNumber": "1.1.1.NEXT",
-            "default": true,
+            "default": false,
             "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
@@ -54,7 +54,7 @@
         },
         {
             "path": "accc_th",
-            "default": false,
+            "default": true,
             "package": "Accc_TH",
             "versionName": "ACCC Trigger Handler - Spring '20",
             "versionNumber": "0.8.1.NEXT",
@@ -83,14 +83,15 @@
     "sfdcLoginUrl": "https://test.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "Accc_Domain": "0Ho4R000000XZAqSAO",
-        "Accc_Common": "0Ho4R000000XZAWSA4",
-		"Accc_PE_Domain": "0Ho4R000000XZAvSAO",
-		"Accc_PE": "0Ho4R000000XZAlSAO",
-		"Accc_TH": "0Ho4R000000XZB0SAO",
-		"Accc_Domain@0.5.1-1": "04t4R000001NO3fQAG",
-		"Accc_Common@1.2.6.0-1": "04t4R000001NOARQA4",
-		"Accc_PE@1.1.1.0-1" : "04t4R000001NOAWQA4",
-		"Accc_TH@0.8.1.0-1" : "04t4R000001NOAbQAO"
+        "Accc_Domain": "0Ho3h000000k9qQCAQ",
+        "Accc_Common": "0Ho3h000000k9qVCAQ",
+        "Accc_PE_Domain": "0Ho3h000000k9qaCAA",
+        "Accc_PE": "0Ho3h000000k9qfCAA",
+        "Accc_TH": "0Ho3h000000k9qkCAA",
+        "Accc_Domain@0.5.1.0-9": "04t3h000003AQOGAA4",
+        "Accc_Common@1.2.6.0-9": "04t3h000003ASvFAAW",
+        "Accc_PE_Domain@0.5.0.0-9": "04t3h000003AbeYAAS",
+        "Accc_PE@1.1.1.0-9": "04t3h000003AbilAAC",
+        "Accc_TH@0.8.1.0-9": "04t3h000003AeFkAAK"
     }
 }

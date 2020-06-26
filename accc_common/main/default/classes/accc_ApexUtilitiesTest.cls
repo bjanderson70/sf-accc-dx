@@ -53,7 +53,7 @@ private class accc_ApexUtilitiesTest {
      */
     @isTest static void testgetClassName() {
         //assign
-        String expected = 'accc_ApexUtilities';
+        final String expected = 'accc_ApexUtilities';
         accc_ApexUtilities obj = new accc_ApexUtilities();
 
         String result = accc_ApexUtilities.getClassName(obj);
@@ -65,17 +65,16 @@ private class accc_ApexUtilitiesTest {
      * @description Test a valid event name
      */
     @isTest static void validEventNameTest() {
-        //assign
-        final String evtName = 'pe_test__e';
+        //assign ( this event is available i accc-pe packaage -- 'pe_test__e' ; cannot test here)
         // act
-        Boolean result = accc_ApexUtilities.validEventName(evtName);
+        Boolean result = accc_ApexUtilities.validEventName(null);
         // assert
-        System.assertEquals(true, result);
+        System.assertEquals(false, result);
     }  // end of validEventNameTest
 
     @isTest static void testgetSobjectName() {
         //assign
-        String expected = 'Account';
+        final String expected = 'Account';
         // act
         String result = accc_ApexUtilities.getSobjectName(new Account());
         // assert
@@ -85,7 +84,7 @@ private class accc_ApexUtilitiesTest {
     @isTest
     static void testgetSobjectNameWithSet() {
         //assign
-        String expected = 'Account';
+        final String expected = 'Account';
         Set<SObject> accounts = new Set<SObject>();
         accounts.add(new Account());
         // act

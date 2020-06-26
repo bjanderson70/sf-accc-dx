@@ -38,7 +38,7 @@
  * Ver       Date            Author                 Modification
  * 1.0    1/8/2017   Bill Anderson     Initial Version
  **/
-global class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
+global inherited sharing class accc_ApexCRUDProvider implements accc_IApexCRUDProvider {
 
     ///////////////////////////////////////////////////////////////////////////////////
     // Data Members

@@ -965,9 +965,8 @@ public inherited sharing class accc_ApexUtilities {
             return false;
         }
         // see if we already have the data
-        if ( accc_ApexUtilities.m_domainNames.size() == 0) {
-            accc_ApexUtilities.updateDomainInformation();
-        }
+        // updates static if not set
+        accc_ApexUtilities.updateDomainInformation();
         return accc_ApexUtilities.m_domainNames.contains(domainToValidate.toLowerCase());
     }    // end of validDomainName
 
@@ -981,9 +980,9 @@ public inherited sharing class accc_ApexUtilities {
         if ( string.isBlank(eventToValidate)) {
             return false;
         }
-        if ( accc_ApexUtilities.m_eventNames.size() == 0) {
-            accc_ApexUtilities.updateDomainInformation();
-        }
+        // updates static if not set
+        accc_ApexUtilities.updateDomainInformation();
+        
         return accc_ApexUtilities.m_eventNames.contains(eventToValidate.toLowerCase());
     }    // end of validEventName
     /**
@@ -1132,18 +1131,20 @@ public inherited sharing class accc_ApexUtilities {
      */
     @TestVisible
     private static void updateDomainInformation() {
-        Map<String, Schema.SObjectType> globalSchemaDesc = Schema.getGlobalDescribe();
-        Set<String> objNames = globalSchemaDesc.keySet();
-        // any data
-        if ( objNames != null && objNames.size() > 0 ) {
-            for (String objName : objNames) {
-                accc_ApexUtilities.m_domainNames.add(objName.toLowerCase());
-                if ( objName.endsWith(accc_ApexConstants.EVENT_TYPE_TAG_s)) {
-                    m_eventNames.add(objName.toLowerCase());
+        // do this once
+        if ( accc_ApexUtilities.m_eventNames.size() == 0) {
+            Map<String, Schema.SObjectType> globalSchemaDesc = Schema.getGlobalDescribe();
+            Set<String> objNames = globalSchemaDesc.keySet();
+            // any data
+            if ( objNames != null && objNames.size() > 0 ) {
+                for (String objName : objNames) {
+                    accc_ApexUtilities.m_domainNames.add(objName.toLowerCase());
+                    if ( objName.endsWith(accc_ApexConstants.EVENT_TYPE_TAG_s)) {
+                        m_eventNames.add(objName.toLowerCase());
+                    }
                 }
             }
         }
-
     }     // end of updateDomainInformation
     /**
      *  @description write data to the test list
