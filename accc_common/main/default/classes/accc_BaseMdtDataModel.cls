@@ -119,8 +119,18 @@ public abstract without sharing class accc_BaseMdtDataModel {
         }
         this.CustomMDTName = customMDT;
         this.categoryField = !string.isBlank(category) ? category : CUSTOM_MDT_CATEGORY;
+        this.orderBy = '';
 
     } // end of ctor
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Protected Properties
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Specify the Ordering in the SOQL
+     */ 
+    public String orderBy { get;set;}
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // PUBLIC METHODS
@@ -135,11 +145,11 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return this.getInformationByLookup(accc_ApexConstants.All_s, accc_ControlPolicySearchEnum.byLabel);
     } // end of findAll
     /**
-    * @description find by category
-    *
-    * @param string the category / namespace
-    * @return the model informaiton
-    */
+     * @description find by category
+     *
+     * @param string the category / namespace
+     * @return the model informaiton
+     */
     public List<BaseDataModelInformation> findByCategory(String category) {
         return this.getInformationByLookup(category, null, accc_ControlPolicySearchEnum.byLabel);
     }// end of findByCategory
@@ -220,7 +230,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * the Category field (i.e. environment, but not always)
      */
     @TestVisible
-    protected String  categoryField {
+    protected String categoryField {
         get { return this.m_categoryField;}
         set {this.m_categoryField = value;}
     } // end of categoryField
@@ -232,11 +242,11 @@ public abstract without sharing class accc_BaseMdtDataModel {
     /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-    * Expose the L1 cache to children
-    */
+     * Expose the L1 cache to children
+     */
     @TestVisible
     protected accc_ApexLocalL1Cache getL1Cache {
-       get { return accc_BaseMdtDataModel.l1Cache;}
+        get { return accc_BaseMdtDataModel.l1Cache;}
     }// end of getL1Cache
     /**
      * @description find the custom mdt
@@ -255,7 +265,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * @details get our query by string
      *
      * @param category/namespace
-    *  @param lookup lookup string
+     *  @param lookup lookup string
      * @param controlType control of the query by
      * @return the query by string
      */
@@ -266,14 +276,14 @@ public abstract without sharing class accc_BaseMdtDataModel {
     } // end of getQueryBy
 
     /**
-    * @description find the custom mdt
-    *
-    * @param category/namespace
-    * @param lookup lookup string
-    * @param accc_ControlPolicySearchEnum how to search
-    *
-    * @return the data model
-    */
+     * @description find the custom mdt
+     *
+     * @param category/namespace
+     * @param lookup lookup string
+     * @param accc_ControlPolicySearchEnum how to search
+     *
+     * @return the data model
+     */
     @TestVisible
     protected virtual List<BaseDataModelInformation> getInformationByLookup(String category, String lookup, accc_ControlPolicySearchEnum controlType) {
         List<SObject> cmdt = null;
@@ -321,9 +331,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
     } // end of setValues
     /**
-    * @description create the soql select clause
-    * @return the select clause
-    */
+     * @description create the soql select clause
+     * @return the select clause
+     */
     @TestVisible
     protected String makeSoqlSelect() {
         String result =  SELECT_FIELDS;
@@ -338,11 +348,11 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return result;
     } // end of makeSoqlSelect
     /**
-    * @description populate our external view of the data cache structure
-    *
-    * @param mdt the data cache Metadata
-    * @return our view of the data ( allows us to change internally)
-    */
+     * @description populate our external view of the data cache structure
+     *
+     * @param mdt the data cache Metadata
+     * @return our view of the data ( allows us to change internally)
+     */
     @TestVisible
     protected List<BaseDataModelInformation> populateFrom(List<SObject> mdt) {
         List<BaseDataModelInformation> result = null;
@@ -370,29 +380,33 @@ public abstract without sharing class accc_BaseMdtDataModel {
         String myValue = theValue;
         String clause = selectClause + accc_ApexConstants.FROM_s + this.customMDTName;
         Boolean validCategory = !string.IsBlank(category) && category != accc_ApexConstants.All_s,
-                validMyValue = !string.IsBlank(myValue) && myValue != accc_ApexConstants.All_s ;
+                validMyValue = !string.IsBlank(myValue) && myValue != accc_ApexConstants.All_s;
 
         if ( !string.isBlank(selectClause) ) {
 
             if ( validMyValue ) {
                 if ( validCategory ) {
                     clause +=  accc_ApexConstants.WHERE_s
-                               + byValue + ' = :myValue '
-                               + accc_ApexConstants.ANDString + ' '
-                               +  this.categoryField  + ' = :category';
+                              + byValue + ' = :myValue '
+                              + accc_ApexConstants.ANDString + ' '
+                              +  this.categoryField  + ' = :category';
                 } else {
                     clause +=  accc_ApexConstants.WHERE_s
-                               + byValue + ' = :myValue ';
+                              + byValue + ' = :myValue ';
                 }
             } else if ( validCategory ) {
                 clause +=  accc_ApexConstants.WHERE_s
-                           +  this.categoryField  + ' = :category';
+                          +  this.categoryField  + ' = :category';
             }
 
             // are we getting ALL items or not
         } else if (validMyValue ) {
             clause +=  accc_ApexConstants.WHERE_s
-                       + byValue + ' = : myValue';
+                      + byValue + ' = : myValue';
+        }
+        // order by clause
+        if ( !string.isBlank(this.orderBy) ) {
+            clause += ' order by ' + this.orderBy;
         }
 
         // get the results
@@ -400,25 +414,25 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
     } // end of queryCustomMDT
     /**
-    * @description make key for the cache
-    *
-    * @param category the category (debug, production, etc.)
-    * @param lookup  how to find the value
-    *
-    * @return the key associate with the appropriate custom metadata
-    */
+     * @description make key for the cache
+     *
+     * @param category the category (debug, production, etc.)
+     * @param lookup  how to find the value
+     *
+     * @return the key associate with the appropriate custom metadata
+     */
     @TestVisible
     protected string makeCacheKey(string category, string lookup) {
-        return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName , accc_ApexUtilities.makeLocalCacheKey(category, lookup));
+        return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName, accc_ApexUtilities.makeLocalCacheKey(category, lookup));
     } // end of makeCacheKey
 
     /**
-    * @description get a valid soql parameter list from the child
-    * @param incomingChildList incoming child list
-    * @return valid soql parameter list from the child
-    */
+     * @description get a valid soql parameter list from the child
+     * @param incomingChildList incoming child list
+     * @return valid soql parameter list from the child
+     */
     @TestVisible
-    protected  List<String>  getValidChildList(List<String> incomingChildList) {
+    protected List<String>  getValidChildList(List<String> incomingChildList) {
 
         List<String> childList = incomingChildList;
         // when users inherit from the base, they may insert
@@ -426,7 +440,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
         if ( childList != null && childList.size() > 0) {
             integer size = childList.size();
             // reconstitute the list, could use set but will not pick up  '\s+ '
-            childList = new  List<String> () ;
+            childList = new  List<String> ();
             for ( integer inx = 0; inx < size; inx++ ) {
                 if ( !string.IsBlank(incomingChildList[inx]) ) {
                     childList.add(incomingChildList[inx]);

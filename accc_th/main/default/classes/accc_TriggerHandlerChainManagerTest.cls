@@ -46,8 +46,6 @@ private class accc_TriggerHandlerChainManagerTest {
 		accc_TriggerHandlerChainManager ctor = new accc_TriggerHandlerChainManager(ExpectedTHEnvironmentCustomMDT);
 		// assert
 		System.assertEquals(ExpectedTHEnvironmentCustomMDT, ctor.triggerEnvironment);
-		// default is true
-		System.assertEquals(true, ctor.continueIfException);
 
 	}
 	@isTest
@@ -61,8 +59,6 @@ private class accc_TriggerHandlerChainManagerTest {
 		System.assertEquals(true, ctor.createHandlerChainByDomain(domain) != null);
 		System.assertEquals(true, accc_TriggerHandlerChainManager.cache(domain) != null);
 		System.assertEquals(true, accc_TriggerHandlerChainManager.cache('') == null);
-		// default is true
-		System.assertEquals(true, ctor.continueIfException);
 		accc_TriggerHandlerChainManager.cache(madeUpDomain, ctor.createHandlerChainByDomain(domain));
 		System.assertEquals(true, accc_TriggerHandlerChainManager.cache(madeUpDomain) != null);
 	}
@@ -76,8 +72,7 @@ private class accc_TriggerHandlerChainManagerTest {
 		// assert
 		System.assertEquals(true, ctor.createHandlerChainByDomain(domain) != null);
 		System.assertEquals(true, accc_TriggerHandlerChainManager.cache(domain) != null);
-		System.assertEquals(true, ctor.continueIfException);
-		System.assertEquals(true, ctor.performanceMetrics);
+	 
 	}
 
 
@@ -92,8 +87,6 @@ private class accc_TriggerHandlerChainManagerTest {
 		// assert
 		System.assertEquals(true, ctor.createHandlerChainByDomain(domain) == null);
 		System.assertEquals(true, accc_TriggerHandlerChainManager.cache(domain) == null);
-		System.assertEquals(false, ctor.continueIfException);
-		System.assertEquals(false, ctor.performanceMetrics);
 		System.assertEquals(true, ctor.buildException != null );
 	}
 

@@ -56,6 +56,12 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
     ////////////////////////////////////////////////////////////////////////////////
 
     @TestVisible
+    private boolean performanceMetricsBool=false;
+
+    @TestVisible
+    private boolean continueIfErrorBool=false;
+
+    @TestVisible
     private accc_ITriggerHandlerResources m_parameters = null;
 
     @TestVisible
@@ -120,6 +126,39 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
     /// Public Methods
     ////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * performanceMetrics
+     * @description getter of perf metrics
+     * @return   return true, if you want perf metrics
+     */
+    public boolean performanceMetrics() {
+        return this.performanceMetricsBool;
+    }
+    /**
+     * performanceMetrics
+     * @description setter of output performance metrics
+     * @param  wantMetrics wantMetrics true if you want performance metrics
+     */
+    public void performanceMetrics(boolean wantMetrics) {
+        this.performanceMetricsBool = wantMetrics;
+    }
+
+    /**
+     * continueIfError
+     * @description getter of perf metrics
+     * @return   return true, if you want to continue if error
+     */
+    public boolean continueIfError() {
+        return this.continueIfErrorBool;
+    }
+    /**
+     * continueIfError
+     * @description setter to continue on exception
+     * @param  continueOnError continueOnError true if you want continue on error
+     */
+    public void continueIfError(boolean continueOnError) {
+        this.continueIfErrorBool = continueOnError;
+    }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
     // If you need to handle after/before events, override the following methods

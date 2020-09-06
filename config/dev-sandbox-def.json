@@ -1,6 +1,6 @@
 {
 	"sandboxName": "acccDev01",
-	"licenseType": "Developer",
+	"licenseType": "Enterprise",
 	"autoActivate": "true",
 	"copyChatter": "false",
 	"description": "used to test and validate ACCC Common and associated parts"

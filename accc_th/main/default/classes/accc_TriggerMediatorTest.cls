@@ -53,9 +53,8 @@ private class accc_TriggerMediatorTest {
         } // end of ctor
         protected override Boolean triggerHandlerInvocation(accc_IHandlerChain chain,
                                                             accc_TriggerHelperClass.TriggerState state,
-                                                            Map<Id, SObject> existingRecords,
-                                                            Boolean continueIfException,
-                                                            Boolean performanceMetrics ) {
+                                                            Map<Id, SObject> existingRecords
+                                                            ) {
             Boolean status=false;
 
             // was a chain found ( we do not log information as it is done elsewhere)
@@ -64,8 +63,6 @@ private class accc_TriggerMediatorTest {
                 status= super.triggerHandlerInvocation(chain,
                                                        state,
                                                        existingRecords,
-                                                       continueIfException,
-                                                       performanceMetrics,
                                                        EXCEPTION_ON_BAD_HANDLER_CHAIN);
             }
             // get our current handler
@@ -75,20 +72,14 @@ private class accc_TriggerMediatorTest {
                                  null == handler.handlerResources().getException(KEY);
             return status;
         } // end of triggerHandlerInvocation
-        protected override Boolean performHandlerWork(accc_IHandlerChain chain,
-                                                      accc_ITriggerHandler handler,
+        protected override Boolean performHandlerWork(accc_ITriggerHandler handler,
                                                       accc_TriggerHelperClass.TriggerState state,
                                                       Map<Id, SObject> existingRecords,
-                                                      Boolean continueIfException,
-                                                      Boolean performanceMetrics,
                                                       String exceptionMessage){
             handler.handlerResources().add(KEY,DATA_AT_KEY);
-            return super.performHandlerWork(chain,
-                                            handler,
+            return super.performHandlerWork(handler,
                                             state,
                                             existingRecords,
-                                            continueIfException,
-                                            performanceMetrics,
                                             exceptionMessage);
 
 
@@ -220,9 +211,8 @@ private class accc_TriggerMediatorTest {
         accc_TriggerHandlerChainManager thcm = ctor.theTriggerManager();
         // assert
         System.assertEquals(true, thcm.createHandlerChainByDomain(domain) != null);
-        // default is true
-        System.assertEquals(true, thcm.continueIfException);
-    }
+        
+     }
     @isTest
     static void testonBeforeInsertChild() {
         // arrange/assign/act
@@ -274,7 +264,6 @@ private class accc_TriggerMediatorTest {
 
         accc_TriggerMediator ctor = new accc_TriggerMediator(Account.class);
         accc_TriggerMediator.mCauseException =true;
-        ctor.theTriggerManager().continueIfException = false;
         Boolean result = ctor.execute(accc_TriggerHelperClass.TriggerState.BeforeInsert);
 
         // assert

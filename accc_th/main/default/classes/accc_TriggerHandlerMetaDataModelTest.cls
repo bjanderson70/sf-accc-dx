@@ -40,12 +40,18 @@
 @isTest
 private class accc_TriggerHandlerMetaDataModelTest {
 	// This test name MUST BE PRESENT (TH == Trigger Handler)
-	static final String ExpectedTHLabelInCustomMDT = 'th_leave_for_test_account';
-	static final String ExpectedTHNameInCustomMDT = 'th_leave_for_test_account';
+	static final String ExpectedTHLabelInCustomMDT = 'Leave For Testing Account One Handler';
+	static final String ExpectedTHLabelTwoInCustomMDT = 'Leave For Testing Account Two Handler';
+	static final String ExpectedTHNameInCustomMDT = 'Leave_For_Testing_Account_One_Handler';
+	static final String ExpectedTHNameTwoInCustomMDT = 'Leave_For_Testing_Account_Two_Handler';
 	static final String ExpectedTHClassNameInCustomMDT = 'accc_TestTriggerHandlerForAccount';
 	static final String ExpectedTHDomainInCustomMDT = 'Account';
 	static final Integer EXPECTED_NUMBER_OF_ACCOUNT_TRIGGERS_INC_CMDT = 2;
 	static final String ExpectedTHEnvironmentCustomMDT = accc_ApexConstants.TEST_CATEGORY;
+	static final Set<String> classesForTestAccountHandler  = new Set<String> {
+		'accc_TestTriggerHandlerForAccount',
+		'accc_TestTriggerHandlerForAccountTwo'
+	};
 
 	@isTest
 	static void testCtor() {
@@ -183,11 +189,10 @@ private class accc_TriggerHandlerMetaDataModelTest {
 
 		// assert
 		system.assertEquals(false, result == null);
-		system.assertEquals(true, result.size() > 0);
+		system.assertEquals(true, result.size() == 1);
 		system.assertEquals(true, result[0].domain == ExpectedTHDomainInCustomMDT);
-		system.assertEquals(true, result[0].classes.containsAll(new  Set<String> {ExpectedTHClassNameInCustomMDT}));
-		system.assertEquals(true, result[0].classes.size() >= EXPECTED_NUMBER_OF_ACCOUNT_TRIGGERS_INC_CMDT);
-		system.assertEquals(true, result[0].isActive == true);
+		system.assertEquals(true, classesForTestAccountHandler.contains(result[0].clazz));
+		system.assertEquals(true, result[0].isActive);
 		system.assertEquals(true, result[0].continueIfException);
 	}
 

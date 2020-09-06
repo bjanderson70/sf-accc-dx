@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2020, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -36,8 +36,8 @@
  * NOTE: JUST USED FOR TESTING
  *  @group Test Layer
  **/
-@isTest
-public class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
+
+public with sharing class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
 	
 	public static final String OBIC = accc_TriggerHandlerBase.OBIC + '- accc_TestTriggerHandlerForContact';
 	public static final String OAUC = accc_TriggerHandlerBase.OAUC + '- accc_TestTriggerHandlerForContact';

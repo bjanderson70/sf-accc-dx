@@ -36,6 +36,32 @@
  * @group Domain Layer
  **/
 public interface accc_ITriggerHandler {
+
+     /**
+     * performanceMetrics 
+     * @description getter of perf metrics
+     * @return   return true, if you want perf metrics
+     */ 
+    boolean performanceMetrics();
+    /**
+     * performanceMetrics 
+     * @description setter of output performance metrics
+     * @param  wantMetrics wantMetrics true if you want performance metrics
+     */ 
+    void performanceMetrics(boolean wantMetrics);
+
+     /**
+     * continueIfError 
+     * @description getter of perf metrics
+     * @return   return true, if you want to continue if error
+     */ 
+    boolean continueIfError();
+    /**
+     * continueIfError 
+     * @description setter to continue on exception
+     * @param  continueOnError continueOnError true if you want continue on error
+     */ 
+    void continueIfError(boolean continueOnError);
     /*
      * Represents the data pass thru to subsequent calls
      * Pay attention to #5 in this link ( https ://developer.salesforce.com/index.php?title=Apex_Code_Best_Practices&oldid=26951 )

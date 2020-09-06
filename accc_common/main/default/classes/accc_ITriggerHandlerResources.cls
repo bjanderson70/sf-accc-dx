@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -76,5 +76,7 @@ public interface accc_ITriggerHandlerResources {
      * @return Integer
      **/
     void reset();
+
+   
 
 }// end of accc_ITriggerHandlerResources

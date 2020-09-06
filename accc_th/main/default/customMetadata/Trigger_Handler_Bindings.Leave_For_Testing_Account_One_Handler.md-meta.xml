@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>th_leave_for_test_account</label>
+    <label>Leave For Testing Account One Handler</label>
     <protected>false</protected>
     <values>
         <field>Active__c</field>
@@ -19,11 +19,15 @@
         <value xsi:type="xsd:string">Test</value>
     </values>
     <values>
+        <field>Order__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
         <field>Performance_Metrics__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
-        <field>Trigger_Classes__c</field>
-        <value xsi:type="xsd:string">accc_TestTriggerHandlerForAccount,accc_TestTriggerHandlerForAccountTwo</value>
+        <field>Trigger_Handler_Class__c</field>
+        <value xsi:type="xsd:string">accc_TestTriggerHandlerForAccount</value>
     </values>
 </CustomMetadata>

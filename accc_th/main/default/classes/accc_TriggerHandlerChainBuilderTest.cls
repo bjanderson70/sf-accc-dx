@@ -57,8 +57,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		System.assertEquals(domainName, ctor.domainName);
 		System.assertEquals(accc_ApexConstants.PRODUCTION_CATEGORY.toLowerCase(), ctor.triggerEnvironment.toLowerCase() );
 		System.assertEquals(false, ctor.validDomainName == null);
-		System.assertEquals(true, ctor.theElements == null);
-		System.assertEquals(false, ctor.continueIfException);
+		System.assertEquals(true, ctor.theElements == null);  
 	}
 	@isTest
 	static void testctorWithDomainAndEnv() {
@@ -71,8 +70,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		System.assertEquals(domainName, ctor.domainName);
 		System.assertEquals(accc_ApexConstants.DEBUG_CATEGORY.toLowerCase(), ctor.triggerEnvironment.toLowerCase() );
 		System.assertEquals(false, ctor.validDomainName);
-		System.assertEquals(true, ctor.theElements == null);
-		System.assertEquals(false, ctor.continueIfException);
+		System.assertEquals(true, ctor.theElements == null); 
 	}
 	@isTest
 	static void testctorWithValidDomain() {
@@ -88,8 +86,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		System.assertEquals(true, ctor.validDomainName);
 		// Note, this ASSUMES the TEST metadata is LEFT INTACT (It SHOULD)
 		System.assertEquals(true, ctor.theElements != null);
-		// we have not try to create a chain, thus we have not read yet
-		System.assertEquals(false, ctor.continueIfException);
+ 
 	}
 
 	@isTest
@@ -104,9 +101,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		System.assertEquals(accc_ApexConstants.DEBUG_CATEGORY.toLowerCase(), ctor.triggerEnvironment.toLowerCase() );
 		System.assertEquals(true, ctor.validDomainName);
 		System.assertEquals(false, ctor.domainActive);
-		System.assertEquals(true, ctor.theElements == null);
-		System.assertEquals(false, ctor.continueIfException);
-
+		System.assertEquals(true, ctor.theElements == null); 
 	}// end of testctorWithValidDomainAndEnv
 
 	@isTest
@@ -123,8 +118,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		System.assertEquals(false, ctor.domainActive);
 		// gets all elements for that environment ( but no domain specific)
 		System.assertEquals(true, ctor.theElements != null);
-		System.assertEquals(false, ctor.continueIfException);
-
+ 
 	}// end of testfindbyEnvironmentAndDomainIsNull
 
 	@isTest
@@ -137,8 +131,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		// assert
 		System.assertEquals(true, chain != null);
 		System.assertEquals(true, ctor.theElements != null);
-		System.assertEquals(true, chain.getHandler() != null);
-		System.assertEquals(true, ctor.continueIfException);
+		System.assertEquals(true, chain.getHandler() != null); 
 	}
 
 	@isTest
@@ -154,14 +147,12 @@ private class accc_TriggerHandlerChainBuilderTest {
 
 		// assert
 		System.assertEquals(true, triggerHandlers != null);
-		System.assertEquals(1, ctor.theElements.size());
+		System.assertEquals(2, ctor.theElements.size());
 		System.assertEquals(true, triggerHandlers.getHandler() != null);
 		System.assertEquals(true, triggerHandlers.getNext().getHandler() != null);
 		System.assertEquals(true, triggerHandlers.getNext() != null);
 		// NOTE: there are 2 accounts handlers; thus, getNext() == 1, getNext().getNext() == 2
 		System.assertEquals(true, triggerHandlers.getNext().getNext() == null);
-
-		System.assertEquals(true, ctor.continueIfException);
 
 
 	}// end of testbuild
@@ -178,7 +169,7 @@ private class accc_TriggerHandlerChainBuilderTest {
 		// assert
 		System.assertEquals(true, triggerHandlers != null);
 		System.assertEquals(true, triggerHandlers.getHandler() != null);
-		System.assertEquals(true, ctor.continueIfException);
+	 
 
 	}// end of testbuildWithContactTest
 

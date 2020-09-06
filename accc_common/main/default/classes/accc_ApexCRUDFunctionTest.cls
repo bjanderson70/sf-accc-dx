@@ -51,7 +51,7 @@ private class accc_ApexCRUDFunctionTest {
     static final Map<String,String> usersTypes = new Map<String,String> {
         READ_ONLY =>'Read Only',
         SADMIN => 'System Administrator',
-        PLATFORM_USER => 'Standard Platform User'
+        PLATFORM_USER => 'Standard User'
     };
     // default values in object
      @TestVisible

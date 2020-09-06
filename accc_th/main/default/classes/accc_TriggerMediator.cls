@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2020, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -49,7 +49,7 @@
 
  * @group Common Layer
  **/
-public virtual inherited sharing class accc_TriggerMediator {
+public virtual with sharing class accc_TriggerMediator {
     //==============================================================
     // Data members
     //==============================================================
@@ -101,6 +101,8 @@ public virtual inherited sharing class accc_TriggerMediator {
       */
     public accc_TriggerMediator(Type sobjectType, String environment) {
         this(sobjectType,environment,Trigger.New, Trigger.OldMap);
+        
+
     }// end of ctor
     /**
      * @description ctor (will determine the environment)
@@ -216,9 +218,7 @@ public virtual inherited sharing class accc_TriggerMediator {
         // invoke trigger handlers
         return this.triggerHandlerInvocation(this.theTriggerChain(),
                                              state,
-                                             this.existingRecords,
-                                             this.theTriggerManager().continueIfException,
-                                             this.theTriggerManager().performanceMetrics
+                                             this.existingRecords
                                              );
     }// end of execute
      /**
@@ -271,14 +271,11 @@ public virtual inherited sharing class accc_TriggerMediator {
      * @param chain the trigger handler chain
      * @param state which trigger event
      * @param existingRecords existing records, if any
-     * @param continueIfException continue if trigger handler exception
      */
     @TestVisible
     protected virtual Boolean triggerHandlerInvocation(accc_IHandlerChain chain,
                                                        accc_TriggerHelperClass.TriggerState state,
-                                                       Map<Id, SObject> existingRecords,
-                                                       Boolean continueIfException,
-                                                       Boolean performanceMetrics ) {
+                                                       Map<Id, SObject> existingRecords) {
         Boolean status=false;
 
         // was a chain found ( we do not log information as it is done elsewhere)
@@ -287,8 +284,6 @@ public virtual inherited sharing class accc_TriggerMediator {
             status= this.triggerHandlerInvocation(chain,
                                                   state,
                                                   existingRecords,
-                                                  continueIfException,
-                                                  performanceMetrics,
                                                   EXCEPTION_ON_BAD_HANDLER_CHAIN);
         }
         return status;
@@ -301,37 +296,48 @@ public virtual inherited sharing class accc_TriggerMediator {
      * @param chain the trigger handler chain chain
      * @param state which trigger event
      * @param existingRecords existing records, if any
-     * @param continueIfException continue if trigger handler exception
-     * @param performanceMetrics getting performance metrics for each handler
      * @param exceptionMessage exception message if trigger handler chain not created
      */
     @TestVisible
     protected virtual Boolean triggerHandlerInvocation(accc_IHandlerChain chain,
                                                        accc_TriggerHelperClass.TriggerState state,
                                                        Map<Id, SObject> existingRecords,
-                                                       Boolean continueIfException,
-                                                       Boolean performanceMetrics,
                                                        String exceptionMessage) {
 
         Boolean successful = true;
         // string excpMsg = string.isBlank(exceptionMessage) ? EXCEPTION_ON_BAD_HANDLER_CHAIN : exceptionMessage;
         // Exception hasException = null;
         accc_ITriggerHandler handler = null;
-        //accc_ITriggerHandlerResources resources=null;
+        accc_ITriggerHandlerResources resources=null;
+ 
 
         // iterate over the chain of trigger handlers
         while ( chain != null && successful ) {
             // get our current handler
             handler = (accc_ITriggerHandler) chain.getHandler();
-            successful=this.performHandlerWork(chain,
-                                               handler,
-                                               state,
-                                               existingRecords,
-                                               continueIfException,
-                                               performanceMetrics,
-                                               exceptionMessage);
-            // get the next trigger handler in the chain
-            chain = chain.getNext();
+            // if the trigger handler was valid (of type accc_ITriggerHandler ) continue
+            if ( handler != null ) {
+
+                // pass in previous resource
+                handler.handlerResources(resources);
+                // perform work
+                successful=this.performHandlerWork(handler,
+                                                   state,
+                                                   existingRecords,
+                                                   exceptionMessage);
+
+                // remember resource ( as 'performHandlerWork' may have set the resources)
+                resources = handler.handlerResources();
+                // get the next trigger handler in the chain
+                chain = chain.getNext();
+            } else {
+                // we have no handler
+                successful = false;
+                // our handler was bad ( probably inherited from the wrong type or
+                // incorrectly entered by name ). This is why we TEST
+                accc_ApexUtilities.log('Trigger Handler is null -' + chain);
+                // we DO NOT break at this point (as someone may have put in a bad handler name)
+            }   // end if handler
 
         }// end while
 
@@ -340,56 +346,45 @@ public virtual inherited sharing class accc_TriggerMediator {
 
     /**
      * @description perform work associated with the handler
-     * @param chain trigger chain (for reference)
+     *
      * @param handler trigger handler
      * @param state  which trigger event
      * @param existingRecords existing records, if any
-     * @param continueIfException continue if trigger handler exception
-     * @param performanceMetrics getting performance metrics for each handler
      * @param exceptionMessage exception message if trigger handler chain not created
      * @return true if successful; false if exception, not handler
      **/
     @TestVisible
-    protected virtual Boolean performHandlerWork(accc_IHandlerChain chain,
-                                                 accc_ITriggerHandler handler,
+    protected virtual Boolean performHandlerWork(accc_ITriggerHandler handler,
                                                  accc_TriggerHelperClass.TriggerState state,
                                                  Map<Id, SObject> existingRecords,
-                                                 Boolean continueIfException,
-                                                 Boolean performanceMetrics,
                                                  String exceptionMessage){
         Boolean successful=false;
         string excpMsg = string.isBlank(exceptionMessage) ? EXCEPTION_ON_BAD_HANDLER_CHAIN : exceptionMessage;
         Exception hasException = null;
-        accc_ITriggerHandlerResources resources=null;
-
+   
         // if the trigger handler was valid (of type accc_ITriggerHandler ) continue
         if ( handler != null ) {
-            // pass previous resources from trigger onto the next
-            handler.handlerResources(resources);
-            // we have a handler, then true, this resets
-            // the state as the user sets 'continueIfException' to true
-            successful = true;
+
             // call the handler in the chain, return the exception, if any
-            hasException = this.callHandler(handler, state, existingRecords, performanceMetrics);
+            hasException = this.callHandler(handler,
+                                            state,
+                                            existingRecords);
             // set our state
             successful= hasException == null;
             // set internal handler's  resource state ( handlers in the following chain can determine state better, if continuing)
             // as the handler that follows (should we continue) can determine corrective measures
-            handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,
-                                           hasException);
+            handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,hasException);
             // do we continue after an exception
-            if ( !successful && !continueIfException ) {
+            if ( !successful && !handler.continueIfError() ) {
                 return successful;
             }
-            // get any resources this handler wants to pass thru to the next handler
-            // ( this allows visibility and reduction of process times (i.e. DML))
-            resources=handler.handlerResources();
+
         } else {
             // we have no handler
             successful = false;
             // our handler was bad ( probably inherited from the wrong type or
             // incorrectly entered by name ). This is why we TEST
-            accc_ApexUtilities.log(excpMsg + '-' + chain);
+            accc_ApexUtilities.log(excpMsg + '-' + handler);
             // we DO NOT break at this point (as someone may have put in a bad handler name)
         }// end if handler
         return successful;
@@ -398,22 +393,21 @@ public virtual inherited sharing class accc_TriggerMediator {
     /**
      * @description we have a trigger handler; invoke the operation
      *
+     * @param handler trigger handler
      * @param state which trigger event
      * @param existingRecords existing records, if any
-     * @param continueIfException continue if trigger handler exception
-     * @param performanceMetrics getting performance metrics for each handler
      * @return Exception, if any from the handler
      */
     protected virtual Exception callHandler( accc_ITriggerHandler handler,
                                              accc_TriggerHelperClass.TriggerState state,
-                                             Map<Id, SObject> existingRecords,
-                                             Boolean performanceMetrics) {
+                                             Map<Id, SObject> existingRecords) {
         String className = accc_StringUtilities.getClassName(handler);
-        accc_ApexPerformanceMetrics metrics = performanceMetrics ? new accc_ApexPerformanceMetrics('Start :' + className) : null;
         Exception handlerException = null;
-
+        Boolean performanceMetrics = handler.performanceMetrics();
+        accc_ApexPerformanceMetrics metrics =null;
         // log start of our handler's performance
         if ( performanceMetrics) {
+            metrics = new accc_ApexPerformanceMetrics('Start :' + className);
             accc_ApexUtilities.log(metrics.toString());
         }
         //

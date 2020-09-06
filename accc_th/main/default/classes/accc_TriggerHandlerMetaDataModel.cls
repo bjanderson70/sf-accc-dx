@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2020, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -37,7 +37,7 @@
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
  * @group Common Trigger Layer
  **/
-public virtual without sharing class accc_TriggerHandlerMetaDataModel extends accc_BaseMdtDataModel {
+public virtual with sharing class accc_TriggerHandlerMetaDataModel extends accc_BaseMdtDataModel {
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -46,7 +46,7 @@ public virtual without sharing class accc_TriggerHandlerMetaDataModel extends ac
 	/////////////////////////////////////////////////////////////////////////////////////////
 
 	public static final String CLASS_SEPARATOR_s = '[,: ]+';
-	public static final String EXCEPTION_STRING_IN_LOOKUP = '+++ EXCEPTION +++ accc_TriggerHandlerMetaDataModel.getInformationByLookup: ';
+	public static final String EXCEPTION_STRING_IN_LOOKUP = '+++ EXCEPTION +++ Trigger_Handler_Bindings.getInformationByLookup: ';
 	// acts as the environment
 	@TestVisible
 	static final String CUSTOM_MDT_ENVIRONMENT = 'Environment__c';
@@ -65,27 +65,29 @@ public virtual without sharing class accc_TriggerHandlerMetaDataModel extends ac
 		// specific to trigger handling
 		public String environment;
 		public String domain;
-		public Set<String> classes;
+		public String clazz;
 		public Boolean isActive;
 		public Boolean  continueIfException;
 		public Boolean  performanceMetrics;
+		public Integer  order;
 
 	} // end of  THDataModelInformation
 
 
 	// the custom mdt name
 	@TestVisible
-	static private final string MDT_NAME = 'accc_Trigger_Handler_MetaData_Model__mdt';
+	static private final string MDT_NAME = 'Trigger_Handler_Bindings__mdt';
 	// fields supported on this custom mdt. DO NOT FORGET TO UPDATE
 	// IF YOU ADD MORE FIELDS above in 'THDataModelInformation'
 	@TestVisible
 	static private final List<String> m_FieldList = new List<String> {
 		'Environment__c'
 		, 'Domain__c'
-		, 'Trigger_Classes__c'
+		, 'Trigger_Handler_Class__c'
 		, 'Active__c'
 		, 'Continue_If_Exception__c'
 		, 'Performance_Metrics__c'
+		, 'Order__c'
 
 	};
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -105,6 +107,7 @@ public virtual without sharing class accc_TriggerHandlerMetaDataModel extends ac
 	 */
 	public accc_TriggerHandlerMetaDataModel() {
 		super(MDT_NAME, accc_BaseMdtDataModel.CUSTOM_MDT_NAME) ;
+		super.orderBy = 'Order__c';
 	} // end of ctor
 
 	/**
@@ -185,36 +188,31 @@ public virtual without sharing class accc_TriggerHandlerMetaDataModel extends ac
 	@TestVisible
 	protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> mdt) {
 		List<THDataModelInformation> results = new List<THDataModelInformation> ();
-		List<accc_Trigger_Handler_MetaData_Model__mdt> cmdts = (List<accc_Trigger_Handler_MetaData_Model__mdt>) mdt;
+		List<Trigger_Handler_Bindings__mdt> cmdts = (List<Trigger_Handler_Bindings__mdt>) mdt;
 
 		if (cmdts != null && cmdts.size() > 0) {
-			String classes;
-			for (accc_Trigger_Handler_MetaData_Model__mdt cmdt : cmdts) {
+		 
+			for (Trigger_Handler_Bindings__mdt cmdt : cmdts) {
 				THDataModelInformation result = new THDataModelInformation();
 				// set common mdt values
 				this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 
 				/* Set Data from the custom metadata type */
 				result.environment = accc_ApexUtilities.normalizeString(cmdt.Environment__c, true).toLowerCase();
-				classes = accc_ApexUtilities.normalizeString(cmdt.Trigger_Classes__c, true);
+				result.clazz = accc_ApexUtilities.normalizeString(cmdt.Trigger_Handler_Class__c, true);
 				result.domain = accc_ApexUtilities.normalizeString(cmdt.Domain__c, true);
 				result.isActive = cmdt.Active__c == null ? false : cmdt.Active__c;
 				result.continueIfException = cmdt.Continue_If_Exception__c == null ? false : cmdt.Continue_If_Exception__c ;
 				result.performanceMetrics = cmdt.Performance_Metrics__c == null ? false : cmdt.Performance_Metrics__c ;
+				result.order = cmdt.Order__c == null ? 1 : (Integer)cmdt.Order__c ;
 
-				// the classes will be present or not, if not create an empty set
-				if ( string.isblank(classes)) {
-					result.classes = new Set<String>();
-				} else {
-					// lets ensure we remove DUPLICATES by instantiating the set from
-					// a delimeted list of classes ( comma, space or colon separated)
-					result.classes = new Set<String>(classes.split(CLASS_SEPARATOR_s));
-				}
+
 				// update the list with new values
 				results.add(result);
+				
 			}
 		} // endif
-
+	
 		return results;
 	} // end of populateFromDataObjectChild
 	/**

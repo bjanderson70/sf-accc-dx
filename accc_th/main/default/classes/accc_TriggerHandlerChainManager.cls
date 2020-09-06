@@ -115,7 +115,7 @@
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
  * @group Common Trigger Layer
  **/
-public inherited sharing class accc_TriggerHandlerChainManager {
+public with sharing class accc_TriggerHandlerChainManager {
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Members
 	////////////////////////////////////////////////////////////////////////////////
@@ -144,9 +144,6 @@ public inherited sharing class accc_TriggerHandlerChainManager {
 	public accc_TriggerHandlerChainManager(string environment) {
 		// what type of environment (test, debug, prod)?
 		this.m_environment = environment;
-		this.continueIfException = true;
-		// default is performance is off
-		this.performanceMetrics = false;
 		this.buildException = null;
 
 	} // end of ctor
@@ -160,17 +157,7 @@ public inherited sharing class accc_TriggerHandlerChainManager {
 	public String triggerEnvironment {
 		get { return this.m_environment;}
 	} // end of triggerEnvironment
-
-	/**
-	 * @description Continue if an exception on triggler handler (default to true)
-	 */
-	@TestVisible
-	public Boolean continueIfException { get; private set;}
-	/**
-	 * @description  gathering performance metric for the handler
-	 */
-	@TestVisible
-	public Boolean performanceMetrics  { get; private set;}
+ 
 	/**
 	 * Did we get a build exception
 	 */
@@ -213,18 +200,9 @@ public inherited sharing class accc_TriggerHandlerChainManager {
 				if ( chain != null ) {
 					// cache for later
 					accc_TriggerHandlerChainManager.cache(theDomainName, chain);
-					// set value after build
-					this.continueIfException = builder.continueIfException;
-					// gathering metrics
-					this.performanceMetrics = builder.performanceMetrics;
-				} else {
-					// the default it is true
-					this.continueIfException = false;
-				}
+				} 
 			} catch (Exception excp) {
 				chain = null;
-				// the default it is true
-				this.continueIfException = false;
 				// keep exception for caller reference
 				this.buildException = excp;
 				// process exception -- whatever is configured for process

@@ -1,7 +1,14 @@
 {
   "orgName": "Accc-Core-Scratch-install",
-  "edition": "Developer",
-  "features": ["MultiCurrency" ,"AuthorApex" ,"DebugApex" ,"BigObjectsBulkAPI" ,"ChangeDataCapture" ,"PlatformCache" ],
+  "edition": "Enterprise",
+  "features": [
+    "MultiCurrency" ,
+    "AuthorApex",
+    "DebugApex",
+    "BigObjectsBulkAPI" ,
+    "ChangeDataCapture" ,
+    "PlatformCache" 
+  ],
   "settings": {
     "communitiesSettings": {
       "enableNetworksEnabled": false

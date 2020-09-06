@@ -31,6 +31,5 @@
     <testClassName>accc_PlatformEvtMdtDataModelTest</testClassName>
     <testClassName>accc_SendPlatformEventNotificationTest</testClassName>
     <testClassName>accc_TestPlatformEventMock</testClassName>
-    <testClassName>accc_TriggerHandlerBaseTest</testClassName>
-    <testClassName>accc_TriggerHandlerResourcesTest</testClassName>
+
 </ApexTestSuite>
