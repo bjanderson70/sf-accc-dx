@@ -227,7 +227,7 @@ function installPackages() {
         local step=0;
         
         # get our package ids ( do not want to keep updating this script)
-         cat sfdx-project.json | grep 04t | awk '{print $1" "$2}' | sed 's/["|,|:]//g' | while read line ; do
+         cat sfdx-project.json | grep 04t | sed 's/["|,|:]//g' | awk '{print $1" "$2}'| while read line ; do
             local pgkId=`echo $line | awk '{print $2}'`
             local name=`echo $line | awk '{print $1}'`
             print "Installing package $name ($pgkId) for $orgName"
