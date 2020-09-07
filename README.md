@@ -47,11 +47,6 @@ Use the scripts to install the **ALL version** (i.e. with Platform Events + Trig
 
 The DX Project has scripts that have ability to control which packages to deploy (either the base ACCC or ACCC + PE/CDC)
 
-<a href="https://githubsfdeploy.herokuapp.com">
-  <img alt="Deploy to Salesforce"
-       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
-</a>
-
 ## Apex Docs
 If you download **CCCDocs** directory and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information. The documentation will also link to the Wiki
 
