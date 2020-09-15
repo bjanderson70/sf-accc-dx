@@ -60,6 +60,7 @@ orgName=
 scratchOrg=
 runUnitTests=
 quietly=
+installPack=
 installBase=
 shellLocation=`basename $0`;
 numOfSODays="2";
@@ -127,12 +128,13 @@ function help() {
 
     echo "${green}${bold}"
     echo ""
-    echo "Usage: $shellLocation -v <Dev-Hub> [ -u <username|targetOrg> | -l <num of Days to keep Scratch Org, default to 2> | -t | -d | -q | -h ]"
+    echo "Usage: $shellLocation -v <Dev-Hub> [ -u <username|targetOrg> | -l <num of Days to keep Scratch Org, default to 2> | -i | -t | -d | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
 	printf "\n\t -v <username|targetOrg>"
 	printf "\n\t -l <# of days to keep scratch org , defaults to $numOfSODays days>"
 	printf "\n\t -t run unit tests"
 	printf "\n\t -d turn on debug"
+    printf "\n\t -i install/re-install packages; otherwise, will PUSH source to target"
     printf "\n\t -q run quietly"
     printf "\n\t -h the help\n"
     resetCursor;
@@ -145,7 +147,7 @@ function help() {
 #######################################################
 function getCommandLineArgs() {
 
-	while getopts u:l:v:shqtb option
+	while getopts u:l:v:sihqtb option
 	do
 	   case "${option}"
 	   in
@@ -157,6 +159,7 @@ function getCommandLineArgs() {
 	    t) runUnitTests=1;;
         b) installBase=1;;
         q) quietly=1;;
+        i) installPack=1;;
 	    h) help; exit 1;;
 	   esac
 	done
@@ -245,6 +248,13 @@ function installPackages() {
         done
     fi
 
+}
+function pushOrInstall() {
+    if [ -z $installPack ]; then
+        installPackages
+    else
+        pushToScratch
+    fi
 }
 #######################################################
 # Push to Scratch Orgs

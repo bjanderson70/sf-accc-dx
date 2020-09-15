@@ -45,15 +45,7 @@
 
 
 # functions to process ( order matters)
-functions=(checkForSFDX\
-            runFromRoot\
-			createScratchOrg\
-            pushToScratch\
-            setPermissions\
-            runApexTests\
-            complete\
-            openOrg
-            )
+functions=(checkForSFDX runFromRoot createScratchOrg pushOrInstall setPermissions runApexTests complete openOrg)
 #######################################################
 # soure common functions
 #
