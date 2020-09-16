@@ -229,7 +229,7 @@ function installPackages() {
 
      if [ ! -z $orgName ]; then
         local step=0;
-        
+        print "installing content to org [$orgName]..."
         # get our package ids ( do not want to keep updating this script)
          cat sfdx-project.json | grep 04t | sed 's/["|,|:]//g' | awk '{print $1" "$2}'| while read line ; do
             local pgkId=`echo $line | awk '{print $2}'`
@@ -251,9 +251,9 @@ function installPackages() {
 }
 function pushOrInstall() {
     if [ -z $installPack ]; then
-        installPackages
-    else
         pushToScratch
+    else
+        installPackages
     fi
 }
 #######################################################
@@ -262,7 +262,7 @@ function pushOrInstall() {
 #######################################################
 function pushToScratch() {
     if [ ! -z $orgName ]; then
-        print "pushing content to scratch org ..."
+        print "pushing content to scratch org [$orgName]..."
         $SFDX_CLI_EXEC force:source:push -u "$orgName"
     fi
 }
