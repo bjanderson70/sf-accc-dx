@@ -1,6 +1,6 @@
 {
   "orgName": "Accc-Pe-Core-Scratch-install",
-  "edition": "Developer",
+  "edition": "Enterprise",
   "features": [ 
               "AuthorApex" 
               ,"DebugApex"
