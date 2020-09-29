@@ -36,7 +36,7 @@
  *
  * Below is an example of how to use this class:
  *
-        static accc_TriggerMediator triggerMediator = new accc_TriggerMediator(Account.class);
+        accc_TriggerMediator triggerMediator = new accc_TriggerMediator(Account.class);
         //
         // :
         //
@@ -371,7 +371,7 @@ public virtual with sharing class accc_TriggerMediator {
                                             existingRecords);
             // set our state
             successful= hasException == null;
-            // set internal handler's  resource state ( handlers in the following chain can determine state better, if continuing)
+            // set internal handlers  resource state ( handlers in the following chain can determine state better, if continuing)
             // as the handler that follows (should we continue) can determine corrective measures
             handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,hasException);
             // do we continue after an exception
@@ -405,7 +405,7 @@ public virtual with sharing class accc_TriggerMediator {
         Exception handlerException = null;
         Boolean performanceMetrics = handler.performanceMetrics();
         accc_ApexPerformanceMetrics metrics =null;
-        // log start of our handler's performance
+        // log start of our handlers performance
         if ( performanceMetrics) {
             metrics = new accc_ApexPerformanceMetrics('Start :' + className);
             accc_ApexUtilities.log(metrics.toString());
@@ -447,7 +447,7 @@ public virtual with sharing class accc_TriggerMediator {
                                    + ', '
                                    + 'Trigger State:' + state );
         } finally {
-            // log the end of the handlers' performance
+            // log the end of the handlers performance
             if ( performanceMetrics) {
                 metrics.message ='End :' +className;
                 accc_ApexUtilities.log(metrics.toString());
