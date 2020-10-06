@@ -14,6 +14,10 @@
         <field>Domain__c</field>
         <value xsi:type="xsd:string">Contact</value>
     </values>
+     <values>
+        <field>SObject_Domain_Name__c</field>
+        <value xsi:type="xsd:string">Contact</value>
+    </values>
     <values>
         <field>Environment__c</field>
         <value xsi:type="xsd:string">Test</value>

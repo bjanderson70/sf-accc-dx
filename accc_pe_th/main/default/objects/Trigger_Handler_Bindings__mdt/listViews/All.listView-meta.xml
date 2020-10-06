@@ -5,13 +5,12 @@
     <columns>MasterLabel</columns>
     <columns>NamespacePrefix</columns>
     <columns>DeveloperName</columns>
-    <columns>Domain__c</columns>
     <columns>Environment__c</columns>
+    <columns>SObject_Domain_Name__c</columns>
     <columns>Trigger_Handler_Class__c</columns>
     <columns>Active__c</columns>
     <columns>Continue_If_Exception__c</columns>
     <columns>Performance_Metrics__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
-    <language>en_US</language>
 </ListView>

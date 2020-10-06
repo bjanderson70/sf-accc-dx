@@ -52,7 +52,7 @@ public virtual with sharing class accc_TriggerHandlerMetaDataModel extends accc_
 	static final String CUSTOM_MDT_ENVIRONMENT = 'Environment__c';
 	// custom mdt domain
 	@TestVisible
-	static final String CUSTOM_MDT_DOMAIN =  'Domain__c';
+	static final String CUSTOM_MDT_DOMAIN =  'SObject_Domain_Name__c';
 
 	/**
 	 * @description data cache information - viewmodel representation , allows for changes
@@ -82,12 +82,12 @@ public virtual with sharing class accc_TriggerHandlerMetaDataModel extends accc_
 	@TestVisible
 	static private final List<String> m_FieldList = new List<String> {
 		'Environment__c'
-		, 'Domain__c'
 		, 'Trigger_Handler_Class__c'
 		, 'Active__c'
 		, 'Continue_If_Exception__c'
 		, 'Performance_Metrics__c'
 		, 'Order__c'
+		, 'SObject_Domain_Name__c'
 
 	};
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ public virtual with sharing class accc_TriggerHandlerMetaDataModel extends accc_
 				/* Set Data from the custom metadata type */
 				result.environment = accc_ApexUtilities.normalizeString(cmdt.Environment__c, true).toLowerCase();
 				result.clazz = accc_ApexUtilities.normalizeString(cmdt.Trigger_Handler_Class__c, true);
-				result.domain = accc_ApexUtilities.normalizeString(cmdt.Domain__c, true);
+				result.domain = accc_ApexUtilities.normalizeString(cmdt.SObject_Domain_Name__c, true);
 				result.isActive = cmdt.Active__c == null ? false : cmdt.Active__c;
 				result.continueIfException = cmdt.Continue_If_Exception__c == null ? false : cmdt.Continue_If_Exception__c ;
 				result.performanceMetrics = cmdt.Performance_Metrics__c == null ? false : cmdt.Performance_Metrics__c ;
