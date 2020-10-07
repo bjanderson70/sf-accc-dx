@@ -10,10 +10,6 @@
         <field>Continue_If_Exception__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
-    <values>
-        <field>Domain__c</field>
-        <value xsi:type="xsd:string">Contact</value>
-    </values>
      <values>
         <field>SObject_Domain_Name__c</field>
         <value xsi:type="xsd:string">Contact</value>
