@@ -20,7 +20,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Domain__c</field>
+                <field>SObject_Domain_Name__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -90,7 +90,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h6g000008AW6F</masterLabel>
+        <masterLabel>00h11000002Y0sB</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
