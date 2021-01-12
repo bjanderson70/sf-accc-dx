@@ -58,4 +58,5 @@
     <testClassName>accc_TestUtility</testClassName>
     <testClassName>accc_TriggerHelperClassTest</testClassName>
     <testClassName>accc_VirtualCustomSettingsTest</testClassName>
+    <testClassName>accc_SObjectGetSetTest</testClassName>
 </ApexTestSuite>

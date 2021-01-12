@@ -5,15 +5,16 @@
             "default": true,
             "package": "ACCC_PE_TH_One_Package",
             "versionName": "ACCC Common,Platform Events and Thread Handling- Winter '21",
-            "versionNumber": "1.3.4.NEXT",
+            "versionNumber": "1.4.4.NEXT",
             "definitionFile": "config/project-scratch-def.json"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0",
+    "sourceApiVersion": "50.0",
     "packageAliases": {
         "ACCC_PE_TH_One_Package": "0Ho6g000000fy7sCAA",
-        "ACCC_PE_TH_One_Package@1.3.4-1": "04t6g000008C0LzAAK"
+        "ACCC_PE_TH_One_Package@1.3.4-1": "04t6g000008C0LzAAK",
+        "ACCC_PE_TH_One_Package@1.4.4-1": "04t6g000008fCgOAAU"
     }
 }
