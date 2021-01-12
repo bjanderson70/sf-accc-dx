@@ -324,6 +324,8 @@ public virtual class accc_SObjectGetSet {
      **/
     public Object setValue(SObject item,String apiName, Object value){
         Object result=null;
+        // reset th exception before getting value
+        this.theException =null;
         if ( item == null || string.isBlank(apiName) ) {
             throw new accc_SObjectGetSetException(NOT_RECOGNIZED_SOBJECT_OR_ITEM);
         }
@@ -364,6 +366,8 @@ public virtual class accc_SObjectGetSet {
      * @return Object value from sobject
      **/
     public Object getValue(SObject item,Schema.SObjectField apiName){
+        // reset th exception before getting value
+        this.theException =null;
         if ( item == null|| apiName == null  ) {
             return this.DEFAULT_RETURN_VALUE;
         }
@@ -381,13 +385,13 @@ public virtual class accc_SObjectGetSet {
      */
     public Object getValue(SObject item, String apiName, String itemType){
 
+        // reset th exception before getting value
+        this.theException =null;
         if ( item == null || String.isBlank(apiName) ) {
             return this.DEFAULT_RETURN_VALUE;
         }
 
         Object data =null;
-        // reset the exception before getting value
-        this.theException =null;
         // check the type if ok;otherwise, throw an exception on the 'itemType'
         // This just ensures complete correctness; whereby an incoming (ETL) wants to ensure data value correctness
         // otherwise, this acts as a NO-OP
@@ -439,9 +443,9 @@ public virtual class accc_SObjectGetSet {
         Object result=null;
 
         // NOTE: Speed-UP : If you know there are NO related objects, this call can be avoid
-
+	this.theException =null;
         // here we check for SObjects ( related object, dot notation)
-        if ( apiName != null && apiName.contains(FIELD_SEPARATOR)) {
+        if ( String.isNotBlank(apiName) && apiName.contains(FIELD_SEPARATOR)) {
             SObject last=item;
             // will always returns non-null value
             names = accc_ApexUtilities.splitStringOnExpression(apiName,'\\.');

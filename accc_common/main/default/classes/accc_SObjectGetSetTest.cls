@@ -145,10 +145,12 @@ private class accc_SObjectGetSetTest {
         // act
 
         // assert
-        system.assertEquals('test1', ctor.getRelatedValue(sample[0],'Account.Name'));
+ 
+        system.assertEquals(null, ctor.getRelatedValue(sample[0],'Account.Name'));
+        system.assertNotEquals(null, ctor.theException);
         system.assertEquals(null, ctor.getRelatedValue(sample[0],''));
-        system.assertEquals(null, ctor.theException);
         system.assertEquals(null, ctor.getRelatedValue(sample[0],'Name'));
+        system.assertEquals (null,ctor.theException);
 
     }
     ///////////////////////////////////////////////////////////////////
