@@ -273,8 +273,8 @@ global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
         if ( msg != null && this.isTracingOn()  ) {
             LoggingLevel lvl = accc_ApexUtilities.logLevel();
             this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
-
-            if ( this.isTheTraceNotCCandShowAllowed() ) {
+            // if user does not want trace ; however, for testing these must be set
+            if ( this.isTheTraceNotCCandShowAllowed() || accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 this.write(lvl, this.logFormatter.format(msg, this.dataModel));
             }
         }
@@ -293,13 +293,29 @@ global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
             LoggingLevel lvl = accc_ApexUtilities.logLevel();
             this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
             string allstring = string.join(msgs, ',');
-
-            if ( this.isTheTraceNotCCandShowAllowed() ) {
+            // if user does not want trace ; however, for testing these must be set
+            if ( this.isTheTraceNotCCandShowAllowed() || accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 this.write(lvl,this.logFormatter.format(allstring, this.dataModel) );
             }
         }
     } // end of trace
 
+    /**
+     * @description set tracing on/off (manually override)
+     *
+     * @param traceOnOff Boolean
+     */
+    public void traceOn(Boolean traceOnOff) {
+        this.isTracingOn(traceOnOff);
+    }
+    /**
+     * @description set tracing on/off (manually override)
+     *
+     * @return is trace On/Off Boolean
+     */
+    public Boolean traceOn() {
+        return this.tracingIsOn==null ? false :  this.tracingIsOn == true;
+    }
     ////////////////////////////////////////////////////////////////////////////////
     /// Protected methods
     ////////////////////////////////////////////////////////////////////////////////
@@ -409,7 +425,7 @@ global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
 
     /**
      * @description is the tracing on
-     * @return trus, if tracing is on
+     * @return true, if tracing is on
      */
     @TestVisible
     protected boolean isTracingOn() {
@@ -418,6 +434,19 @@ global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
             this.tracingIsOn = accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceFlagOn_r);
         }
         return (boolean)this.tracingIsOn;
+
+    } // end of isTracingOn
+      /**
+       * @description allow children to set trace on/off
+       * @param usrRequest Boolean
+       * @return true, previous setting
+       */
+    @TestVisible
+    protected boolean isTracingOn(Boolean usrRequest) {
+        Boolean previous = (boolean) this.tracingIsOn;
+        this.tracingIsOn = usrRequest;
+
+        return previous;
 
     } // end of isTracingOn
 
@@ -444,10 +473,10 @@ global virtual inherited sharing class accc_ApexLogger implements accc_ILogger {
     /////////////////////////////////////////////////////////////////////////////
 
     /**
-    * @description get the data model
-    * @return accc_ApexLogDataModel 
-    **/
-     @TestVisible
+     * @description get the data model
+     * @return accc_ApexLogDataModel
+     **/
+    @TestVisible
     private accc_ApexLogDataModel getDataModel(){
         if ( this.dataModel == null ) {
             this.dataModel=new accc_ApexLogDataModel( new DmlException().getStackTraceString()

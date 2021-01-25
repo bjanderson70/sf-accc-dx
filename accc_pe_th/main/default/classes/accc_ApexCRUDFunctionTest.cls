@@ -54,7 +54,7 @@ private class accc_ApexCRUDFunctionTest {
         PLATFORM_USER => 'Standard User'
     };
     // default values in object
-     @TestVisible
+    @TestVisible
     static final Set<String> DEFAULT_SETTINGS = new Set<String> {
         'Debug',
         'Info'
@@ -86,7 +86,7 @@ private class accc_ApexCRUDFunctionTest {
         List<AcccApplicationLog__c> logs = accc_ApexCRUDFunctionTest.createTestLogs();
         accc_SObjectBaseWriter writer = new accc_SyncAsyncWriter(logs);
         // we have to set writer's crud bec/ by DEFAULT it uses inherited mode
- 
+
         Boolean admin=true;
         User usr= accc_ApexCRUDFunctionTest.setTestUser(SADMIN,true,true,true);
         // admin
@@ -211,10 +211,16 @@ private class accc_ApexCRUDFunctionTest {
                                             Boolean edit,
                                             Boolean remove){
 
+        // placed in a try/catch in the event it is invoked
+        // more than once in a transaction
+
         PermissionSet ps = new PermissionSet(Name = 'TestIt'+ DateTime.now().millisecond(),
                                              Label = 'Test It ' + DateTime.now().millisecond() + objectType+ ' LogTest');
-        insert ps;
+        try {
+            insert ps;
+        } catch (Exception excp) {
 
+        }
         ObjectPermissions oPerm = null;
         if ( objectType == 'accc_Org_Events__b') {
             oPerm=new ObjectPermissions(ParentId = ps.Id,
@@ -230,11 +236,22 @@ private class accc_ApexCRUDFunctionTest {
                                         PermissionsDelete = remove,
                                         SObjectType = objectType);
         }
+        // placed in a try/catch in the event it is invoked
+        // more than once in a transaction
+        try {
+            insert oPerm;
+        } catch (Exception excp) {
 
-        insert oPerm;
+        }
 
         PermissionSetAssignment assignment = new PermissionSetAssignment(AssigneeId = usr.Id,
                                                                          PermissionSetId = ps.Id);
-        insert assignment;
+        // placed in a try/catch in the event it is invoked
+        // more than once in a transaction
+        try {
+            insert assignment;
+        } catch (Exception excp) {
+
+        }
     }
 }// end of accc_ApexCRUDFunctionTest

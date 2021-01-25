@@ -114,39 +114,46 @@ private class accc_ApexLoggerTest {
     } // end of testMessagesWithInjectionOfLogLevel
 
     /**
-    * @description test message traced with proper log level
-    */
+     * @description test message traced with proper log level
+     */
     @isTest static void testTraceMessagesWithInjectionOfLogLevel() {
         // arrange & act
         List<String> messages = accc_ApexLoggerTest.getLogMessages();
         LoggingLevel lvl = (LoggingLevel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
-
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
-
+        //  tracing is turned on!
+        logger.traceOn(true);
         for (Integer i = 0; i < messages.size(); i++) {
+            //Boolean tracingOn =logger.lastMessage()==null;
             logger.trace(messages[i]);
             system.assertEquals(true, logger.lastMessage().contains(lvl.name()));
+
         }
     } // end of testTraceMessagesWithInjectionOfLogLevel
 
     /**
-    * @description test message traced with proper log level
-    */
+     * @description test message traced with proper log level
+     */
     @isTest static void testTraceListOfMessagesWithInjectionOfLogLevel() {
         // arrange & act
         List<String> messages = accc_ApexLoggerTest.getLogMessages();
         LoggingLevel lvl = (LoggingLevel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
 
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
-
+        //  tracing is turned on!
+        logger.traceOn(true);
+ 
         for (Integer inx = 0; inx < messages.size(); inx++) {
-            logger.trace(new List<Object> {messages[inx]});
+            // Boolean tracingOn =logger.lastMessage()==null;
+            logger.trace(new List<Object> {messages[inx]});  
+            // assert
             system.assertEquals(true, logger.lastMessage().contains(messages[inx]));
+
         }
     } // end of testTraceListOfMessagesWithInjectionOfLogLevel
 
     /**
-    *
+     *
      * @description test message written with improper log level
      */
     @isTest static void negativeTestMessagesWithInjectionOfLogLevel() {
@@ -209,15 +216,15 @@ private class accc_ApexLoggerTest {
     // get log messages
     //
     private static List<String> getLogMessages() {
-        List<String> messages = new String[] {
-            'info'
-            , 'debug'
-            , 'error'
-            , 'fine'
-            , 'finer'
-            , 'finest'
+        return new String[] {
+                   'info'
+                   , 'debug'
+                   , 'error'
+                   , 'fine'
+                   , 'finer'
+                   , 'finest'
         };
-        return messages;
+
     } // end of getLogMessages
 
 } // end of accc_ApexLoggerTest

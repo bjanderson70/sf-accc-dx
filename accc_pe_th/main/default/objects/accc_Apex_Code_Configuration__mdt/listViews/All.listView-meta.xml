@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>DeveloperName</columns>
+    <columns>CacheResource__c</columns>
+    <columns>CacheStrategy__c</columns>
+    <columns>CacheStrategyInvocation__c</columns>
+    <columns>ConfigurationResource__c</columns>
+    <columns>DML_Provider__c</columns>
+    <columns>ExceptionFormatter__c</columns>
+    <columns>ExceptionHandler__c</columns>
+    <columns>ExceptionPolicyHandler__c</columns>
+    <columns>FactoryResource__c</columns>
+    <columns>FallbackResource__c</columns>
+    <columns>LogFormatter__c</columns>
+    <columns>Logger__c</columns>
+    <columns>PreviousTransactionResultResource__c</columns>
+    <columns>RuntimeEnvironment__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

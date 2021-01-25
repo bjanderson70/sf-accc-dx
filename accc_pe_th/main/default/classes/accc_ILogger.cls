@@ -43,74 +43,74 @@ public virtual interface accc_ILogger {
      */
     String lastMessage();
     /**
-    * @description trace message behaves like a write,but only if trace flag is on
-    *
-    * @param msg Object to write
-    */
+     * @description trace message behaves like a write,but only if trace flag is on
+     *
+     * @param msg Object to write
+     */
     void trace(Object msg);
     /**
-    * @description trace messages behaves like a write,but only if trace flag is on
-    *
-    * @param msg Objects to write
-    */
+     * @description trace messages behaves like a write,but only if trace flag is on
+     *
+     * @param msg Objects to write
+     */
     void trace(List<Object> msg);
     /**
-    * @description write out message to sink based on the  log level setting
-    *
-    * @param msg Object to write
-    */
+     * @description write out message to sink based on the  log level setting
+     *
+     * @param msg Object to write
+     */
     void write(Object msg);
     /**
-    * @description write out messages to sink based on the  log level setting
-    *
-    * @param msg Objects to write
-    */
+     * @description write out messages to sink based on the  log level setting
+     *
+     * @param msg Objects to write
+     */
     void write(List<Object> msg);
     /**
-    * @description info log level
-    *
-    * @param msg Object to write
-    */
+     * @description info log level
+     *
+     * @param msg Object to write
+     */
     void info(Object msg);
 
     /**
-    * @description debug log level
-    *
-    * @param msg Object to write
-    */
+     * @description debug log level
+     *
+     * @param msg Object to write
+     */
     void debug(Object msg);
 
     /**
-    * @description warn log level
-    *
-    * @param msg Object to write
-    */
+     * @description warn log level
+     *
+     * @param msg Object to write
+     */
     void warn(Object msg);
 
     /**
-    * @description error log level
-    *
-    * @param msg Object to write
-    */
+     * @description error log level
+     *
+     * @param msg Object to write
+     */
     void error(Object msg);
 
     /**
-    * @description fine log level
-    *
-    * @param msg Object to write
-    */
+     * @description fine log level
+     *
+     * @param msg Object to write
+     */
     void fine(Object msg);
     /**
-    * @description finer log level
-    *
-    * @param msg Object to write
-    */
+     * @description finer log level
+     *
+     * @param msg Object to write
+     */
     void finer(Object msg);
     /**
-    * @description finest log level
-    *
-    * @param msg Object to write
-    */
+     * @description finest log level
+     *
+     * @param msg Object to write
+     */
     void finest(Object msg);
     /**
      * @description get the current logging level
@@ -118,10 +118,24 @@ public virtual interface accc_ILogger {
      */
     LoggingLevel logLevel();
     /**
-    * @description set the current logging level
-    *
-    * @param level LoggingLevel
-    */
+     * @description set the current logging level
+     *
+     * @param level LoggingLevel
+     */
     void logLevel(LoggingLevel level);
+
+    /**
+     * @description set tracing on/off (manually override)
+     *
+     * @param traceOnOff Boolean
+     */
+    void traceOn(Boolean traceOnOff);
+    /**
+     * @description set tracing on/off (manually override)
+     *
+     * @return is trace On/Off Boolean
+     */
+    Boolean traceOn();
+
 
 } // end of accc_ILogger

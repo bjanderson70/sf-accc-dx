@@ -34,7 +34,7 @@
  *                       May need to revist to determine if we can improve performance.
  * @Author             : Bill Anderson
  * @Group              : Metadata
- * @Last Modified On   : 01-12-2021
+ * @Last Modified On   : 01-22-2021
  * @Modification Log   :
  * Ver       Date            Author                 Modification
  * 1.0    9/8/2019  Bill Anderson     Initial Version
@@ -323,7 +323,7 @@ public virtual class accc_SObjectGetSet {
      * @return Object previous value from sobject
      **/
     public Object setValue(SObject item,String apiName, Object value){
-        Object result=null;
+        
         // reset th exception before getting value
         this.theException =null;
         if ( item == null || string.isBlank(apiName) ) {
@@ -339,7 +339,7 @@ public virtual class accc_SObjectGetSet {
      * @return Object previous value from sobject
      **/
     public Object setValue(SObject item, Schema.SObjectField field, Object value) {
-        Object result=null;
+        
         // reset th exception before getting value
         this.theException =null;
         if ( item == null || field==null ) {
@@ -484,23 +484,23 @@ public virtual class accc_SObjectGetSet {
     /// Protected Methods
     ////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * injectIntoJSON
-     * @description get the sobject by name and write out json; this
-     * assumes you know the proper TYPE when setting it in the JSON metadata.
-     * If you are UNSURE, set the 'Type' to 'Unknown' and it will render as a String
-     *
-     * @param json generator
-     * @param item sobject
-     * @param apiName api name
-     * @param itemType value type
-     * @return void
-     **/
-    @TestVisible
-    protected virtual void injectIntoJSON(Object jsGen,SObject item,String name, String apiName, String itemType){
+    // /**
+    //  * injectIntoJSON
+    //  * @description get the sobject by name and write out json; this
+    //  * assumes you know the proper TYPE when setting it in the JSON metadata.
+    //  * If you are UNSURE, set the 'Type' to 'Unknown' and it will render as a String
+    //  *
+    //  * @param json generator
+    //  * @param item sobject
+    //  * @param apiName api name
+    //  * @param itemType value type
+    //  * @return void
+    //  **/
+    // @TestVisible
+    // protected virtual void injectIntoJSON(Object jsGen,SObject item,String name, String apiName, String itemType){
 
 
-    }// end of injectIntoJSON
+    // }// end of injectIntoJSON
 
 
     ////////////////////////////////////////////////////////////////////////////////

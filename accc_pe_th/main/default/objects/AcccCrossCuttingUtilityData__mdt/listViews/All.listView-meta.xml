@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>DeveloperName</columns>
+    <columns>NamespacePrefix</columns>
+    <columns>environmentClass__c</columns>
+    <columns>logLevelForTrace__c</columns>
+    <columns>maxNumberOfItemsInChunks__c</columns>
+    <columns>showCCInfo__c</columns>
+    <columns>softAssert__c</columns>
+    <columns>traceFlagOn__c</columns>
+    <columns>triggersEnable__c</columns>
+    <columns>useCachingStrategy__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

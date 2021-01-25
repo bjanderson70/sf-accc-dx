@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>DeveloperName</columns>
+    <columns>NamespacePrefix</columns>
+    <columns>CachePartition__c</columns>
+    <columns>CachingEnabled__c</columns>
+    <columns>Category__c</columns>
+    <columns>ContainFields__c</columns>
+    <columns>TimeToLiveMS__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>
