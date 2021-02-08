@@ -47,6 +47,8 @@ private class accc_ApexCRUDProviderTest {
     };
     static final String WARNING = 'Warning';
     static final String ERROR = 'Error';
+    static final String READ_ONLY_PROFILE = 'Read Only';
+    static final String STANDARD_PROFILE = 'Standard User';
 
     @isTest
     static void getProviderTest() {
@@ -902,7 +904,8 @@ private class accc_ApexCRUDProviderTest {
      */
     @TestVisible
     private static User setTestUser(Boolean create, Boolean edit, Boolean remove){
-        Profile prof = [SELECT Id FROM Profile WHERE Name='Read Only'];
+        // may return null if either one of the profiles is NOT present ( but should be)
+        Profile prof = accc_ApexCRUDProviderTest.getProfile();
 
         User newUser = new User(Alias = 'readonly',
                                 Email='standarduser@mytest.com',
@@ -965,5 +968,20 @@ private class accc_ApexCRUDProviderTest {
         PermissionSetAssignment assignment = new PermissionSetAssignment(AssigneeId = usr.Id,
                                                                          PermissionSetId = ps.Id);
         insert assignment;
+    }
+
+    /**
+     * getProfile
+     * @description get a profile, Read Only, if present, fallback to Standard ( for Scratch Org)
+     * @return  Profile
+     */
+    @TestVisible
+    private static Profile getProfile() {
+
+        List<Profile> prof = [SELECT Id FROM Profile WHERE Name= :READ_ONLY_PROFILE LIMIT 1];
+        if ( prof.isEmpty() ) {
+            prof = [SELECT Id FROM Profile WHERE Name= :STANDARD_PROFILE LIMIT 1];
+        }
+        return prof.isEmpty() ? null : prof[0];
     }
 }// end of accc_ApexCRUDProviderTest

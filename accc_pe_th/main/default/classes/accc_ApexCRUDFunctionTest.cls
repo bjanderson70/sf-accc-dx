@@ -59,6 +59,8 @@ private class accc_ApexCRUDFunctionTest {
         'Debug',
         'Info'
     };
+    static final String READ_ONLY_PROFILE = 'Read Only';
+    static final String STANDARD_PROFILE = 'Standard User';
 
     @isTest
     static void testWithSyncAsyncWriterReadOnly(){
@@ -173,7 +175,7 @@ private class accc_ApexCRUDFunctionTest {
                                     Boolean edit,
                                     Boolean remove){
         String name=usersTypes.get(userNameKey);
-        Profile prof = [SELECT Id FROM Profile WHERE Name=:name];
+        Profile prof = accc_ApexCRUDFunctionTest.getProfile();
 
         User newUser = new User(Alias = userNameKey,
                                 Email='standarduser@mytest.com',
@@ -253,5 +255,20 @@ private class accc_ApexCRUDFunctionTest {
         } catch (Exception excp) {
 
         }
+    }
+
+    /**
+    * getProfile
+    * @description get a profile, Read Only, if present, fallback to Standard ( for Scratch Org)
+    * @return  Profile
+    */
+    @TestVisible
+    private static Profile getProfile() {
+
+        List<Profile> prof = [SELECT Id FROM Profile WHERE Name= :READ_ONLY_PROFILE LIMIT 1];
+        if ( prof.isEmpty() ) {
+            prof = [SELECT Id FROM Profile WHERE Name= :STANDARD_PROFILE LIMIT 1];
+        }
+        return prof.isEmpty() ? null : prof[0];
     }
 }// end of accc_ApexCRUDFunctionTest

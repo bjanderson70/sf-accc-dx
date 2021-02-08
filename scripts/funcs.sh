@@ -60,6 +60,7 @@ scratchOrg=
 runUnitTests=
 quietly=
 installBase=
+devhub=
 shellLocation=`dirname $0`;
 #######################################################
 # Utility to  reset cursor
@@ -124,10 +125,11 @@ function help() {
 
     echo "${green}${bold}"
     echo ""
-    echo "Usage: $shellLocation [ -u <username|targetOrg> | -t | -v | -q | -h ]"
+    echo "Usage: $shellLocation [ -u <username|targetOrg> | -v <dev-hub> | -t | -d | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
 	printf "\n\t -t run unit tests"
-	printf "\n\t -v turn on debug"
+	printf "\n\t -d turn on debug"
+    printf "\n\t -v <dev-hub>"
     printf "\n\t -q run quietly"
     printf "\n\t -h the help\n"
     resetCursor;
@@ -139,18 +141,19 @@ function help() {
 #
 #######################################################
 function getCommandLineArgs() {
-	while getopts u:svhqtb option
+	while getopts u:v:shqtbd option
 	do
-		case "${option}"
-		in
-			u) orgName=${OPTARG};;
-			v) set -xv;;
+	    case "${option}"
+	    in
+	    u) orgName=${OPTARG};;
+	    v) devhub="-v ${OPTARG}";;
+	    d) set -xv;;
             s) scratchOrg=1;;
-			t) runUnitTests=1;;
+	    t) runUnitTests=1;;
             b) installBase=1;;
             q) quietly=1;;
-			h) help; exit 1;;
-		esac
+	    h) help; exit 0;;
+	    esac
 	done
     #if no org, then creating a scratch org
     if [ -z $orgName ]; then

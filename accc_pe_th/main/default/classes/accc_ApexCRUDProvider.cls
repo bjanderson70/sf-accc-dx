@@ -459,20 +459,22 @@ global inherited sharing class accc_ApexCRUDProvider implements accc_IApexCRUDPr
 
             try {
                 accc_ApexDMLOptions options = this.getDmlOptions();
-                // could be null , check
-                if ( theObjects != null ) {
+                // could be null and empty , check
+                if ( theObjects != null && !theObjects.isEmpty() ) {
                     // see if we can delete records ( checking the record if not system mode)
                     List<SObject> sanitizedRecords=this.getAccessibleRecords(theObjects);
-                    if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
-                        // this is awful; but not going to mock as one still does not execute the delete
-                        if ( accc_ApexConstants.UNIT_TEST_RUNNING
-                             && accc_ApexCRUDProvider.forTestingConditions == true ) {
-                            results=accc_ApexCRUDProvider.getTestResultsForDeleteImmediate();
-                        } else {
-                            results=Database.deleteImmediate(sanitizedRecords);
+                    if ( sanitizedRecords != null &&  !sanitizedRecords.isEmpty() ) {
+                        if ( options.theDMLMode == accc_ApexDMLOptions.DMLMode.IMMEDIATE ) {
+                            // this is awful; but not going to mock as one still does not execute the delete
+                            if ( accc_ApexConstants.UNIT_TEST_RUNNING && accc_ApexCRUDProvider.forTestingConditions == true ) {
+                                results=accc_ApexCRUDProvider.getTestResultsForDeleteImmediate();
+                            } else {
+                                results=Database.deleteImmediate(sanitizedRecords);
+                            }
+                            // even though we sanitized the records, checkmarx wants an additional check
+                        } else if (  sanitizedRecords[0].getSObjectType().getDescribe().isDeletable() ) {
+                            results=Database.delete(sanitizedRecords,options.getDmlOptions().OptAllOrNone);
                         }
-                    } else {
-                        results=Database.delete(sanitizedRecords,options.getDmlOptions().OptAllOrNone);
                     }
                 }
 
