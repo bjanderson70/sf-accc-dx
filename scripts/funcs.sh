@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ############################################################################
-# Copyright (c) 2020, Salesforce.  All rights reserved.
+# Copyright (c) 2020-2021-2021, Salesforce.  All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -65,12 +65,18 @@ installBase=
 shellLocation=`basename $0`;
 numOfSODays="2";
 devhub=;
+sObjectName=;
+sObjectNameNeed=1;
+domainName=;
+templateDir=;
+outputDir=;
+
 #######################################################
 # Utility to  reset cursor
 #
 #######################################################
 function resetCursor() {
-    echo "${reset}" 
+    echo "${reset}"
 }
 #######################################################
 # Utility print out error
@@ -78,9 +84,9 @@ function resetCursor() {
 #######################################################
 function handleError() {
 	echo "${red}${bold}"
-	printf >&2 "\n\tERROR: $1"" Aborted\n"; 
+	printf >&2 "\n\tERROR: $1"" Aborted\n";
 	resetCursor;
-	exit -1; 
+	exit -1;
 }
 #######################################################
 # Utility print out error
@@ -88,7 +94,7 @@ function handleError() {
 #######################################################
 function runFromRoot() {
 	local cdir=`pwd | grep "/scripts"`
-    if [ ! -z $cdir ]; then
+    if [ ! -z ${cdir} ]; then
        cd ../;
     fi
     userDir=`pwd`;
@@ -108,7 +114,7 @@ function shutdown() {
 #
 #######################################################
 function print(){
-    if [ -z $quietly ]; then
+    if [ -z ${quietly} ]; then
         echo "${green}${bold}$1";
         resetCursor;
     fi
@@ -120,6 +126,15 @@ function print(){
 function checkForSFDX(){
 	type $SFDX_CLI_EXEC >/dev/null 2>&1 || { handleError " $shellLocation requires sfdx but it's not installed or found in PATH."; }
 }
+
+#######################################################
+# Set the Sobject Need ( by default it is on)
+#
+#######################################################
+function needSObjectName() {
+    sObjectNameNeed=$1
+}
+
 #######################################################
 # Utility for help
 #
@@ -130,7 +145,7 @@ function help() {
     echo ""
     echo "Usage: $shellLocation -v <Dev-Hub> [ -u <username|targetOrg> | -l <num of Days to keep Scratch Org, default to 2> | -i | -t | -d | -q | -h ]"
 	printf "\n\t -u <username|targetOrg>"
-	printf "\n\t -v <username|targetOrg>"
+	printf "\n\t -v <username|dev-hub-alias>"
 	printf "\n\t -l <# of days to keep scratch org , defaults to $numOfSODays days>"
 	printf "\n\t -t run unit tests"
 	printf "\n\t -d turn on debug"
@@ -140,14 +155,96 @@ function help() {
     resetCursor;
 	exit 0
 }
+#######################################################
+# Utility for help for generators
+#
+#######################################################
+function help2() {
 
+    echo "${green}${bold}"
+    echo ""
+    echo "Usage: $shellLocation -d <pluralized-domain-name> -s <SObject-Name>| -h | -m ]"
+	printf "\n\t -d <pluralized-domain-name>, i.e. Accounts, Contacts, Leads, etc."
+    if [  ${sObjectNameNeed} -eq 1 ]; then
+	    printf "\n\t -s <SObject-Name>, i.e. Account, Contact, Lead, etc."
+    fi
+    printf "\n\t -m run in debug-mode"
+    printf "\n\t -h the help\n"
+    resetCursor;
+	exit 0
+}
+#######################################################
+# Utility for help for generators
+#
+#######################################################
+function help3() {
+
+    echo "${green}${bold}"
+    echo ""
+    echo "Usage: $shellLocation -v <Dev-Hub> | -h | -d ]"
+	printf "\n\t -v <Dev-Hub> [REQUIRED]"
+    printf "\n\t -d run in debug-mode"
+    printf "\n\t -h the help\n"
+    resetCursor;
+	exit 0
+}
+
+#######################################################
+# Command Line Arguments (for generators)
+#
+#######################################################
+function getCommandLineArgs2() {
+
+	while getopts d:s:mh option
+	do
+	   case "${option}"
+	   in
+	    s) sObjectName=${OPTARG};;
+	    d) domainName=${OPTARG};;
+	    m) set -xv;;
+	    h) help2;;
+	   esac
+	done
+    # need sObjectName
+    if [ -z ${sObjectName} ]; then
+        if [  ${sObjectNameNeed} -eq 1 ]; then
+            handleError "Need to know the SObject Name  "
+        fi
+    fi
+	#need to know domainName
+    if [ -z ${domainName} ]; then
+        handleError "Need to know the Domain Name  "
+    fi
+}
+#######################################################
+# Command Line Arguments
+#
+#######################################################
+function getCommandLineArgs3() {
+
+	while getopts l:v:dh option
+	do
+	   case "${option}"
+	   in
+	    l) numOfSODays=${OPTARG};;
+		v) devhub=${OPTARG};;
+	    d) set -xv;;
+	    h) help3;;
+	   esac
+	done
+
+	#need to know dev-hub
+    if [ -z ${devhub} ]; then
+        handleError "Need to know the Dev-Hub when creating scratch org "
+    fi
+}
 #######################################################
 # Command Line Arguments
 #
 #######################################################
 function getCommandLineArgs() {
 
-	while getopts u:l:v:sihqtb option
+	while getopts u:l:v:dsihqtb option
 	do
 	   case "${option}"
 	   in
@@ -160,17 +257,16 @@ function getCommandLineArgs() {
         b) installBase=1;;
         q) quietly=1;;
         i) installPack=1;;
-	    h) help; exit 1;;
+	    h) help;;
 	   esac
 	done
     #if no org, then creating a scratch org
-    if [ -z $orgName ]; then
+    if [ -z ${orgName} ]; then
         scratchOrg=1;
     fi
-	 #need to know dev-hub
-    if [ -z $devhub ]; then
+	#need to know dev-hub
+    if [ -z ${devhub} ]; then
         handleError "Need to know the Dev-Hub when creating scratch org "
-
     fi
 }
 #######################################################
@@ -179,7 +275,7 @@ function getCommandLineArgs() {
 #######################################################
 function isCIEnvironment() {
     # determine who is running
-    if [[ ! -z "${IS_CI}" ]]; then
+    if [[ ! -z ${IS_CI} ]]; then
         print "Script is running on CI Environment"
         SFDX_CLI_EXEC=node_modules/sfdx-cli/bin/run
     fi
@@ -189,29 +285,68 @@ function isCIEnvironment() {
 #
 #######################################################
 function createScratchOrg() {
-    
-    if [ ! -z $scratchOrg ]; then
+
+    if [ ! -z ${scratchOrg} ]; then
         print "Creating Scratch org..."
-        # get username
-        orgName=`$SFDX_CLI_EXEC force:org:create -v $devhub -s -f config/project-scratch-def.json -d $numOfSODays --json |  grep username | awk '{ print $2}' | sed 's/"//g'`
-        print "Scratch org created (user=$orgName)."
-		if [  -z $orgName ]; then
+        # create scratch
+        $SFDX_CLI_EXEC force:org:create -v "$devhub" -s -f config/project-scratch-def.json -d $numOfSODays --json > .$$_orgCreate
+        #check status
+        if [[ $? > 0 ]]; then
+            cat .$$_orgCreate
+            echo
+            rm .$$_orgCreate
 			handleError "Problem creating scratch Org (could be network issues, permissions, or limits) [sfdx force:org:create -s -f config/project-scratch-def.json -d $numOfSODays --json] "
 		fi
+        orgName=`cat ".$$_orgCreate" |  grep username | awk '{ print $2}' | sed 's/"//g'`;
+        rm .$$_orgCreate;
+
+        print "Scratch org created (user=$orgName)."
+
     fi
+
 }
 
 #######################################################
-# Run Apex Unit Tests  
+# Run Apex Unit Tests
 #
 #######################################################
 function runApexTests() {
-    
-   if [ ! -z $runUnitTests ]; then
+
+   if [ ! -z ${runUnitTests-x} ]; then
        print "Running Apex Unit Tests (target=$orgName) [w/ core-coverage]"
        # run tests
-       $SFDX_CLI_EXEC force:apex:test:run -r human -c -u "$orgName" -w 30 
+       $SFDX_CLI_EXEC force:apex:test:run -r human -c -u "$orgName" -w 30
    fi
+}
+#######################################################
+# make the output dir
+#
+#######################################################
+function makeOutputDir() {
+
+    base=$(dirName $0)
+    baseOutput="$base/output"
+
+    if [ ! -d "$baseOutput" ]; then
+        mkdir "$baseOutput"
+
+    fi
+    outputDir="$baseOutput"
+}
+#######################################################
+# make the output dir
+#
+#######################################################
+function getTemplatesDir() {
+      set -xv
+      pwd
+    base=`pwd`
+    #$(dirName $0)
+    baseOutput="$base/templates"
+    templateDir="${baseOutput}"
+
+    [ ! -d "${baseOutput}" ] && handleError "Could not find the templates: $baseOutput"
+
 }
 #######################################################
 # set permissions
@@ -227,7 +362,7 @@ function setPermissions() {
 #######################################################
 function installPackages() {
 
-     if [ ! -z $orgName ]; then
+     if [ ! -z ${orgName} ]; then
         local step=0;
         print "installing content to org [$orgName]..."
         # get our package ids ( do not want to keep updating this script)
@@ -235,9 +370,9 @@ function installPackages() {
             local pgkId=`echo $line | awk '{print $2}'`
             local name=`echo $line | awk '{print $1}'`
             print "Installing package $name ($pgkId) for $orgName"
-            $SFDX_CLI_EXEC force:package:install -a package --package "$pgkId" --wait 30 --publishwait 30 -u "$orgName" 
+            $SFDX_CLI_EXEC force:package:install -a package --package "$pgkId" --wait 30 --publishwait 30 -u "$orgName"
             #check for install just the base/common
-            if [ ! -z $installBase ]; then
+            if [ ! -z ${installBase} ]; then
                 ((step=step+1));
             fi
             # just installing the common ??
@@ -249,8 +384,12 @@ function installPackages() {
     fi
 
 }
+#######################################################
+# Push or Install Source
+#
+#######################################################
 function pushOrInstall() {
-    if [ -z $installPack ]; then
+    if [ -z ${installPack} ]; then
         pushToScratch
     else
         installPackages
@@ -261,7 +400,7 @@ function pushOrInstall() {
 #
 #######################################################
 function pushToScratch() {
-    if [ ! -z $orgName ]; then
+    if [ ! -z ${orgName} ]; then
         print "pushing content to scratch org [$orgName]..."
         $SFDX_CLI_EXEC force:source:push -u "$orgName"
     fi
@@ -271,9 +410,9 @@ function pushToScratch() {
 #
 #######################################################
 function openOrg() {
-    if [ ! -z $orgName ]; then
-        print "Launching Org now ..."
-        $SFDX_CLI_EXEC force:org:open -u "$orgName"
+    if [ ! -z ${orgName} ]; then
+        print "Launching Org now [setup]..."
+        $SFDX_CLI_EXEC force:org:open -u "$orgName" -p "lightning/setup/SetupOneHome/home"
     fi
 }
 #######################################################
