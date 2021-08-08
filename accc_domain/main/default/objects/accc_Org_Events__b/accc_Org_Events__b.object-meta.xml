@@ -3,5 +3,5 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Cross-cutting concerns which holds event information for audit and retrieval</description>
     <label>Accc Org Event</label>
-    <pluralLabel>Accc Org Events</pluralLabel>
+    <pluralLabel>Accc Big Object Org Events</pluralLabel>
 </CustomObject>

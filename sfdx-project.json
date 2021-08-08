@@ -2,10 +2,10 @@
     "packageDirectories": [
         {
             "path": "accc_domain",
-            "default": false,
+            "default": true,
             "package": "Accc_Domain",
-            "versionName": "ACCC Domain - Winter '20",
-            "versionNumber": "0.5.1.NEXT",
+            "versionName": "ACCC Domain - Summer '21",
+            "versionNumber": "0.6.1.NEXT",
             "definitionFile": "config/project-scratch-def.json"
         },
         {
@@ -18,7 +18,7 @@
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.1.LATEST"
+                    "versionNumber": "0.6.1.LATEST"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.1.LATEST"
+                    "versionNumber": "0.6.1.LATEST"
                 },
                 {
                     "package": "Accc_Common",
@@ -54,7 +54,7 @@
         },
         {
             "path": "accc_th",
-            "default": true,
+            "default": false,
             "package": "Accc_TH",
             "versionName": "ACCC Trigger Handler - Spring '20",
             "versionNumber": "1.0.2.NEXT",
@@ -62,7 +62,7 @@
             "dependencies": [
                 {
                     "package": "Accc_Domain",
-                    "versionNumber": "0.5.1.LATEST"
+                    "versionNumber": "0.6.1.LATEST"
                 },
                 {
                     "package": "Accc_Common",
@@ -88,7 +88,7 @@
         "Accc_PE_Domain": "0Ho6g000000fy7dCAA",
         "Accc_PE": "0Ho6g000000fy7iCAA",
         "Accc_TH": "0Ho6g000000fy7nCAA",
-        "Accc_Domain@0.5.1-1": "04t6g000008KJv3AAG",
+        "Accc_Domain@0.6.1-1": "04t6g000008s5E5AAI",
         "Accc_Common@1.2.9-1": "04t6g000008KJv8AAG",
         "Accc_PE_Domain@0.5.2-1": "04t6g000008KJvDAAW",
         "Accc_PE@1.1.2-1": "04t6g000008KJvIAAW",
