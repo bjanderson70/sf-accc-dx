@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2021, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -60,7 +60,7 @@ public with sharing class accc_TriggerHandlerChainBuilder {
     // collection of custom metadata type
     @TestVisible
     List<accc_TriggerHandlerMetaDataModel.THDataModelInformation> m_elements = null;
- 
+
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // Ctors
@@ -181,7 +181,7 @@ public with sharing class accc_TriggerHandlerChainBuilder {
         }
     } // end of triggerEnvironment
 
-  
+
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // Public Methods
@@ -220,41 +220,44 @@ public with sharing class accc_TriggerHandlerChainBuilder {
     @TestVisible
     private accc_IHandlerChain buildTriggerEventHandlerChain(List<accc_TriggerHandlerMetaDataModel.THDataModelInformation> elements
                                                              , String theDomainName) {
-
-        // here is the head
-        accc_IHandlerChain result = null;
+        // here is the top and result (current)
+        accc_IHandlerChain top=null,
+                           current = null;
         // any work
-        if ( elements == null || elements.size() == 0 ) {
-            return result;
+        if ( elements == null || elements.isEmpty() ) {
+            return current;
         }
- 
+
         // define the instance we want to create
         accc_ITriggerHandler instance;
-
         // iterate over the elements
-
         for ( accc_TriggerHandlerMetaDataModel.THDataModelInformation element : elements) {
             // we work on the domain object that are active
-            if ( element.domain == theDomainName &&
-                 element.isActive ) {
+            if ( element.domain == theDomainName
+                 && element.isActive ) {
 
-     
-                // attempt to create an instance of the class (must have default ctor)
+                // attempt to create an instance of the class (MUST have default ctor)
                 instance = (accc_ITriggerHandler)accc_ApexUtilities.getClassInstance(element.clazz);
                 // was an instance created
                 if ( instance != null ) {
                     // get the next item in the chain
-                    accc_IHandlerChain next = result != null ? result : null;
-                    result = new accc_VirtualTriggerHandlerChain(instance);
-                    // we already have part of the chain, add to it
-                    result.setNext(next);
+                    accc_IHandlerChain previous = current != null ? current : null;
+                    current = new accc_VirtualTriggerHandlerChain(instance);
+                    // ensure next is null
+                    current.setNext(null);
+                    // set previous , next item in link/chain
+                    if ( previous != null ) {
+                        previous.setNext(current);
+                    }
+                    // keep the top to return
+                    if ( top == null ) {
+                        top= current;
+                    }
                 }
-
-            } // end if
-        }// end for
-
-        return result;
-    } // end of buildTriggerEventHandlerChain
+            }     // end if
+        }    // end for
+        return top;
+    }     // end of buildTriggerEventHandlerChain
 
     /**
      * @description is the domain active
