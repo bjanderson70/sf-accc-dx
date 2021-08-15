@@ -6,6 +6,7 @@
 .sfdx/
 .localdevserver/
 .vim-force.com/
+.vscode/
 
 # LWC VSCode autocomplete
 **/lwc/jsconfig.json
