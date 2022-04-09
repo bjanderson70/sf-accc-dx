@@ -76,7 +76,9 @@ global inherited sharing class accc_GenericDbResultHandler {
         this.theResultType = ResultType.INSERT_RESULT;
         integer size = result != null ? result.size() : 0;
         for ( integer inx = 0; inx < size; inx++) {
-            this.processErrors(result[inx].getErrors());
+            if (!result[inx].isSuccess()) {
+                this.processErrors(result[inx].getErrors());
+            }
         }
     }// end of ctor
     /**
@@ -88,7 +90,9 @@ global inherited sharing class accc_GenericDbResultHandler {
         this.theResultType = ResultType.UPDATE_RESULT;
         integer size = result != null ? result.size() : 0;
         for ( integer inx = 0; inx < size; inx++) {
-            this.processErrors(result[inx].getErrors());
+            if (!result[inx].isSuccess()) {
+                this.processErrors(result[inx].getErrors());
+            }
         }
     }// end of ctor
     /**
@@ -100,7 +104,9 @@ global inherited sharing class accc_GenericDbResultHandler {
         this.theResultType = ResultType.DELETE_RESULT;
         integer size = result != null ? result.size() : 0;
         for ( integer inx = 0; inx < size; inx++) {
-            this.processErrors(result[inx].getErrors());
+            if (!result[inx].isSuccess()) {
+                this.processErrors(result[inx].getErrors());
+            }
         }
     }// end of ctor
     /**
@@ -112,7 +118,9 @@ global inherited sharing class accc_GenericDbResultHandler {
         this.theResultType = ResultType.UNDELETE_RESULT;
         integer size = result != null ? result.size() : 0;
         for ( integer inx = 0; inx < size; inx++) {
-            this.processErrors(result[inx].getErrors());
+            if (!result[inx].isSuccess()) {
+                this.processErrors(result[inx].getErrors());
+            }
         }
     }// end of ctor
      /**
@@ -124,7 +132,9 @@ global inherited sharing class accc_GenericDbResultHandler {
         this.theResultType = ResultType.MERGE_RESULT;
         integer size = result != null ? result.size() : 0;
         for ( integer inx = 0; inx < size; inx++) {
-            this.processErrors(result[inx].getErrors());
+            if (!result[inx].isSuccess()) {
+                this.processErrors(result[inx].getErrors());
+            }
         }
     } // end of ctor
 
