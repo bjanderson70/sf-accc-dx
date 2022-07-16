@@ -515,8 +515,11 @@ global inherited sharing class accc_ApexCRUDProvider implements accc_IApexCRUDPr
                 SObjectAccessDecision securityDecision = Security.stripInaccessible(
                     aType,
                     theObjects);
+		// FIX [ISSUE-002] when in USER-SYSTEM mode - 
+		// "addError" (does not work bec/ of copy) or "insert" ( does not return the id within the list)
+		theObjects.clear();
                 // get accessible records
-                results= securityDecision.getRecords();
+                theObjects.addAll( securityDecision.getRecords());
             }
             return results;
 
